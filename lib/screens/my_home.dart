@@ -6,10 +6,29 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+  // Explicit
+  String codeCenter = 'ยินดีต้อนรับ \r\n กรุณากด Icon \'แฮมเบอร์เกอร์\' มุมซ้ายบน';
+
+  // Method
+  Widget showText() {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        '$codeCenter',
+        style: TextStyle(fontSize: 18.0),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          showText(),
+        ],
+      ),
     );
   }
 }

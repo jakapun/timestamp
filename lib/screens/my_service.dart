@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:timestamp/screens/admin.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/qrbarcode.dart';
 import 'package:timestamp/screens/stamp_in.dart';
@@ -90,7 +91,7 @@ class _MyserviceState extends State<Myservice> {
       ),
       onTap: () {
         setState(() {
-          currentWidget = QrBarcode();
+          currentWidget = AdminSec();
           Navigator.of(context).pop();
         });
       },
