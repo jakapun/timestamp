@@ -9,7 +9,7 @@ class AdminSec extends StatefulWidget {
 class _AdminSecState extends State<AdminSec> {
 
   Widget showLogo() {
-    return Image.asset('images/icon_admin.png');
+    return Image.asset('images/icon_admin2.png');
   }
 
   // App Name
