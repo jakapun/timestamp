@@ -57,7 +57,7 @@ class _AdminSecState extends State<AdminSec> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false, 
       // body: Text('Home',style: TextStyle(fontSize: 50.0),),
       body: Form(
           child: Container(

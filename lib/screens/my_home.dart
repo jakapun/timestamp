@@ -7,7 +7,7 @@ class MyHome extends StatefulWidget {
 
 class _MyHomeState extends State<MyHome> {
   // Explicit
-  String codeCenter = 'ยินดีต้อนรับ \r\n กรุณากด Icon \'แฮมเบอร์เกอร์\' มุมซ้ายบน';
+  String codeCenter = 'ยินดีต้อนรับ \r\n กรุณากด Icon \'แฮมเบอร์เกอร์\' มุมซ้ายบน \r\n หรือ slide หน้าจอจากขอบด้านซ้ายไปขวา';
 
   // Method
   Widget showText() {

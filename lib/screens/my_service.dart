@@ -191,9 +191,35 @@ class _MyserviceState extends State<Myservice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.white,
+      // appBar: new AppBar(
+      //       title: new Text('My Service'),
+      //       backgroundColor: Colors.transparent,
+      //       elevation: 0.0,
+      // ),
+      // appBar: AppBar(
+      //   title: Text('My Service'),
+      // ),
       appBar: AppBar(
-        title: Text('My Service'),
-      ),
+          title: Text('My Service',
+              style: TextStyle(color: Colors.white),
+              textDirection: TextDirection.ltr),
+          flexibleSpace: Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF2255EE),
+                    const Color(0xFF00DDDD),
+                  ],
+                  begin: const FractionalOffset(0.0, 0.1),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+          ),
+          iconTheme: new IconThemeData(color: Colors.yellow[900]),
+        ),
       body: currentWidget,
       drawer: myDrawer(), // call drawer
     );
