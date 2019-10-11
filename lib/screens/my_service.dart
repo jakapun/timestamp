@@ -18,9 +18,9 @@ class _MyserviceState extends State<Myservice> {
   Widget menuFormPage() {
     return ListTile(
       leading: Icon(
-        Icons.all_out,
+        Icons.alarm_add,
         size: 36.0,
-        color: Colors.red,
+        color: Colors.green[400],
       ),
       title: Text(
         'ลงเวลาเข้า',
@@ -39,9 +39,9 @@ class _MyserviceState extends State<Myservice> {
   Widget menuListViewPage() {
     return ListTile(
       leading: Icon(
-        Icons.all_out,
+        Icons.alarm_off,
         size: 36.0,
-        color: Colors.purple,
+        color: Colors.red,
       ),
       title: Text(
         'ลงเวลาออก',
@@ -60,12 +60,32 @@ class _MyserviceState extends State<Myservice> {
   Widget menuQRcode() {
     return ListTile(
       leading: Icon(
-        Icons.android,
+        Icons.crop_free,
         size: 36.0,
         color: Colors.purple,
       ),
       title: Text(
         'สแกน Qrcode/Barcode',
+        style: TextStyle(fontSize: 18.0),
+      ),
+      onTap: () {
+        setState(() {
+          currentWidget = QrBarcode();
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
+
+  Widget menuAdmin() {
+    return ListTile(
+      leading: Icon(
+        Icons.android,
+        size: 36.0,
+        color: Colors.purple,
+      ),
+      title: Text(
+        'Admin เซคชั่น',
         style: TextStyle(fontSize: 18.0),
       ),
       onTap: () {
@@ -144,6 +164,8 @@ class _MyserviceState extends State<Myservice> {
           menuFormPage(),
           Divider(),
           menuQRcode(),
+          Divider(),
+          menuAdmin(),
           Divider(),
           signOutAnExit(),
         ],
