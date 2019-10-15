@@ -8,7 +8,6 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
-  // Explicit
   double mySize = 100.0;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
@@ -20,14 +19,11 @@ class _AuthenState extends State<Authen> {
   @override
   void initState() {
     super.initState();
-    checkStatus();
+    // checkStatus();
   }
 
   Future<void> checkStatus() async {
-    // FirebaseUser firebaseUser = await firebaseAuth.currentUser();
-    // if (firebaseUser != null) {
-      moveToService();
-    // }
+    moveToService();
   }
 
   void moveToService() {
@@ -87,8 +83,8 @@ class _AuthenState extends State<Authen> {
     //     .signInWithEmailAndPassword(
     //         email: emailString, password: passwordString)
     //     .then((response) {
-      print('Authen Success');
-      moveToService();
+    //   print('Authen Success');
+    //   moveToService();
     // }).catchError((response) {
     //   String errorString = response.message;
     //   print('error = $errorString');
