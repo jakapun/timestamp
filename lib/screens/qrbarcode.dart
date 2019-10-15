@@ -4,23 +4,21 @@ import 'package:barcode_scan/barcode_scan.dart';
 // QrBarcode
 
 class QrBarcode extends StatefulWidget {
-
   @override
   _QrBarcodeState createState() => _QrBarcodeState();
 }
 
 class _QrBarcodeState extends State<QrBarcode> {
-
   // Explicit
-  String qrCodeString = 'QRcode';
+  String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
 
   // Method
   Widget showText() {
     return Container(
       alignment: Alignment.center,
-      child: Text(
+      child: SelectableText(
         '$qrCodeString',
-        style: TextStyle(fontSize: 48.0),
+        style: TextStyle(fontSize: 26.0),
       ),
     );
   }
@@ -28,7 +26,7 @@ class _QrBarcodeState extends State<QrBarcode> {
   Widget showButton() {
     return RaisedButton.icon(
       icon: Icon(Icons.android),
-      label: Text('Read QR code'),
+      label: Text('สแกน Qrcode/Barcode'),
       onPressed: () {
         qrProcess();
       },
@@ -53,8 +51,8 @@ class _QrBarcodeState extends State<QrBarcode> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          showText(),
           showButton(),
+          showText(),
         ],
       ),
     );

@@ -8,8 +8,17 @@ class MyHome extends StatefulWidget {
 class _MyHomeState extends State<MyHome> {
   // Explicit
   String codeCenter = 'ยินดีต้อนรับ \r\n กรุณากด Icon \'แฮมเบอร์เกอร์\' มุมซ้ายบน \r\n หรือ slide หน้าจอจากขอบด้านซ้ายไปขวา';
+  
 
   // Method
+  Widget showImage() {
+    return Container(
+      margin: EdgeInsets.only(top: 50.0),
+      height: 200.0,
+      child: codeCenter == null ? Image.asset('images/pic.png') : Image.asset('images/pic.png'),
+    );
+  }
+
   Widget showText() {
     return Container(
       alignment: Alignment.center,
@@ -26,6 +35,7 @@ class _MyHomeState extends State<MyHome> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          showImage(),
           showText(),
         ],
       ),
