@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:timestamp/screens/my_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+// import 'dart:io';
 
 class StampIn extends StatefulWidget {
   @override
@@ -201,7 +204,7 @@ class _StampInState extends State<StampIn> {
                 // check name,detail
                 print(
                     'name = $name, detail = $detail, lat = $lat, lng = $lng, code = $code');
-                // uploadFileToStorage();
+                uploadFileToStorage();
               }
             } else {
               myAlert(
@@ -214,10 +217,30 @@ class _StampInState extends State<StampIn> {
   }
 
   Future uploadFileToStorage() async {
+
+    String nodeEndPoint = 'http://101.109.115.27:2522/image';
     String namePicture = '$code.jpg';
     print('filename pic = $namePicture');
     // create instance
-      updateValueToFireStore();
+      // updateValueToFireStore();
+
+    //   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    // StorageReference storageReference =
+    //     firebaseStorage.ref().child('Picture/$namePicture');
+    // StorageUploadTask storageUploadTask = storageReference.putFile(file);
+
+    if (file == null) return;
+   String base64Image = base64Encode(file.readAsBytesSync());
+   String fileName = file.path.split("/").last;
+
+   http.post(nodeEndPoint, body: {
+     "image": base64Image,
+     "name": fileName,
+   }).then((res) {
+     print(res.statusCode);
+   }).catchError((err) {
+     print(err);
+   });
     
   }
 

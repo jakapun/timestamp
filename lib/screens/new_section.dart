@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:timestamp/screens/my_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Register extends StatefulWidget {
+import 'package:timestamp/screens/my_service.dart';
+
+class NewSection extends StatefulWidget {
   @override
-  _RegisterState createState() => _RegisterState();
+  _NewSectionState createState() => _NewSectionState();
 }
 
-class _RegisterState extends State<Register> {
+class _NewSectionState extends State<NewSection> {
+
   // Explicit
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString, _mySelection;

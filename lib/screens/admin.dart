@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:timestamp/screens/section.dart';
+import 'package:timestamp/screens/my_home.dart';
+import 'package:timestamp/screens/new_section.dart';
 
 class AdminSec extends StatefulWidget {
   @override
@@ -7,150 +8,212 @@ class AdminSec extends StatefulWidget {
 }
 
 class _AdminSecState extends State<AdminSec> {
-  int _cIndex = 0;
+  double mySize = 100.0;
+  // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final formKey = GlobalKey<FormState>();
+  String emailString = '', passwordString = '';
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  Widget currentWidget;
 
-  void _incrementTab(index) {
-    setState(() {
-      _cIndex = index;
-    });
+  // Method
+
+  @override
+  void initState() {
+    super.initState();
+    // checkStatus();
+  }
+
+  Future<void> checkStatus() async {
+    moveToService();
+  }
+
+  void moveToService() {
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => MyHome());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+  }
+
+  Widget mySizeBox() {
+    return SizedBox(
+      width: 8.0,
+    );
+  }
+
+  Widget singUpButton() {
+    return OutlineButton(
+      borderSide: BorderSide(color: Colors.green.shade900),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Text(
+        'กำหนด ศูนย์',
+        style: TextStyle(color: Colors.green.shade900),
+      ),
+      onPressed: () {
+        print('You Click SingUp');
+
+        // Create Route
+        // var registerRoute =
+        //     MaterialPageRoute(builder: (BuildContext context) => Myservice());
+        // Navigator.of(context).push(registerRoute);
+
+        // Navigator.of(context).pop();
+        // setState(() {
+        //   currentWidget = NewSection();
+        // });
+
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => NewSection());
+        Navigator.of(context).push(materialPageRoute);
+      },
+    );
+  }
+
+  Widget singInButton() {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        'Sign In',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        formKey.currentState.save();
+        checkAuthen();
+      },
+    );
+  }
+
+  Future<void> checkAuthen() async {
+    print('email = $emailString, password = $passwordString');
+    // await firebaseAuth
+    //     .signInWithEmailAndPassword(
+    //         email: emailString, password: passwordString)
+    //     .then((response) {
+    //   print('Authen Success');
+    //   moveToService();
+    // }).catchError((response) {
+    //   String errorString = response.message;
+    //   print('error = $errorString');
+    //   myShowSnackBar(errorString);
+    // });
+  }
+
+  Widget myButton() {
+    return Container(
+      width: 220.0,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: singInButton(),
+          ),
+          mySizeBox(),
+          Expanded(
+            child: singUpButton(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget passwordText() {
+    return Container(
+      width: 220.0,
+      child: TextFormField(
+        obscureText: true,
+        decoration: InputDecoration(
+          labelText: 'Password :',
+          hintText: 'More 6 Charactor',
+        ),
+        onSaved: (String value) {
+          passwordString = value;
+        },
+      ),
+    );
+  }
+
+  Widget emailText() {
+    return Container(
+      width: 220.0,
+      child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          labelText: 'Email :',
+          hintText: 'you@email.com',
+        ),
+        onSaved: (String value) {
+          emailString = value;
+        },
+      ),
+    );
   }
 
   Widget showLogo() {
-    return Image.asset('images/icon_admin2.png');
+    return Container(
+      width: mySize,
+      height: mySize,
+      child: Image.asset(
+        'images/logo.png',
+        fit: BoxFit.contain,
+      ),
+    );
   }
-
-  // App Name
 
   Widget showText() {
     return Text(
       'Admin เซคชั่น',
       style: TextStyle(
-          fontFamily: 'Pridi',
-          fontSize: 25.0,
+          fontSize: 45.0,
           fontWeight: FontWeight.bold,
-          color: Colors.blueAccent[100]),
+          color: Colors.brown[800],
+          fontFamily: 'PermanentMarker'),
     );
   }
 
-  Widget oneButton(BuildContext context1) {
-    //สร้างตัวแปรชื่อ context
-    return RaisedButton(
-      color: Colors.blue,
-      child: Text('Call one'),
-      onPressed: () {
-        print('You Click SignUp');
-        var registerRoute = new MaterialPageRoute(
-            builder: (BuildContext context) => DefSection());
-        Navigator.of(context1).push(registerRoute);
-      },
+  void myShowSnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.green[700],
+      duration: Duration(seconds: 8),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+        textColor: Colors.orange,
+      ),
     );
-  }
-
-  Widget twoButton(BuildContext context1) {
-    //สร้างตัวแปรชื่อ context
-    return RaisedButton(
-      color: Colors.blue,
-      child: Text('Call two'),
-      onPressed: () {
-        print('You Click SignUp');
-        var registerRoute = new MaterialPageRoute(
-            builder: (BuildContext context) => DefSection());
-        Navigator.of(context1).push(registerRoute);
-      },
-    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        // body: Text('Home',style: TextStyle(fontSize: 50.0),),
-        body: Form(
-            child: Container(
+      key: scaffoldKey,
+      resizeToAvoidBottomPadding: true,
+      body: Center(
+        child: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.yellow, Colors.white],
-                  begin: Alignment(-1, -1))),
-          padding: EdgeInsets.only(top: 100.0),
-          alignment: Alignment.center,
-          child: Column(
-            children: <Widget>[
-              showLogo(),
-              Container(
-                //ครอบ container เพื่อจัด margin ของ text
-                margin: EdgeInsets.only(top: 20.0),
-                child: showText(),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 48.0, right: 48.0),
-                child: Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: oneButton(context),
-                    ),
-                    new Expanded(
-                      child: twoButton(context), //goto line 63
-                    )
-                  ],
-                ),
-              )
-            ],
+            gradient: RadialGradient(
+              colors: [Colors.white, Colors.green.shade900],
+              radius: 1.2,
+            ),
           ),
-        )),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _cIndex,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              // icon: Icon(Icons.ac_unit,color: Color.fromRGBO(r, g, b, opacity)),
-              icon: Icon(Icons.settings),
-              title: Text('Setting'),
+          alignment: Alignment.center,
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                showLogo(),
+                showText(),
+                myButton(),
+              ],
             ),
-            BottomNavigationBarItem(
-              // icon: Icon(Icons.ac_unit,color: Color.fromARGB(255, 0, 0, 0)),
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              title: Text('New Page'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Goto Page'),
-            )
-          ],
-          onTap: (index) {
-            print('$index');
-            _incrementTab(index);
-            if (index == 0) { 
-            Navigator.of(context)
-                .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-              return new DefSection();
-            })); 
-            } else if (index == 1) {
-            Navigator.of(context)
-                .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-              return new DefSection();
-            })); 
-            } else if (index == 2) {
-            Navigator.of(context)
-                .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-              return new DefSection();
-            })); 
-            } else if (index == 3) {
-            Navigator.of(context)
-                .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-              return new DefSection();
-            })); 
-            } else {
-            Navigator.of(context)
-                .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-              return new DefSection();
-            })); 
-            }   
-            
-          },
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }
