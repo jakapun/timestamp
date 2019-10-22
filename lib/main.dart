@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:timestamp/screens/authen.dart';
-import 'package:timestamp/screens/my_service.dart';
+import 'package:timestamp/screens/authen.dart';
 
 void main(){
   runApp(MyApp());
@@ -9,6 +8,6 @@ void main(){
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Myservice(),);
+    return MaterialApp(home: Authen());
   }
 }

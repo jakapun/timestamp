@@ -62,6 +62,7 @@ class _AuthenState extends State<Authen> {
 
   Widget singInButton() {
     return RaisedButton(
+      elevation: 5.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
@@ -90,6 +91,13 @@ class _AuthenState extends State<Authen> {
     //   print('error = $errorString');
     //   myShowSnackBar(errorString);
     // });
+    /*
+    str1.toLowerCase(); // lorem
+    str1.toUpperCase(); // LOREM
+    "   $str2  ".trim(); // 'Lorem ipsum'
+    str3.split('\n'); // ['Multi', 'Line', 'Lorem Lorem ipsum'];
+    str2.replaceAll('e', 'é'); // Lorém
+    */
   }
 
   Widget myButton() {

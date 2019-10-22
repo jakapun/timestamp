@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/new_section.dart';
+import 'package:timestamp/screens/relate_id.dart';
 
 class AdminSec extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _AdminSecState extends State<AdminSec> {
         borderRadius: BorderRadius.circular(30.0),
       ),
       child: Text(
-        'กำหนด ศูนย์',
+        'สร้างข้อมูล ศูนย์/ส่วน',
         style: TextStyle(color: Colors.green.shade900),
       ),
       onPressed: () {
@@ -77,12 +78,15 @@ class _AdminSecState extends State<AdminSec> {
       ),
       color: Colors.green[900],
       child: Text(
-        'Sign In',
+        'ผูก รหัสพนักงาน',
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
-        formKey.currentState.save();
-        checkAuthen();
+        // formKey.currentState.save();
+        // checkAuthen();
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => RelateId());
+        Navigator.of(context).push(materialPageRoute);
       },
     );
   }
@@ -206,7 +210,7 @@ class _AdminSecState extends State<AdminSec> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                showLogo(),
+                // showLogo(),
                 showText(),
                 myButton(),
               ],

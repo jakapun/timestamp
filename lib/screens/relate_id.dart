@@ -214,7 +214,7 @@ class _RelateIdState extends State<RelateId> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('ลงทะเบียน User'),
+        title: Text('ผูก รหัสพนักงาน กับศูนย์'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(
@@ -238,8 +238,8 @@ class _RelateIdState extends State<RelateId> {
             child: Column(
               children: <Widget>[
                 nameText(),
-                emailText(),
-                passwordText(),
+                // emailText(),
+                // passwordText(),
                 dropdownButton(),
               ],
             ),

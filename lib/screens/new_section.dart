@@ -214,7 +214,7 @@ class _NewSectionState extends State<NewSection> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('ลงทะเบียน User'),
+        title: Text('สร้างข้อมูล ศูนย์ ใต้ส่วนงาน'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(
