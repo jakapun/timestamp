@@ -57,6 +57,8 @@ class _RelateIdState extends State<RelateId> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'Type Emplyee Id';
+        } else {
+            return null;
         }
       },
       onSaved: (String value) {
@@ -82,6 +84,8 @@ class _RelateIdState extends State<RelateId> {
       validator: (String value) {
         if (!((value.contains('@')) && (value.contains('.')))) {
           return 'Type Email Format';
+        } else {
+            return null;
         }
       },
       onSaved: (String value) {
@@ -106,6 +110,8 @@ class _RelateIdState extends State<RelateId> {
       validator: (String value) {
         if (value.length <= 5) {
           return 'Password Much More 6 Charactor';
+        } else {
+            return null;
         }
       },
       onSaved: (String value) {

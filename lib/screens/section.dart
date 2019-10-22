@@ -23,6 +23,8 @@ class _DefSectionState extends State<DefSection> {
       validator: (String value) {
         if (value.length == 0) {
           return 'please type name?';
+        } else {
+            return null;
         }
       },
       onSaved: (String value) {
@@ -39,6 +41,8 @@ class _DefSectionState extends State<DefSection> {
       validator: (String value) {
         if (!((value.contains('@') && value.contains('.')))) {
           return 'type email format yourmail@name.com';
+        } else {
+            return null;
         }
       },
       onSaved: (String value) {
@@ -56,6 +60,8 @@ class _DefSectionState extends State<DefSection> {
       validator: (String value) {
         if (value.length <= 5) {
           return 'Please Type Password > 5 digit';
+        } else {
+            return null;
         }
       },
       onSaved: (String value) {
