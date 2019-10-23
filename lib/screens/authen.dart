@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:timestamp/screens/my_service.dart';
 import 'package:timestamp/screens/register.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -98,6 +101,64 @@ class _AuthenState extends State<Authen> {
     str3.split('\n'); // ['Multi', 'Line', 'Lorem Lorem ipsum'];
     str2.replaceAll('e', 'é'); // Lorém
     */
+
+    String urlString = 'http://101.109.115.27:2500/api/signin';
+
+    var body = {
+      "username": emailString,
+      "password": passwordString
+    };
+
+    // var response = await get(urlString);
+    var response = await post(urlString, body: body);
+
+    if (response.statusCode == 200) {
+    print(response.statusCode);
+    var result = json.decode(response.body);
+    // print('result = $result');
+
+    if (result.toString() == 'null') {
+      myAlert('User False', 'No $emailString in my Database');
+    } else {
+      // for (var myJSON in result) {
+      //   print('myJSON = $myJSON');
+      //   UserModel userModel = UserModel.fromJSON(myJSON);
+
+      //   if (password == userModel.password.trim()) {
+      //     print('Login Success $password');
+
+      //     MaterialPageRoute materialPageRoute =
+      //         MaterialPageRoute(builder: (BuildContext context) => MyService(userModel: userModel,));
+      //     Navigator.of(context).pushAndRemoveUntil(
+      //         materialPageRoute, (Route<dynamic> route) => false);
+      //   } else {
+      //     myAlert('Password False', 'Plese try Aganis Password False');
+      //   }
+      // }
+
+        if (result['status']){
+          String token = result['token'];
+          token = token.split(' ').last;
+          // print(token);
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('stoken', token);
+          String sValue = prefs.getString('stoken');
+          // sValue.replaceAll('JWT ', '');
+          print(sValue);
+
+          MaterialPageRoute materialPageRoute =
+              MaterialPageRoute(builder: (BuildContext context) => Myservice());
+          Navigator.of(context).pushAndRemoveUntil(
+              materialPageRoute, (Route<dynamic> route) => false);
+        } else {
+          print(result['error']);
+        }
+
+    } // End else result.toString() != 'null'
+    } else { //check respond = 200
+      myAlert('Error', response.statusCode.toString());
+    }
   }
 
   Widget myButton() {
@@ -183,6 +244,40 @@ class _AuthenState extends State<Authen> {
       ),
     );
     scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  Widget showTitleAlert(String title) {
+    return ListTile(
+      leading: Icon(
+        Icons.add_alert,
+        size: 36.0,
+        color: Colors.red,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 24.0, color: Colors.red.shade800),
+      ),
+    );
+  }
+
+  void myAlert(String titleString, String messageString) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: showTitleAlert(titleString),
+          content: Text(messageString),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
