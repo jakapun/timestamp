@@ -82,7 +82,15 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<void> checkAuthen() async {
-    print('email = $emailString, password = $passwordString');
+
+    if (emailString.length <= 5 && passwordString.length <= 5){
+       print('email = $emailString, password = $passwordString');
+       myShowSnackBar('username && password ต้องไม่เท่ากับ ว่าง');
+    } else {
+
+        // emailString = emailString.trim();
+        // passwordString = passwordString.trim();
+
     // await firebaseAuth
     //     .signInWithEmailAndPassword(
     //         email: emailString, password: passwordString)
@@ -105,8 +113,8 @@ class _AuthenState extends State<Authen> {
     String urlString = 'http://101.109.115.27:2500/api/signin';
 
     var body = {
-      "username": emailString,
-      "password": passwordString
+      "username": emailString.trim(),
+      "password": passwordString.trim()
     };
 
     // var response = await get(urlString);
@@ -140,7 +148,7 @@ class _AuthenState extends State<Authen> {
           String token = result['token'];
           token = token.split(' ').last;
           // print(token);
-
+          if (token.isNotEmpty) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('stoken', token);
           String sValue = prefs.getString('stoken');
@@ -151,6 +159,10 @@ class _AuthenState extends State<Authen> {
               MaterialPageRoute(builder: (BuildContext context) => Myservice());
           Navigator.of(context).pushAndRemoveUntil(
               materialPageRoute, (Route<dynamic> route) => false);
+          
+          } else {
+            myAlert('Respond Fail', 'Backend Not Reply');
+          }
         } else {
           print(result['error']);
         }
@@ -159,6 +171,8 @@ class _AuthenState extends State<Authen> {
     } else { //check respond = 200
       myAlert('Error', response.statusCode.toString());
     }
+
+    } // End If check emailstring.length
   }
 
   Widget myButton() {
