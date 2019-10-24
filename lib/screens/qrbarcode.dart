@@ -11,7 +11,8 @@ class QrBarcode extends StatefulWidget {
 
 class _QrBarcodeState extends State<QrBarcode> {
   // Explicit
-  String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
+  // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
+  String qrCodeString;
   double lat, lng;
 
   // method
@@ -40,6 +41,7 @@ class _QrBarcodeState extends State<QrBarcode> {
       label: Text('ลงเวลาออกด้วย Qrcode/Barcode'),
       onPressed: () {
         qrProcess();
+        // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
       },
     );
   }
@@ -76,6 +78,7 @@ class _QrBarcodeState extends State<QrBarcode> {
         setState(() {
           qrCodeString = codeString;
         });
+        // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
       }
     } catch (e) {}
   }
@@ -100,6 +103,30 @@ class _QrBarcodeState extends State<QrBarcode> {
           style: TextStyle(fontSize: 20.0),
         ),
         Text('$lng')
+      ],
+    );
+  }
+
+  Widget uploadValueButton() {
+    // return IconButton(
+    //   icon: Icon(Icons.cloud_upload),
+    //   onPressed: () {},
+    // );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        FloatingActionButton(
+          child: Icon(Icons.cloud_upload),
+          onPressed: () {
+            if ((lat.toString().isEmpty) || (qrCodeString.isEmpty)) {
+              myAlert('มีข้อผิดพลาด',
+                  'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ');
+            } else {
+              // check name,detail
+              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
+            }
+          },
+        ),
       ],
     );
   }
@@ -131,6 +158,7 @@ class _QrBarcodeState extends State<QrBarcode> {
         children: <Widget>[
           showButton(),
           showText(),
+          uploadValueButton(),
         ],
       ),
     );
