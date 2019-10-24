@@ -214,8 +214,8 @@ class _AuthenState extends State<Authen> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          labelText: 'Email :',
-          hintText: 'you@email.com',
+          labelText: 'Username :',
+          hintText: 'TOT Employee Id',
         ),
         onSaved: (String value) {
           emailString = value;
