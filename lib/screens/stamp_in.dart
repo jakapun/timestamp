@@ -22,6 +22,7 @@ class _StampInState extends State<StampIn> {
   bool imageBool = false;
   final formKey = GlobalKey<FormState>();
   String name, detail, code, urlPicture;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   // method
 
@@ -216,6 +217,20 @@ class _StampInState extends State<StampIn> {
     );
   }
 
+  void myShowSnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.green[700],
+      duration: Duration(seconds: 15),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+        textColor: Colors.orange,
+      ),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   Future uploadFileToStorage() async {
 
     String nodeEndPoint = 'http://101.109.115.27:2522/image';
@@ -231,13 +246,31 @@ class _StampInState extends State<StampIn> {
 
     if (file == null) return;
    String base64Image = base64Encode(file.readAsBytesSync());
-   String fileName = file.path.split("/").last;
+  //  String fileName = file.path.split("/").last;
+
+    // var response = await post(urlString, body: body);
+
+    // if (response.statusCode == 200) {
+    // print(response.statusCode);
+    // var result = json.decode(response.body);
 
    http.post(nodeEndPoint, body: {
      "image": base64Image,
-     "name": fileName,
-   }).then((res) {
-     print(res.statusCode);
+     "name": namePicture,
+   }).then((response) {
+     if (response.statusCode == 200) {
+     print(response.statusCode);
+     var result = json.decode(response.body);
+        // if (result['status']){
+        if (result.toString() == 'null') {
+          print('result not have value');
+        } else {
+          print(result['status'].toString());
+          myShowSnackBar('Upload Image Successful');
+        }
+     } else { //if response=200
+     print('api response != 200');
+     }
    }).catchError((err) {
      print(err);
    });

@@ -83,7 +83,7 @@ class _AuthenState extends State<Authen> {
 
   Future<void> checkAuthen() async {
 
-    if (emailString.length <= 5 && passwordString.length <= 5){
+    if ((emailString.length <= 5) || (passwordString.length <= 5)){
        print('email = $emailString, password = $passwordString');
        myShowSnackBar('username && password ต้องไม่เท่ากับ ว่าง');
     } else {
@@ -151,8 +151,8 @@ class _AuthenState extends State<Authen> {
           if (token.isNotEmpty) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('stoken', token);
+          //  read value from store_preference
           String sValue = prefs.getString('stoken');
-          // sValue.replaceAll('JWT ', '');
           print(sValue);
 
           MaterialPageRoute materialPageRoute =
@@ -250,7 +250,7 @@ class _AuthenState extends State<Authen> {
     SnackBar snackBar = SnackBar(
       content: Text(messageString),
       backgroundColor: Colors.green[700],
-      duration: Duration(seconds: 8),
+      duration: Duration(seconds: 15),
       action: SnackBarAction(
         label: 'Close',
         onPressed: () {},
