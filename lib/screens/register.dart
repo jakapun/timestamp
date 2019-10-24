@@ -42,9 +42,9 @@ class _RegisterState extends State<Register> {
   Widget nameText() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'รหัสพนักงาน/OS :',
+        labelText: 'ชื่อ นามสกุล :',
         labelStyle: TextStyle(color: Colors.pink[400]),
-        helperText: 'Type Emplyee Id',
+        helperText: 'Type Firstname Lastname',
         helperStyle: TextStyle(color: Colors.pink[400]),
         icon: Icon(
           Icons.face,
@@ -54,7 +54,7 @@ class _RegisterState extends State<Register> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Type Emplyee Id';
+          return 'Type Firstname,Lastname';
         } else {
             return null;
         }
@@ -69,9 +69,9 @@ class _RegisterState extends State<Register> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'อีเมล์ :',
+        labelText: 'รหัสพนักงาน/OS :',
         labelStyle: TextStyle(color: Colors.blue),
-        helperText: 'Type you@email.com',
+        helperText: 'TOT Employee Id',
         helperStyle: TextStyle(color: Colors.blue),
         icon: Icon(
           Icons.email,
@@ -80,8 +80,9 @@ class _RegisterState extends State<Register> {
         ),
       ),
       validator: (String value) {
-        if (!((value.contains('@')) && (value.contains('.')))) {
-          return 'Type Email Format';
+        // if (!((value.contains('@')) && (value.contains('.')))) {
+        if (value.length <= 5) {
+          return 'Type Employee Id';
         } else {
             return null;
         }

@@ -198,8 +198,8 @@ class _AuthenState extends State<Authen> {
       child: TextFormField(
         obscureText: true,
         decoration: InputDecoration(
-          labelText: 'Password :',
-          hintText: 'More 6 Charactor',
+          labelText: 'พาสเวิรด์ :',
+          hintText: 'More 5 Charactor',
         ),
         onSaved: (String value) {
           passwordString = value;
@@ -214,7 +214,7 @@ class _AuthenState extends State<Authen> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          labelText: 'Username :',
+          labelText: 'รหัสพนักงาน/OS :',
           hintText: 'TOT Employee Id',
         ),
         onSaved: (String value) {
