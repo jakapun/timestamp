@@ -157,7 +157,7 @@ class _RelateIdState extends State<RelateId> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name = $nameString, Email = $emailString, Pass = $passwordString, Drop = $_mySelection');
+              'Name = $nameString, Drop = $_mySelection');
           register();
         }
       },

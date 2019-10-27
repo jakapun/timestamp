@@ -13,7 +13,7 @@ class _NewSectionState extends State<NewSection> {
 
   // Explicit
   final formKey = GlobalKey<FormState>();
-  String nameString, emailString, passwordString, _mySelection;
+  String nameString1, nameString2, abbrOString, abbrTString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   final String url = "http://webmyls.com/php/getdata.php";
@@ -41,12 +41,12 @@ class _NewSectionState extends State<NewSection> {
   }
 
   // Method
-  Widget nameText() {
+  Widget nameText1() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'รหัสพนักงาน/OS :',
+        labelText: 'ชื่อเต็ม ส่วนงาน :',
         labelStyle: TextStyle(color: Colors.pink[400]),
-        helperText: 'Type Emplyee Id',
+        helperText: 'ชื่อส่วนงาน',
         helperStyle: TextStyle(color: Colors.pink[400]),
         icon: Icon(
           Icons.face,
@@ -56,24 +56,50 @@ class _NewSectionState extends State<NewSection> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Type Emplyee Id';
+          return 'พิมพ์ชื่อ ส่วนงาน';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        nameString = value;
+        nameString1 = value;
       },
     );
   }
 
-  Widget emailText() {
+  Widget nameText2() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'ชื่อเต็ม ศูนย์ที่สังกัด :',
+        labelStyle: TextStyle(color: Colors.orange[600]),
+        helperText: 'ชื่อศูนย์',
+        helperStyle: TextStyle(color: Colors.orange[600]),
+        icon: Icon(
+          Icons.assignment_ind,
+          size: 36.0,
+          color: Colors.orange[600],
+        ),
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'พิมพ์ชื่อ ศูนย์';
+        } else {
+            return null;
+        }
+      },
+      onSaved: (String value) {
+        nameString2 = value;
+      },
+    );
+  }
+
+  Widget abbrOneText() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'อีเมล์ :',
+        labelText: 'ตัวย่อส่วนงาน :',
         labelStyle: TextStyle(color: Colors.blue),
-        helperText: 'Type you@email.com',
+        helperText: 'ตัวย่อส่วน',
         helperStyle: TextStyle(color: Colors.blue),
         icon: Icon(
           Icons.email,
@@ -82,24 +108,24 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (!((value.contains('@')) && (value.contains('.')))) {
-          return 'Type Email Format';
+        if (value.length <= 5) {
+          return 'พิมพ์ ตัวย่อส่วน';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        emailString = value;
+        abbrOString = value;
       },
     );
   }
 
-  Widget passwordText() {
+  Widget abbrTwoText() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'พาสเวิร์ด :',
+        labelText: 'ตัวย่อศูนย์ ที่สังกัด :',
         labelStyle: TextStyle(color: Colors.green),
-        helperText: 'More 6 Charactor',
+        helperText: 'ตัวย่อศูนย์',
         helperStyle: TextStyle(color: Colors.green),
         icon: Icon(
           Icons.lock,
@@ -109,13 +135,13 @@ class _NewSectionState extends State<NewSection> {
       ),
       validator: (String value) {
         if (value.length <= 5) {
-          return 'Password Much More 6 Charactor';
+          return 'พิมพ์ ตัวย่อศูนย์';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        passwordString = value;
+        abbrTString = value;
       },
     );
   }
@@ -123,7 +149,7 @@ class _NewSectionState extends State<NewSection> {
   Widget dropdownButton(){
     return DropdownButton(
         icon: Icon(Icons.arrow_downward),
-        hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
+        hint: Text('กรุณาเลือก จังหวัด'),
         iconSize: 36,
         elevation: 26,
         style: TextStyle(
@@ -157,7 +183,7 @@ class _NewSectionState extends State<NewSection> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name = $nameString, Email = $emailString, Pass = $passwordString, Drop = $_mySelection');
+              'Name1 = $nameString1, Name2 = $nameString2, abbrone = $abbrOString, abbrtwo = $abbrTString, dropdown = $_mySelection');
           register();
         }
       },
@@ -243,9 +269,10 @@ class _NewSectionState extends State<NewSection> {
             height: 700.0,
             child: Column(
               children: <Widget>[
-                nameText(),
-                emailText(),
-                passwordText(),
+                nameText1(),
+                nameText2(),
+                abbrOneText(),
+                abbrTwoText(),
                 dropdownButton(),
               ],
             ),
