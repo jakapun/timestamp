@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:timestamp/screens/my_service.dart';
 import 'package:timestamp/screens/register.dart';
@@ -108,6 +110,8 @@ class _AuthenState extends State<Authen> {
     "   $str2  ".trim(); // 'Lorem ipsum'
     str3.split('\n'); // ['Multi', 'Line', 'Lorem Lorem ipsum'];
     str2.replaceAll('e', 'é'); // Lorém
+
+    101.109.115.27:2500/api/flutterget/User=123456
     */
 
     String urlString = 'http://101.109.115.27:2500/api/signin';
@@ -155,10 +159,28 @@ class _AuthenState extends State<Authen> {
           String sValue = prefs.getString('stoken');
           print(sValue);
 
-          MaterialPageRoute materialPageRoute =
-              MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          Navigator.of(context).pushAndRemoveUntil(
-              materialPageRoute, (Route<dynamic> route) => false);
+          // ,headers: {HttpHeaders.authorizationHeader: "$sValue"},
+          String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
+          var response2 = await get(urlString2, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
+          if (response2.statusCode == 200) {
+             print(response.statusCode);
+             var result2 = json.decode(response.body);
+             if (result2['status']){
+            //  String getmessage = result['message'];
+             myAlert('OK', response2.statusCode.toString());
+             } else {
+             print('message = Null');
+             }
+          } else {
+            myAlert('Error', response2.statusCode.toString());
+          }
+
+
+
+          // MaterialPageRoute materialPageRoute =
+          //     MaterialPageRoute(builder: (BuildContext context) => Myservice());
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     materialPageRoute, (Route<dynamic> route) => false);
           
           } else {
             myAlert('Respond Fail', 'Backend Not Reply');
