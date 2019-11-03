@@ -13,6 +13,8 @@ class _RegisterState extends State<Register> {
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  String _myStatic;
+  List<Map> _myJson = [{"id":0,"name":"<New>"},{"id":1,"name":"Test Practice"}];
 
   final String url = "http://webmyls.com/php/getdata.php";
 
@@ -144,6 +146,31 @@ class _RegisterState extends State<Register> {
             });
           },
           value: _mySelection,
+        );
+
+  }
+
+  Widget dropdownstatic(){
+    return DropdownButton(
+            isDense: true,
+            hint: new Text("Select"),
+            value: _myStatic,
+            onChanged: (String newValue) {
+
+              setState(() {
+                _mySelection = newValue;
+              });
+
+              print (_mySelection);
+            },
+            items: _myJson.map((Map map) {
+              return new DropdownMenuItem<String>(
+                value: map["id"].toString(),
+                child: new Text(
+                  map["name"],
+                ),
+              );
+            }).toList(),
         );
 
   }

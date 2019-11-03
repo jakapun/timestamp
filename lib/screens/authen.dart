@@ -163,10 +163,11 @@ class _AuthenState extends State<Authen> {
           String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
           var response2 = await get(urlString2, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
           if (response2.statusCode == 200) {
-             print(response.statusCode);
-             var result2 = json.decode(response.body);
+             print(response2.statusCode);
+             var result2 = json.decode(response2.body);
              if (result2['status']){
-            //  String getmessage = result['message'];
+             String getmessage = result2['message'];
+             print(getmessage);
              myAlert('OK', response2.statusCode.toString());
              } else {
              print('message = Null');
@@ -177,10 +178,10 @@ class _AuthenState extends State<Authen> {
 
 
 
-          // MaterialPageRoute materialPageRoute =
-          //     MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     materialPageRoute, (Route<dynamic> route) => false);
+          MaterialPageRoute materialPageRoute =
+              MaterialPageRoute(builder: (BuildContext context) => Myservice());
+          Navigator.of(context).pushAndRemoveUntil(
+              materialPageRoute, (Route<dynamic> route) => false);
           
           } else {
             myAlert('Respond Fail', 'Backend Not Reply');

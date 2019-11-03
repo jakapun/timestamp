@@ -5,8 +5,28 @@ import 'dart:convert';
 import 'package:timestamp/screens/my_service.dart';
 
 class RelateId extends StatefulWidget {
+
+  RelateId() : super();
+
   @override
   _RelateIdState createState() => _RelateIdState();
+}
+
+class Company {
+  int id;
+  String name;
+ 
+  Company(this.id, this.name);
+ 
+  static List<Company> getCompanies() {
+    return <Company>[
+      Company(1, 'Apple'),
+      Company(2, 'Google'),
+      Company(3, 'Samsung'),
+      Company(4, 'Sony'),
+      Company(5, 'LG'),
+    ];
+  }
 }
 
 class _RelateIdState extends State<RelateId> {
@@ -15,7 +35,10 @@ class _RelateIdState extends State<RelateId> {
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  List<Company> _companies = Company.getCompanies();
+  List<DropdownMenuItem<Company>> _dropdownMenuItems;
+  Company _selectedCompany;
+  
   final String url = "http://webmyls.com/php/getdata.php";
 
   List data = List(); //edited line
@@ -35,9 +58,31 @@ class _RelateIdState extends State<RelateId> {
   }
 
   @override
+  
   void initState() {
+    _dropdownMenuItems = buildDropdownMenuItems(_companies);
+    _selectedCompany = _dropdownMenuItems[0].value;
     super.initState();
     this.getSWData();
+  }
+
+  List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
+    List<DropdownMenuItem<Company>> items = List();
+    for (Company company in companies) {
+      items.add(
+        DropdownMenuItem(
+          value: company,
+          child: Text(company.name),
+        ),
+      );
+    }
+    return items;
+  }
+ 
+  onChangeDropdownItem(Company selectedCompany) {
+    setState(() {
+      _selectedCompany = selectedCompany;
+    });
   }
 
   // Method
@@ -149,6 +194,15 @@ class _RelateIdState extends State<RelateId> {
 
   }
 
+  Widget dropdownstatic(){
+    return DropdownButton(
+            value: _selectedCompany,
+            items: _dropdownMenuItems,
+            onChanged: onChangeDropdownItem,
+        );
+
+  }
+
   Widget uploadButton() {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
@@ -157,7 +211,7 @@ class _RelateIdState extends State<RelateId> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name = $nameString, Drop = $_mySelection');
+              'Name = $nameString, Drop = $_mySelection, dropStatic = ${_selectedCompany.name}');
           register();
         }
       },
@@ -247,6 +301,7 @@ class _RelateIdState extends State<RelateId> {
                 // emailText(),
                 // passwordText(),
                 dropdownButton(),
+                dropdownstatic(),
               ],
             ),
           ),
