@@ -8,6 +8,10 @@ void main(){
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Authen());
+    
+    return MaterialApp(
+      title: 'not allow debug mode',
+      debugShowCheckedModeBanner: false,
+      home: Authen());
   }
 }
