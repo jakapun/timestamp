@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:timestamp/screens/admin.dart';
 import 'package:timestamp/screens/my_home.dart';
@@ -117,9 +118,8 @@ class _MyserviceState extends State<Myservice> {
   }
 
   Future<void> mySignOut() async {
-    
+      // _onBackPressed();
       exit(0);
-  
   }
 
   Widget showLogo() {
@@ -189,9 +189,30 @@ class _MyserviceState extends State<Myservice> {
     print('name =');
   }
 
+  Future<bool> _onBackPressed(){
+    return showDialog(
+      context: context,
+      builder: (context)=>CupertinoAlertDialog(
+        title: Text('คุณต้องการ ออกจากระบบหรือไม่?'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('No'),
+            onPressed: ()=>Navigator.pop(context, false),
+          ),
+          FlatButton(
+            child: Text('Yes'),
+            onPressed: ()=>Navigator.pop(context, true),
+          )
+        ],
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+      return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: new Scaffold(
       // backgroundColor: Colors.transparent,
       // backgroundColor: Colors.white,
       // appBar: new AppBar(
@@ -223,6 +244,7 @@ class _MyserviceState extends State<Myservice> {
         ),
       body: currentWidget,
       drawer: myDrawer(), // call drawer
-    );
+    ));
+
   }
 }
