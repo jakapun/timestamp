@@ -246,9 +246,10 @@ class _AuthenState extends State<Authen> {
       width: 220.0,
       child: TextFormField(
         obscureText: true,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: 'พาสเวิรด์ :',
-          hintText: 'More 5 Charactor',
+          hintText: 'More 5 Digits',
         ),
         onSaved: (String value) {
           passwordString = value;
@@ -261,10 +262,10 @@ class _AuthenState extends State<Authen> {
     return Container(
       width: 220.0,
       child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: 'รหัสพนักงาน/OS :',
-          hintText: 'TOT Employee Id',
+          hintText: 'Employee Id',
         ),
         onSaved: (String value) {
           emailString = value;

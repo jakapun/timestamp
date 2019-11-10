@@ -16,13 +16,12 @@ class _NewSectionState extends State<NewSection> {
   String nameString1, nameString2, abbrOString, abbrTString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final String url = "http://webmyls.com/php/getdata.php";
+  final String url = "http://101.109.115.27:2522/api/getprovince";
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -55,7 +54,7 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (value.isEmpty) {
+        if ((value.isEmpty) || (value.length <= 8))  {
           return 'พิมพ์ชื่อ ส่วนงาน';
         } else {
             return null;
@@ -81,7 +80,7 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (value.isEmpty) {
+        if ((value.isEmpty)|| (value.length <= 8)) {
           return 'พิมพ์ชื่อ ศูนย์';
         } else {
             return null;
@@ -108,7 +107,7 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (value.length <= 5) {
+        if (value.length <= 3) {
           return 'พิมพ์ ตัวย่อส่วน';
         } else {
             return null;
@@ -134,7 +133,7 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (value.length <= 5) {
+        if (value.length <= 3) {
           return 'พิมพ์ ตัวย่อศูนย์';
         } else {
             return null;
@@ -161,8 +160,8 @@ class _NewSectionState extends State<NewSection> {
         ),
           items: data.map((item) {
             return new DropdownMenuItem(
-              child: new Text(item['item_name']),
-              value: item['id'].toString(),
+              child: new Text(item['province']),
+              value: item['EN'],
             );
           }).toList(),
           onChanged: (newVal) {
@@ -191,18 +190,40 @@ class _NewSectionState extends State<NewSection> {
   }
 
   Future<void> register() async {
-    // await firebaseAuth
-    //     .createUserWithEmailAndPassword(
-    //   email: emailString,
-    //   password: passwordString,
-    // )
-    //     .then((objResponse) {
-      print('Register Success');
-      setUpDisplayName();
-    // }).catchError((objResponse) {
-    //   print('${objResponse.toString()}');
-    //   myAlert(objResponse.code.toString(), objResponse.message.toString());
-    // });
+
+    String urlpost = "http://101.109.115.27:2522/api/adddivision";
+
+    var body = {
+          "Name1": nameString1.trim(),
+          "abbrone": abbrOString.trim(),
+          "Name2": nameString2.trim(),
+          "abbrtwo": abbrTString.trim(),
+          "dropdown": _mySelection
+        };
+      //setUpDisplayName();
+    // var response = await get(urlString);
+    var response = await http.post(urlpost, body: body);
+
+    if (response.statusCode == 200) {
+    print(response.statusCode);
+    var result = json.decode(response.body);
+    // print('result = $result');
+
+    if (result.toString() == 'null') {
+      myAlert('Not Insert', 'No Create in my Database');
+    } else {
+      if (result['status']){
+      String getmessage = result['message'];
+      myAlert('OK', '$getmessage');
+      } else {
+      myAlert('Not OK', 'message = Null');
+      }
+    }
+
+    } else { //check respond = 200
+      myAlert('Error', response.statusCode.toString());
+    }
+    
   }
 
   Future<void> setUpDisplayName() async {

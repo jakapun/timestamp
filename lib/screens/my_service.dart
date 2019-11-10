@@ -90,11 +90,17 @@ class _MyserviceState extends State<Myservice> {
         'Admin เซคชั่น',
         style: TextStyle(fontSize: 18.0),
       ),
+      // onTap: () {
+      //   setState(() {
+      //     currentWidget = AdminSec();
+      //     Navigator.of(context).pop();
+      //   });
+      // },
       onTap: () {
-        setState(() {
-          currentWidget = AdminSec();
-          Navigator.of(context).pop();
-        });
+        var addChildrenRoute =
+            MaterialPageRoute(builder: (BuildContext context) => AdminSec());
+        Navigator.of(context).pop();
+        Navigator.of(context).push(addChildrenRoute);
       },
     );
   }

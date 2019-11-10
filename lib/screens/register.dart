@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:timestamp/screens/my_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,12 +12,13 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   // Explicit
   final formKey = GlobalKey<FormState>();
-  String nameString, emailString, passwordString, _mySelection;
+  String nameStringf, nameStringl, emailString, passwordString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String _myStatic;
   List<Map> _myJson = [{"id":0,"name":"<New>"},{"id":1,"name":"Test Practice"}];
 
-  final String url = "http://webmyls.com/php/getdata.php";
+  // final String url = "http://webmyls.com/php/getdata.php";
+  final String url = "http://101.109.115.27:2522/api/getprovince";
 
   List data = List(); //edited line
 
@@ -41,12 +43,38 @@ class _RegisterState extends State<Register> {
   }
 
   // Method
-  Widget nameText() {
+  Widget nameTextf() {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'ชื่อ นามสกุล :',
+        labelStyle: TextStyle(color: Colors.orange),
+        helperText: 'Type Firstname',
+        helperStyle: TextStyle(color: Colors.orange),
+        icon: Icon(
+          Icons.face,
+          size: 36.0,
+          color: Colors.orange,
+        ),
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Type Firstname';
+        } else {
+            return null;
+        }
+      },
+      onSaved: (String value) {
+        nameStringf = value;
+      },
+    );
+  }
+
+  Widget nameTextl() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'นามสกุล :',
         labelStyle: TextStyle(color: Colors.pink[400]),
-        helperText: 'Type Firstname Lastname',
+        helperText: 'Type Lastname',
         helperStyle: TextStyle(color: Colors.pink[400]),
         icon: Icon(
           Icons.face,
@@ -56,24 +84,24 @@ class _RegisterState extends State<Register> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Type Firstname,Lastname';
+          return 'Type Lastname';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        nameString = value;
+        nameStringl = value;
       },
     );
   }
 
   Widget emailText() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        labelText: 'รหัสพนักงาน/OS :',
+        labelText: 'รหัสพนักงานTOT/OS :',
         labelStyle: TextStyle(color: Colors.blue),
-        helperText: 'TOT Employee Id',
+        helperText: 'TOT Employee Id/OS Id',
         helperStyle: TextStyle(color: Colors.blue),
         icon: Icon(
           Icons.email,
@@ -97,10 +125,12 @@ class _RegisterState extends State<Register> {
 
   Widget passwordText() {
     return TextFormField(
+      keyboardType: TextInputType.number,
+      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       decoration: InputDecoration(
         labelText: 'พาสเวิร์ด :',
         labelStyle: TextStyle(color: Colors.green),
-        helperText: 'More 6 Charactor',
+        helperText: 'MoreThan 6 Digits',
         helperStyle: TextStyle(color: Colors.green),
         icon: Icon(
           Icons.lock,
@@ -110,7 +140,7 @@ class _RegisterState extends State<Register> {
       ),
       validator: (String value) {
         if (value.length <= 5) {
-          return 'Password Much More 6 Charactor';
+          return 'Password Much More 6 Digits';
         } else {
             return null;
         }
@@ -124,7 +154,7 @@ class _RegisterState extends State<Register> {
   Widget dropdownButton(){
     return DropdownButton(
         icon: Icon(Icons.arrow_downward),
-        hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
+        hint: Text('กรุณาเลือก จังหวัด'),
         iconSize: 36,
         elevation: 26,
         style: TextStyle(
@@ -136,8 +166,8 @@ class _RegisterState extends State<Register> {
         ),
           items: data.map((item) {
             return new DropdownMenuItem(
-              child: new Text(item['item_name']),
-              value: item['id'].toString(),
+              child: new Text(item['province']),
+              value: item['EN'],
             );
           }).toList(),
           onChanged: (newVal) {
@@ -183,7 +213,7 @@ class _RegisterState extends State<Register> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name = $nameString, Email = $emailString, Pass = $passwordString, Drop = $_mySelection');
+              'Namef = $nameStringf, Namel = $nameStringl, Email = $emailString, Pass = $passwordString, Drop = $_mySelection');
           register();
         }
       },
@@ -269,7 +299,8 @@ class _RegisterState extends State<Register> {
             height: 700.0,
             child: Column(
               children: <Widget>[
-                nameText(),
+                nameTextf(),
+                nameTextl(),
                 emailText(),
                 passwordText(),
                 dropdownButton(),
