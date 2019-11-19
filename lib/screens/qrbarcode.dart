@@ -12,6 +12,7 @@ class QrBarcode extends StatefulWidget {
 class _QrBarcodeState extends State<QrBarcode> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   String qrCodeString;
   double lat, lng;
 
@@ -22,6 +23,17 @@ class _QrBarcodeState extends State<QrBarcode> {
     // เริ่มทำงานตรงนี้ก่อนที่อื่น
     super.initState();
     findLatLng();
+  }
+
+  Widget showTextOne() {
+    return Text(
+      'ลงเวลาด้วย Qrcode',
+      style: TextStyle(
+          fontSize: 30.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.brown[800],
+          fontFamily: 'PermanentMarker'),
+    );
   }
 
   Widget showText() {
@@ -78,9 +90,24 @@ class _QrBarcodeState extends State<QrBarcode> {
         setState(() {
           qrCodeString = codeString;
         });
+        // myShowSnackBar('$codeString');
         // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
       }
     } catch (e) {}
+  }
+
+  void myShowSnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.green[700],
+      duration: Duration(seconds: 15),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+        textColor: Colors.orange,
+      ),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   Widget showLat() {
@@ -107,22 +134,30 @@ class _QrBarcodeState extends State<QrBarcode> {
     );
   }
 
+  Widget mySizeBox() {
+    return SizedBox(
+      width: 8.0,
+      height: 100.0,
+    );
+  }
+
   Widget uploadValueButton() {
     // return IconButton(
     //   icon: Icon(Icons.cloud_upload),
     //   onPressed: () {},
     // );
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment:
+          MainAxisAlignment.center, // จัดตำแหน่ง FloatingActionButton
       children: <Widget>[
         FloatingActionButton(
+          tooltip: 'กดเพื่อ Upload ข้อมูล',
           child: Icon(Icons.cloud_upload),
           onPressed: () {
             if ((lat.toString().isEmpty) || (qrCodeString.isEmpty)) {
               myAlert('มีข้อผิดพลาด',
-                  'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ');
+                  'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
-              // check name,detail
               print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
             }
           },
@@ -156,11 +191,15 @@ class _QrBarcodeState extends State<QrBarcode> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          showTextOne(),
+          mySizeBox(),
           showButton(),
           showText(),
           uploadValueButton(),
         ],
       ),
+      
     );
+    
   }
 }

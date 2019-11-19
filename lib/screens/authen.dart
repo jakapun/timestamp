@@ -246,7 +246,6 @@ class _AuthenState extends State<Authen> {
       width: 220.0,
       child: TextFormField(
         obscureText: true,
-        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: 'พาสเวิรด์ :',
           hintText: 'More 5 Digits',
