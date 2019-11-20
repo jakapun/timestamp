@@ -88,6 +88,7 @@ class _RelateIdState extends State<RelateId> {
   // Method
   Widget nameText() {
     return TextFormField(
+      initialValue: '',
       decoration: InputDecoration(
         labelText: 'รหัสพนักงาน/OS :',
         labelStyle: TextStyle(color: Colors.pink[400]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timestamp/screens/create_qr.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/new_section.dart';
 import 'package:timestamp/screens/relate_id.dart';
@@ -38,6 +39,12 @@ class _AdminSecState extends State<AdminSec> {
   Widget mySizeBox() {
     return SizedBox(
       width: 8.0,
+    );
+  }
+
+  Widget mySizeBoxH() {
+    return SizedBox(
+      height: 25.0,
     );
   }
 
@@ -91,6 +98,26 @@ class _AdminSecState extends State<AdminSec> {
     );
   }
 
+  Widget createPoint() {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        'สร้าง จุดลงเวลา',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        // formKey.currentState.save();
+        // checkAuthen();
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => CreateQr());
+        Navigator.of(context).push(materialPageRoute);
+      },
+    );
+  }
+
   Future<void> checkAuthen() async {
     print('email = $emailString, password = $passwordString');
     // await firebaseAuth
@@ -106,20 +133,68 @@ class _AdminSecState extends State<AdminSec> {
     // });
   }
 
+  Widget freeButton() {
+    return OutlineButton(
+      borderSide: BorderSide(color: Colors.green.shade900),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        '',
+        style: TextStyle(color: Colors.green.shade900),
+      ),
+      onPressed: () {
+        // formKey.currentState.save();
+        // checkAuthen();
+        
+      },
+    );
+  }
+
   Widget myButton() {
     return Container(
       width: 220.0,
-      child: Row(
+      child: Column(
         children: <Widget>[
-          Expanded(
-            child: singInButton(),
+          // singInButton(),
+          // singInButton(),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: singInButton(),
+              ),
+              mySizeBox(),
+              Expanded(
+                child: singUpButton(),
+              ),
+            ],
           ),
-          mySizeBox(),
-          Expanded(
-            child: singUpButton(),
+          mySizeBoxH(),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: createPoint(),
+              ),
+              mySizeBox(),
+              Expanded(
+                child: freeButton(),
+              ),
+            ],
           ),
         ],
       ),
+      // child: Row(
+      //   children: <Widget>[
+      //     Expanded(
+      //       child: singInButton(),
+      //     ),
+      //     mySizeBox(),
+      //     Expanded(
+      //       child: singUpButton(),
+      //     ),
+      //   ],
+      // ),
     );
   }
 
@@ -212,6 +287,7 @@ class _AdminSecState extends State<AdminSec> {
               children: <Widget>[
                 // showLogo(),
                 showText(),
+                mySizeBoxH(),
                 myButton(),
               ],
             ),

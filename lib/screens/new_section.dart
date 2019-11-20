@@ -147,7 +147,7 @@ class _NewSectionState extends State<NewSection> {
 
   Widget dropdownButton(){
     return DropdownButton(
-        icon: Icon(Icons.arrow_downward),
+        icon: Icon(Icons.arrow_drop_down),
         hint: Text('กรุณาเลือก จังหวัด'),
         iconSize: 36,
         elevation: 26,

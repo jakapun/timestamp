@@ -9,12 +9,20 @@ import 'package:timestamp/screens/stamp_out.dart';
 
 class Myservice extends StatefulWidget {
 
+  // final String uname;
+
+  // Myservice({
+  //   Key key,
+  //   @required this.uname,
+  // }) : super(key: key);
+
   @override
   _MyserviceState createState() => _MyserviceState();
 }
 
 class _MyserviceState extends State<Myservice> {
 
+  String getuname;
   Widget currentWidget = MyHome();
 
   Widget menuFormPage() {
@@ -156,7 +164,7 @@ class _MyserviceState extends State<Myservice> {
               color: Colors.blue[900],
             ),
           ),
-          Text('Login by'),
+          Text('Login: $getuname'),
         ],
       ),
     );
@@ -170,8 +178,8 @@ class _MyserviceState extends State<Myservice> {
           menuListViewPage(),
           Divider(),
           menuFormPage(),
-          Divider(),
-          menuQRcode(),
+          // Divider(),
+          // menuQRcode(),
           Divider(),
           menuAdmin(),
           Divider(),
@@ -190,9 +198,9 @@ class _MyserviceState extends State<Myservice> {
   Future<void> findDisplayName() async {
     // FirebaseUser firebaseUser = await firebaseAuth.currentUser();
     setState(() {
-
+      //  getuname = widget.uname;
     });
-    print('name =');
+    print('name =$getuname');
   }
 
   Future<bool> _onBackPressed(){

@@ -204,8 +204,10 @@ class _AuthenState extends State<Authen> {
 
 
 
+          // MaterialPageRoute materialPageRoute =
+          //     MaterialPageRoute(builder: (BuildContext context) => Myservice(uname: emailString.trim()));
           MaterialPageRoute materialPageRoute =
-              MaterialPageRoute(builder: (BuildContext context) => Myservice());
+               MaterialPageRoute(builder: (BuildContext context) => Myservice());
           Navigator.of(context).pushAndRemoveUntil(
               materialPageRoute, (Route<dynamic> route) => false);
           
