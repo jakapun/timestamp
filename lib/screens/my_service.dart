@@ -135,7 +135,8 @@ class _MyserviceState extends State<Myservice> {
   }
 
   Future<void> mySignOut() async {
-      // _onBackPressed();
+      _onBackPressed();
+      // clearSharePreferance(context);
       exit(0);
   }
 
@@ -189,7 +190,7 @@ class _MyserviceState extends State<Myservice> {
           menuFormPage(),
           Divider(),
           // menuQRcode(),
-          (temppriv == 0) ? menuAdmin() : mySizeBoxH(),
+          (temppriv == 1) ? menuAdmin() : mySizeBoxH(),
           Divider(),
           signOutAnExit(),
         ],
@@ -228,19 +229,32 @@ class _MyserviceState extends State<Myservice> {
     print('name =$getuname');
   }
 
+  void clearSharePreferance(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+        prefs.clear();
+    });
+  }
+
   Future<bool> _onBackPressed(){
+    
     return showDialog(
       context: context,
       builder: (context)=>CupertinoAlertDialog(
         title: Text('$getuname ต้องการ ออกจากระบบหรือไม่?'),
         actions: <Widget>[
           FlatButton(
-            child: Text('No'),
+            child: Text('No',
+            style: TextStyle(fontSize: 17.0, color: Colors.red[800])),
             onPressed: ()=>Navigator.pop(context, false),
           ),
           FlatButton(
-            child: Text('Yes'),
-            onPressed: ()=>Navigator.pop(context, true),
+            child: Text('Yes',
+            style: TextStyle(fontSize: 17.0, color: Colors.blue)),
+            onPressed: () {
+                      clearSharePreferance(context);
+                      Navigator.pop(context, true);
+            }
           )
         ],
       )

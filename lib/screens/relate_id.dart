@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timestamp/screens/my_service.dart';
 
 class RelateId extends StatefulWidget {
@@ -40,12 +40,16 @@ class _RelateIdState extends State<RelateId> {
   Company _selectedCompany;
   
   // String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
-  final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisionsall";
+  // final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisionsall";
   // /getdivisions/:prv
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String tempprv = prefs.getString('sprv');
+    String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -183,7 +187,7 @@ class _RelateIdState extends State<RelateId> {
         ),
           items: data.map((item) {
             return new DropdownMenuItem(
-              child: new Text(item['fsdivision']),
+              child: new Text(item['sdivisiontwo']),
               value: item['sdivision'].toString(),
             );
           }).toList(),
@@ -214,7 +218,7 @@ class _RelateIdState extends State<RelateId> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name = $nameString, Drop = $_mySelection, dropStatic = ${_selectedCompany.name}');
+              'Name = $nameString, Drop = $_mySelection');
           register();
         }
       },
@@ -222,18 +226,38 @@ class _RelateIdState extends State<RelateId> {
   }
 
   Future<void> register() async {
-    // await firebaseAuth
-    //     .createUserWithEmailAndPassword(
-    //   email: emailString,
-    //   password: passwordString,
-    // )
-    //     .then((objResponse) {
-      print('Register Success');
-      setUpDisplayName();
-    // }).catchError((objResponse) {
-    //   print('${objResponse.toString()}');
-    //   myAlert(objResponse.code.toString(), objResponse.message.toString());
-    // });
+    // addgroup
+    
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup";
+
+    var body = {
+          "idstaff": nameString.trim(),
+          "ndivision": _mySelection.trim()
+        };
+      //setUpDisplayName();
+    // var response = await get(urlString);
+    var response = await http.post(urlpost, body: body);
+
+    if (response.statusCode == 200) {
+    print(response.statusCode);
+    var result = json.decode(response.body);
+    // print('result = $result');
+
+    if (result.toString() == 'null') {
+      myAlert('Not Insert', 'No Create in my Database');
+    } else {
+      if (result['status']){
+      String getmessage = result['message'];
+      myAlert('OK', '$getmessage');
+      } else {
+      myAlert('Not OK', 'message = Null');
+      }
+    }
+
+    } else { //check respond = 200
+      myAlert('Error', response.statusCode.toString());
+    }
+    
   }
 
   Future<void> setUpDisplayName() async {
