@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
 
-class StampOut extends StatefulWidget {
+class StampIn2 extends StatefulWidget {
   @override
-  _StampOutState createState() => _StampOutState();
+  _StampIn2State createState() => _StampIn2State();
 }
 
-class _StampOutState extends State<StampOut> {
+class _StampIn2State extends State<StampIn2> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -25,7 +25,7 @@ class _StampOutState extends State<StampOut> {
 
   Widget showTextOne() {
     return Text(
-      'ลงเวลาออก',
+      'ลงเวลาเข้า',
       style: TextStyle(
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
@@ -172,7 +172,7 @@ class _StampOutState extends State<StampOut> {
       children: <Widget>[
         FloatingActionButton(
           elevation: 15.0,
-          // foregroundColor: Colors.red[900],
+          // foregroundColor: Colors.green[900],
           tooltip: 'กดเพื่อ Upload ข้อมูล',
           child: Icon(Icons.cloud_upload, size: 40.0,),
           onPressed: () {

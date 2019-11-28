@@ -16,7 +16,7 @@ class _NewSectionState extends State<NewSection> {
   String nameString1, nameString2, abbrOString, abbrTString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final String url = "http://101.109.115.27:2522/api/getprovince";
+  final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
 
   List data = List(); //edited line
 
@@ -190,8 +190,8 @@ class _NewSectionState extends State<NewSection> {
   }
 
   Future<void> register() async {
-
-    String urlpost = "http://101.109.115.27:2522/api/adddivision";
+    // http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/adddivis";
 
     var body = {
           "Name1": nameString1.trim(),

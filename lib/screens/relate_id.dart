@@ -33,13 +33,15 @@ class _RelateIdState extends State<RelateId> {
 
 // Explicit
   final formKey = GlobalKey<FormState>();
-  String nameString, emailString, passwordString, _mySelection;
+  String nameString, emailString, passwordString, _mySelection, rstoreprv;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
   Company _selectedCompany;
   
-  final String url = "http://webmyls.com/php/getdata.php";
+  // String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
+  final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisionsall";
+  // /getdivisions/:prv
 
   List data = List(); //edited line
 
@@ -181,8 +183,8 @@ class _RelateIdState extends State<RelateId> {
         ),
           items: data.map((item) {
             return new DropdownMenuItem(
-              child: new Text(item['item_name']),
-              value: item['id'].toString(),
+              child: new Text(item['fsdivision']),
+              value: item['sdivision'].toString(),
             );
           }).toList(),
           onChanged: (newVal) {
@@ -302,7 +304,7 @@ class _RelateIdState extends State<RelateId> {
                 // emailText(),
                 // passwordText(),
                 dropdownButton(),
-                dropdownstatic(),
+                // dropdownstatic(),
               ],
             ),
           ),

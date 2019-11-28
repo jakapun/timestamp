@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:timestamp/screens/admin.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/qrbarcode.dart';
-import 'package:timestamp/screens/stamp_in.dart';
+// import 'package:timestamp/screens/stamp_in.dart';
+import 'package:timestamp/screens/stamp_in2.dart';
 import 'package:timestamp/screens/stamp_out.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Myservice extends StatefulWidget {
 
@@ -22,7 +24,8 @@ class Myservice extends StatefulWidget {
 
 class _MyserviceState extends State<Myservice> {
 
-  String getuname;
+  String getuname, temps;
+  int temppriv;
   Widget currentWidget = MyHome();
 
   Widget menuFormPage() {
@@ -40,7 +43,7 @@ class _MyserviceState extends State<Myservice> {
       onTap: () {
         Navigator.of(context).pop();
         setState(() {
-          currentWidget = StampIn();
+          currentWidget = StampIn2();
         });
       },
     ); // https://material.io/resources/icons/?style=baseline
@@ -170,22 +173,34 @@ class _MyserviceState extends State<Myservice> {
     );
   }
 
+  Widget mySizeBoxH() {
+    return SizedBox(
+      height: 25.0,
+    );
+  }
+
   Widget myDrawer() {
     return Drawer(
-      child: ListView(
+      child: (temps == 'xxx') ? ListView(
         children: <Widget>[
           myHead(),
           menuListViewPage(),
           Divider(),
           menuFormPage(),
-          // Divider(),
-          // menuQRcode(),
           Divider(),
-          menuAdmin(),
+          // menuQRcode(),
+          (temppriv == 0) ? menuAdmin() : mySizeBoxH(),
           Divider(),
           signOutAnExit(),
         ],
-      ),
+      )
+      : ListView(
+        children: <Widget>[
+          myHead(),
+          Divider(),
+          signOutAnExit(),
+        ],
+      )
     );
   }
 
@@ -197,8 +212,18 @@ class _MyserviceState extends State<Myservice> {
 
   Future<void> findDisplayName() async {
     // FirebaseUser firebaseUser = await firebaseAuth.currentUser();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    
+
     setState(() {
-      //  getuname = widget.uname;
+      getuname = prefs.getString('suid');
+      temps = prefs.getString('srelate');
+      temppriv = prefs.getInt('spriv');
+      if (temps == 'xxx') {
+         print(temppriv.toString());
+      } else {
+         print('relateid is not xxx');
+      }
     });
     print('name =$getuname');
   }
@@ -207,7 +232,7 @@ class _MyserviceState extends State<Myservice> {
     return showDialog(
       context: context,
       builder: (context)=>CupertinoAlertDialog(
-        title: Text('คุณต้องการ ออกจากระบบหรือไม่?'),
+        title: Text('$getuname ต้องการ ออกจากระบบหรือไม่?'),
         actions: <Widget>[
           FlatButton(
             child: Text('No'),
@@ -238,7 +263,7 @@ class _MyserviceState extends State<Myservice> {
       //   title: Text('My Service'),
       // ),
       appBar: AppBar(
-          title: Text('My Service',
+          title: Text('My name is $getuname',
               style: TextStyle(color: Colors.white),
               textDirection: TextDirection.ltr),
           flexibleSpace: Container(

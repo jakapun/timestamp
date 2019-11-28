@@ -139,8 +139,8 @@ class _AuthenState extends State<Authen> {
 
     101.109.115.27:2500/api/flutterget/User=123456
     */
-
-    String urlString = 'http://101.109.115.27:2500/api/signin';
+    // uid: user.fname, prv: user.province, priv: user.privilege
+    String urlString = 'http://8a7a08360daf.sn.mynetname.net:2528/api/signin';
 
     var body = {
       "username": emailString.trim(),
@@ -182,11 +182,16 @@ class _AuthenState extends State<Authen> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('stoken', token);
           //  read value from store_preference
+          //  uid: user.fname, prv: user.province, priv: user.privilege
+          await prefs.setString('suid', result['uid']);
+          await prefs.setString('sprv', result['prv']);
+          await prefs.setInt('spriv', result['priv']); //store preference Integer
+          await prefs.setString('srelate', result['relate']);
           String sValue = prefs.getString('stoken');
           print(sValue);
 
           // ,headers: {HttpHeaders.authorizationHeader: "$sValue"},
-          String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
+          String urlString2 = 'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/User=123456';
           var response2 = await get(urlString2, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
           if (response2.statusCode == 200) {
              print(response2.statusCode);
