@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateQr extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class CreateQr extends StatefulWidget {
 class _CreateQrState extends State<CreateQr> {
   //explicit
   final formKey = GlobalKey<FormState>();
-  String qrString, _mySelection;
+  String qrString, _mySelection, tempprv;
   double lat, lng;
 
   final String url = "http://webmyls.com/php/getdata.php";
@@ -53,12 +54,15 @@ class _CreateQrState extends State<CreateQr> {
   }
 
   Future<void> findLatLng() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var currentLocation = await findLocationData();
 
     if (currentLocation == null) {
       myAlert('Location Error', 'Please Open GPS&Allow use Location');
     } else {
       setState(() {
+        tempprv = prefs.getString('sprv');
         lat = currentLocation.latitude;
         lng = currentLocation.longitude;
       });
