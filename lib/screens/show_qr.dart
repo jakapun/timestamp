@@ -40,7 +40,7 @@ class _ShowQrState extends State<ShowQr> {
                   child: Container(
                     width: 320,
                     child: QrImage(
-                      data: getqrdata.,
+                      data: getqrdata,
                       gapless: false,
                       size: 320,
                       foregroundColor: Color(0xff03291c),
