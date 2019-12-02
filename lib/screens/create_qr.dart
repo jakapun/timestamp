@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
@@ -14,12 +16,17 @@ class _CreateQrState extends State<CreateQr> {
   final formKey = GlobalKey<FormState>();
   String qrString, _mySelection, tempprv;
   double lat, lng;
-
-  final String url = "http://webmyls.com/php/getdata.php";
+  int randInt;  
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tempprv = prefs.getString('sprv');
+
+    String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -55,18 +62,54 @@ class _CreateQrState extends State<CreateQr> {
 
   Future<void> findLatLng() async {
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     var currentLocation = await findLocationData();
 
     if (currentLocation == null) {
       myAlert('Location Error', 'Please Open GPS&Allow use Location');
     } else {
       setState(() {
-        tempprv = prefs.getString('sprv');
+        randInt = Random().nextInt(100000);
         lat = currentLocation.latitude;
         lng = currentLocation.longitude;
       });
     }
+  }
+
+  Future<void> register() async {
+    // addgroup
+    
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/createqr";
+    String qrone = '$tempprv\_$_mySelection\_$randInt\_$lng\_$lat';
+    String qrmini = '$tempprv\_$_mySelection';
+    var body = {
+          "qrmessage": qrone,
+          "latitude": lat.toString(),
+          "longitude": lng.toString()
+        };
+      //setUpDisplayName();
+    // var response = await get(urlString);
+    var response = await http.post(urlpost, body: body);
+
+    if (response.statusCode == 200) {
+    print(response.statusCode);
+    var result = json.decode(response.body);
+    // print('result = $result');
+
+    if (result.toString() == 'null') {
+      myAlert('Not Insert', 'No Create in my Database');
+    } else {
+      if (result['status']){
+      // String getmessage = result['message'];
+      myAlert('OK', '$qrmini');
+      } else {
+      myAlert('Not OK', 'message = Null');
+      }
+    }
+
+    } else { //check respond = 200
+      myAlert('Error', response.statusCode.toString());
+    }
+    
   }
 
   Widget nameText() {
@@ -90,6 +133,7 @@ class _CreateQrState extends State<CreateQr> {
         }
       },
       onSaved: (String value) {
+        // qrString = '$tempprv/_$value/_$randInt';
         qrString = value;
       },
     );
@@ -108,12 +152,13 @@ class _CreateQrState extends State<CreateQr> {
       ),
       items: data.map((item) {
         return new DropdownMenuItem(
-          child: new Text(item['item_name']),
-          value: item['id'].toString(),
+          child: new Text(item['sdivisiontwo']),
+          value: item['sdivision'].toString(),
         );
       }).toList(),
       onChanged: (newVal) {
         setState(() {
+          // _mySelection = '$tempprv $newVal $randInt';
           _mySelection = newVal;
         });
       },
@@ -147,7 +192,8 @@ class _CreateQrState extends State<CreateQr> {
         print('Upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('Name = $qrString, Drop = $_mySelection, Lat = $lat, lng = $lng');
+          print('qrcodetext = $_mySelection, Lat = $lat, lng = $lng');
+          register();
         }
       },
     );
@@ -159,7 +205,7 @@ class _CreateQrState extends State<CreateQr> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('ผูก รหัสพนักงาน กับศูนย์'),
+        title: Text('สร้าง QRCode ลงเวลา'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(
@@ -182,7 +228,7 @@ class _CreateQrState extends State<CreateQr> {
             height: 700.0,
             child: Column(
               children: <Widget>[
-                nameText(),
+                // nameText(),
                 // emailText(),
                 // passwordText(),
                 dropdownButton(),
