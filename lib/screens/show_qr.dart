@@ -40,7 +40,7 @@ class _ShowQrState extends State<ShowQr> {
                   child: Container(
                     width: 320,
                     child: QrImage(
-                      data: getqrdata,
+                      data: getqrdata.,
                       gapless: false,
                       size: 320,
                       foregroundColor: Color(0xff03291c),
@@ -52,7 +52,8 @@ class _ShowQrState extends State<ShowQr> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40)
                     .copyWith(bottom: 40),
-                child: Text('create qrcode already'),
+                // child: Text('create qrcode already'),
+                child: Text('$getqrdata'),
               ),
             ],
           ),

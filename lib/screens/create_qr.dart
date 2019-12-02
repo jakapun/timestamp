@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timestamp/screens/show_qr.dart';
 
 class CreateQr extends StatefulWidget {
   @override
@@ -101,6 +102,10 @@ class _CreateQrState extends State<CreateQr> {
       if (result['status']){
       // String getmessage = result['message'];
       myAlert('OK', '$qrmini');
+      var addChildrenRoute =
+            MaterialPageRoute(builder: (BuildContext context) => ShowQr(qrdata: qrone));
+        Navigator.of(context).pop();
+        Navigator.of(context).push(addChildrenRoute);
       } else {
       myAlert('Not OK', 'message = Null');
       }
