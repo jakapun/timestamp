@@ -187,6 +187,7 @@ class _AuthenState extends State<Authen> {
           await prefs.setString('sprv', result['prv']);
           await prefs.setInt('spriv', result['priv']); //store preference Integer
           await prefs.setString('srelate', result['relate']);
+          await prefs.setString('sfulln', result['fullname']);
           String sValue = prefs.getString('stoken');
           print(sValue);
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ShowQr extends StatefulWidget {
-
   final String qrdata;
 
   ShowQr({
@@ -10,13 +9,11 @@ class ShowQr extends StatefulWidget {
     @required this.qrdata,
   }) : super(key: key);
 
-  
   @override
   _ShowQrState createState() => _ShowQrState();
 }
 
 class _ShowQrState extends State<ShowQr> {
-
   String getqrdata;
 
   @override
@@ -53,7 +50,10 @@ class _ShowQrState extends State<ShowQr> {
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40)
                     .copyWith(bottom: 40),
                 // child: Text('create qrcode already'),
-                child: Text('$getqrdata'),
+                child: Text(
+                  '$getqrdata',
+                  style: TextStyle(fontSize: 28.0),
+                ),
               ),
             ],
           ),

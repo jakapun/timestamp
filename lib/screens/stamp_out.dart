@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StampOut extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _StampOutState extends State<StampOut> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String qrCodeString = '';
+  String qrCodeString = '', tempprv, temprela, tempfull;
   double lat, lng;
 
   // method
@@ -73,6 +74,14 @@ class _StampOutState extends State<StampOut> {
   }
 
   Future<void> findLatLng() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('srelate', result['relate']);
+    // await prefs.setString('sfulln', result['fulln']);
+    tempprv = prefs.getString('sprv');
+    temprela = prefs.getString('srelate');
+    tempfull = prefs.getString('sfulln');
+
     var currentLocation = await findLocationData();
 
     if (currentLocation == null) {

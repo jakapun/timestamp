@@ -3,6 +3,7 @@ import 'package:timestamp/screens/create_qr.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/new_section.dart';
 import 'package:timestamp/screens/relate_id.dart';
+import 'package:timestamp/screens/set_privilege.dart';
 
 class AdminSec extends StatefulWidget {
   @override
@@ -141,13 +142,13 @@ class _AdminSecState extends State<AdminSec> {
       ),
       color: Colors.green[900],
       child: Text(
-        '',
+        'กำหนดสิทธิ user',
         style: TextStyle(color: Colors.green.shade900),
       ),
       onPressed: () {
-        // formKey.currentState.save();
-        // checkAuthen();
-        
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => SetPriv());
+        Navigator.of(context).push(materialPageRoute);
       },
     );
   }

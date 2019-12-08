@@ -1,27 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timestamp/screens/my_service.dart';
 
-class NewSection extends StatefulWidget {
+
+class SetPriv extends StatefulWidget {
+
+  SetPriv() : super();
+
   @override
-  _NewSectionState createState() => _NewSectionState();
+  _SetPrivState createState() => _SetPrivState();
+} 
+
+ class Company {
+  int id;
+  String name;
+ 
+  Company(this.id, this.name);
+ 
+  static List<Company> getCompanies() {
+    return <Company>[
+      Company(1, 'Apple'),
+      Company(2, 'Google'),
+      Company(3, 'Samsung'),
+      Company(4, 'Sony'),
+      Company(5, 'LG'),
+    ];
+  }
 }
 
-class _NewSectionState extends State<NewSection> {
+class _SetPrivState extends State<SetPriv> {
 
   // Explicit
   final formKey = GlobalKey<FormState>();
-  String nameString1, nameString2, abbrOString, abbrTString, _mySelection;
+  String nameString, emailString, passwordString, _mySelection, rstoreprv;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
+  List<Company> _companies = Company.getCompanies();
+  List<DropdownMenuItem<Company>> _dropdownMenuItems;
+  Company _selectedCompany;
+  
+  // String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
+  // final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisionsall";
+  // /getdivisions/:prv
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String tempprv = prefs.getString('sprv');
+    String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    var res = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -34,18 +65,41 @@ class _NewSectionState extends State<NewSection> {
   }
 
   @override
+  
   void initState() {
+    _dropdownMenuItems = buildDropdownMenuItems(_companies);
+    _selectedCompany = _dropdownMenuItems[0].value;
     super.initState();
     this.getSWData();
   }
 
+  List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
+    List<DropdownMenuItem<Company>> items = List();
+    for (Company company in companies) {
+      items.add(
+        DropdownMenuItem(
+          value: company,
+          child: Text(company.name),
+        ),
+      );
+    }
+    return items;
+  }
+ 
+  onChangeDropdownItem(Company selectedCompany) {
+    setState(() {
+      _selectedCompany = selectedCompany;
+    });
+  }
+
   // Method
-  Widget nameText1() {
+  Widget nameText() {
     return TextFormField(
+      initialValue: '',
       decoration: InputDecoration(
-        labelText: 'ชื่อเต็ม ส่วนงาน :',
+        labelText: 'รหัสพนักงาน/OS :',
         labelStyle: TextStyle(color: Colors.pink[400]),
-        helperText: 'ชื่อส่วนงาน',
+        helperText: 'Type Emplyee Id',
         helperStyle: TextStyle(color: Colors.pink[400]),
         icon: Icon(
           Icons.face,
@@ -54,51 +108,25 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if ((value.isEmpty) || (value.length <= 8))  {
-          return 'พิมพ์ชื่อ ส่วนงาน';
+        if (value.isEmpty) {
+          return 'Type Emplyee Id';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        nameString1 = value;
+        nameString = value;
       },
     );
   }
 
-  Widget nameText2() {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'ชื่อเต็ม ศูนย์ที่สังกัด :',
-        labelStyle: TextStyle(color: Colors.orange[600]),
-        helperText: 'ชื่อศูนย์',
-        helperStyle: TextStyle(color: Colors.orange[600]),
-        icon: Icon(
-          Icons.assignment_ind,
-          size: 36.0,
-          color: Colors.orange[600],
-        ),
-      ),
-      validator: (String value) {
-        if ((value.isEmpty)|| (value.length <= 8)) {
-          return 'พิมพ์ชื่อ ศูนย์';
-        } else {
-            return null;
-        }
-      },
-      onSaved: (String value) {
-        nameString2 = value;
-      },
-    );
-  }
-
-  Widget abbrOneText() {
+  Widget emailText() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'ตัวย่อส่วนงาน :',
+        labelText: 'อีเมล์ :',
         labelStyle: TextStyle(color: Colors.blue),
-        helperText: 'ตัวย่อส่วน',
+        helperText: 'Type you@email.com',
         helperStyle: TextStyle(color: Colors.blue),
         icon: Icon(
           Icons.email,
@@ -107,24 +135,24 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (value.length <= 3) {
-          return 'พิมพ์ ตัวย่อส่วน';
+        if (!((value.contains('@')) && (value.contains('.')))) {
+          return 'Type Email Format';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        abbrOString = value;
+        emailString = value;
       },
     );
   }
 
-  Widget abbrTwoText() {
+  Widget passwordText() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'ตัวย่อศูนย์ ที่สังกัด :',
+        labelText: 'พาสเวิร์ด :',
         labelStyle: TextStyle(color: Colors.green),
-        helperText: 'ตัวย่อศูนย์',
+        helperText: 'More 6 Charactor',
         helperStyle: TextStyle(color: Colors.green),
         icon: Icon(
           Icons.lock,
@@ -133,27 +161,26 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if (value.length <= 3) {
-          return 'พิมพ์ ตัวย่อศูนย์';
+        if (value.length <= 5) {
+          return 'Password Much More 6 Charactor';
         } else {
             return null;
         }
       },
       onSaved: (String value) {
-        abbrTString = value;
+        passwordString = value;
       },
     );
   }
 
   Widget dropdownButton(){
     return DropdownButton(
-        icon: Icon(Icons.arrow_drop_down),
-        hint: Text('กรุณาเลือก จังหวัด'),
+        icon: Icon(Icons.arrow_downward),
+        hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
         iconSize: 36,
         elevation: 26,
         style: TextStyle(
-          color: Colors.deepPurple,
-          fontSize: 18.0,
+          color: Colors.deepPurple
         ),
         underline: Container(
           height: 2,
@@ -161,8 +188,8 @@ class _NewSectionState extends State<NewSection> {
         ),
           items: data.map((item) {
             return new DropdownMenuItem(
-              child: new Text(item['province']),
-              value: item['EN'],
+              child: new Text(item['sdivisiontwo']),
+              value: item['sdivision'].toString(),
             );
           }).toList(),
           onChanged: (newVal) {
@@ -175,6 +202,23 @@ class _NewSectionState extends State<NewSection> {
 
   }
 
+  Widget dropdownstatic(){
+    return DropdownButton(
+            icon: Icon(Icons.arrow_downward),
+            hint: Text('กรุณาเลือก สิทธิ'),
+            iconSize: 36,
+            elevation: 26,
+            style: TextStyle(
+                 color: Colors.deepPurple,
+                 fontSize: 18.0,
+            ),
+            value: _selectedCompany,
+            items: _dropdownMenuItems,
+            onChanged: onChangeDropdownItem,
+        );
+
+  }
+
   Widget uploadButton() {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
@@ -183,23 +227,21 @@ class _NewSectionState extends State<NewSection> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name1 = $nameString1, Name2 = $nameString2, abbrone = $abbrOString, abbrtwo = $abbrTString, dropdown = $_mySelection');
-          register();
+              'Name = $nameString, Drop = ${_selectedCompany.name}');
+          // register();
         }
       },
     );
   }
 
   Future<void> register() async {
-    // http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/adddivis";
+    // addgroup
+    
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup";
 
     var body = {
-          "Name1": nameString1.trim(),
-          "abbrone": abbrOString.trim(),
-          "Name2": nameString2.trim(),
-          "abbrtwo": abbrTString.trim(),
-          "dropdown": _mySelection
+          "idstaff": nameString.trim(),
+          "ndivision": _mySelection.trim()
         };
       //setUpDisplayName();
     // var response = await get(urlString);
@@ -268,7 +310,7 @@ class _NewSectionState extends State<NewSection> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('สร้างข้อมูล ศูนย์ ใต้ส่วนงาน'),
+        title: Text('กำหนดสิทธิให้ User'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(
@@ -291,11 +333,11 @@ class _NewSectionState extends State<NewSection> {
             height: 700.0,
             child: Column(
               children: <Widget>[
-                nameText1(),
-                nameText2(),
-                abbrOneText(),
-                abbrTwoText(),
-                dropdownButton(),
+                nameText(),
+                // emailText(),
+                // passwordText(),
+                // dropdownButton(),
+                dropdownstatic(),
               ],
             ),
           ),

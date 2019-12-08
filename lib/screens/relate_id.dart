@@ -179,7 +179,8 @@ class _RelateIdState extends State<RelateId> {
         iconSize: 36,
         elevation: 26,
         style: TextStyle(
-          color: Colors.deepPurple
+          color: Colors.deepPurple,
+          fontSize: 18.0,
         ),
         underline: Container(
           height: 2,
