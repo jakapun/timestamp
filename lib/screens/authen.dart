@@ -190,9 +190,9 @@ class _AuthenState extends State<Authen> {
           await prefs.setString('sfulln', result['fullname']);
           String sValue = prefs.getString('stoken');
           print(sValue);
-
+          print(prefs.getInt('spriv').toString());
           // ,headers: {HttpHeaders.authorizationHeader: "$sValue"},
-          String urlString2 = 'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/User=123456';
+          String urlString2 = 'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
           var response2 = await get(urlString2, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
           if (response2.statusCode == 200) {
              print(response2.statusCode);

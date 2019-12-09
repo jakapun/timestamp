@@ -4,6 +4,7 @@ import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/new_section.dart';
 import 'package:timestamp/screens/relate_id.dart';
 import 'package:timestamp/screens/set_privilege.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminSec extends StatefulWidget {
   @override
@@ -14,20 +15,29 @@ class _AdminSecState extends State<AdminSec> {
   double mySize = 100.0;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
-  String emailString = '', passwordString = '';
+  String emailString = '', passwordString = '', getuname, temps;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Widget currentWidget;
+  int temppriv = 0;
 
   // Method
 
   @override
   void initState() {
     super.initState();
-    // checkStatus();
+    checkStatus();
   }
 
   Future<void> checkStatus() async {
-    moveToService();
+    // moveToService();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      getuname = prefs.getString('suid');
+      temps = prefs.getString('srelate');
+      // temppriv = prefs.getInt('spriv');
+      temppriv = (prefs.getInt('spriv') ?? 0);
+    });
+    
   }
 
   void moveToService() {
@@ -153,6 +163,23 @@ class _AdminSecState extends State<AdminSec> {
     );
   }
 
+  Widget freeButton2() {
+    return OutlineButton(
+      borderSide: BorderSide(color: Colors.green.shade900),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        '',
+        style: TextStyle(color: Colors.green.shade900),
+      ),
+      onPressed: () {
+        print(temppriv.toString());
+      },
+    );
+  }
+
   Widget myButton() {
     return Container(
       width: 220.0,
@@ -179,7 +206,8 @@ class _AdminSecState extends State<AdminSec> {
               ),
               mySizeBox(),
               Expanded(
-                child: freeButton(),
+                // (temppriv == 4) ? menuAdmin() : mySizeBoxH(),
+                child: (temppriv == 4) ? freeButton() : freeButton2(),
               ),
             ],
           ),

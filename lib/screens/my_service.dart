@@ -25,7 +25,7 @@ class Myservice extends StatefulWidget {
 class _MyserviceState extends State<Myservice> {
 
   String getuname, temps;
-  int temppriv;
+  int temppriv = 0;
   Widget currentWidget = MyHome();
 
   Widget menuFormPage() {
@@ -190,7 +190,7 @@ class _MyserviceState extends State<Myservice> {
           menuFormPage(),
           Divider(),
           // menuQRcode(),
-          (temppriv == 1) ? menuAdmin() : mySizeBoxH(),
+          (temppriv > 2) ? menuAdmin() : mySizeBoxH(),
           Divider(),
           signOutAnExit(),
         ],
@@ -219,7 +219,8 @@ class _MyserviceState extends State<Myservice> {
     setState(() {
       getuname = prefs.getString('suid');
       temps = prefs.getString('srelate');
-      temppriv = prefs.getInt('spriv');
+      // temppriv = prefs.getInt('spriv');
+      temppriv = (prefs.getInt('spriv') ?? 0);
       if (temps == 'xxx') {
          print(temppriv.toString());
       } else {

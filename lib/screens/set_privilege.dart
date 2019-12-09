@@ -21,11 +21,10 @@ class SetPriv extends StatefulWidget {
  
   static List<Company> getCompanies() {
     return <Company>[
-      Company(1, 'Apple'),
-      Company(2, 'Google'),
-      Company(3, 'Samsung'),
-      Company(4, 'Sony'),
-      Company(5, 'LG'),
+      Company(1, 'user (พนักงาน/os)'),
+      Company(2, 'head (ผจ.ศูนย์/ผช.จังหวัด)'),
+      Company(3, 'admin ประจำศูนย์'),
+      // Company(4, 'sup'),
     ];
   }
 }
@@ -227,21 +226,22 @@ class _SetPrivState extends State<SetPriv> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Name = $nameString, Drop = ${_selectedCompany.name}');
-          // register();
+              'Name = $nameString, Drop = ${_selectedCompany.id}');
+          uppriv();
         }
       },
     );
   }
 
-  Future<void> register() async {
+  Future<void> uppriv() async {
     // addgroup
     
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/updatepriv";
+                   // http://8a7a08360daf.sn.mynetname.net:2528/api/addpoint
 
     var body = {
-          "idstaff": nameString.trim(),
-          "ndivision": _mySelection.trim()
+          "user": nameString.trim(),
+          "priv": _selectedCompany.id.toString()
         };
       //setUpDisplayName();
     // var response = await get(urlString);
