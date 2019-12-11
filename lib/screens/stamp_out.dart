@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:timestamp/screens/my_service.dart';
 
 class StampOut extends StatefulWidget {
   @override
@@ -12,7 +17,7 @@ class _StampOutState extends State<StampOut> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String qrCodeString = '', tempprv, temprela, tempfull;
+  String qrCodeString = '', tempprv, temprela, tempfull, token = '';
   double lat, lng;
 
   // method
@@ -81,6 +86,8 @@ class _StampOutState extends State<StampOut> {
     tempprv = prefs.getString('sprv');
     temprela = prefs.getString('srelate');
     tempfull = prefs.getString('sfulln');
+    // await prefs.setString('stoken', token);
+    token = prefs.getString('stoken');
 
     var currentLocation = await findLocationData();
 
@@ -106,6 +113,47 @@ class _StampOutState extends State<StampOut> {
         // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
       }
     } catch (e) {}
+  }
+
+  Future<void> sendstamp() async {
+    // addgroup
+
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
+    
+    var body = {
+      "glati": lat.toString(),
+      "glong": lng.toString(),
+      "prov": tempprv
+    };
+    //setUpDisplayName();
+    // var response = await get(urlString);
+
+    var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      var result = json.decode(response.body);
+      // print('result = $result');
+
+      if (result.toString() == 'null') {
+        myAlert('Not Stampout', 'No Stampout,put data in my Database');
+      } else {
+        if (result['status']) {
+          String getmessage = result['message'];
+          myAlert('OK', '$getmessage');
+          var addChildrenRoute = MaterialPageRoute(
+              builder: (BuildContext context) => Myservice());
+          // Navigator.of(context).pop();
+          Navigator.of(context).push(addChildrenRoute);
+        } else {
+          String getmessage = result['message'];
+          myAlert('Not OK', '$getmessage');
+        }
+      }
+    } else {
+      //check respond = 200
+      myAlert('Error', response.statusCode.toString());
+    }
   }
 
   void myShowSnackBar(String messageString) {
@@ -189,7 +237,8 @@ class _StampOutState extends State<StampOut> {
               myAlert('มีข้อผิดพลาด',
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
-              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
+              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
+              //, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"}
             }
           },
         ),

@@ -5,6 +5,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Register extends StatefulWidget {
+  final String imeidata;
+
+  Register({
+    Key key,
+    @required this.imeidata,
+  }) : super(key: key);
+
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -13,8 +20,7 @@ class _RegisterState extends State<Register> {
   // Explicit
   final formKey = GlobalKey<FormState>();
   String nameStringf, nameStringl, emailString, passwordString, _mySelection;
-  // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  String _myStatic;
+  String _myStatic, deviceid = ''; 
   List<Map> _myJson = [{"id":0,"name":"<New>"},{"id":1,"name":"Test Practice"}];
 
   // final String url = "http://webmyls.com/php/getdata.php";
@@ -40,9 +46,14 @@ class _RegisterState extends State<Register> {
   void initState() {
     super.initState();
     this.getSWData();
+    setState(() {
+      deviceid = widget.imeidata;
+    });
   }
 
   // Method
+
+
   Widget nameTextf() {
     return TextFormField(
       decoration: InputDecoration(
@@ -214,8 +225,8 @@ class _RegisterState extends State<Register> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'Namef = $nameStringf, Namel = $nameStringl, Email = $emailString, Pass = $passwordString, Drop = $_mySelection');
-          register();
+              'Namef = $nameStringf, Namel = $nameStringl, Email = $emailString, Pass = $passwordString, Drop = $_mySelection, deviceid = $deviceid');
+          // register();
         }
       },
     );
@@ -230,7 +241,8 @@ class _RegisterState extends State<Register> {
           "username": emailString.trim(),
           "password": passwordString.trim(),
           "province": _mySelection.trim(),
-          "fname": nameStringf.trim()
+          "fname": nameStringf.trim(),
+          "deviceid": deviceid.trim()
         };
       //setUpDisplayName();
     // var response = await get(urlString);

@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:timestamp/screens/my_service.dart';
 
 class StampIn2 extends StatefulWidget {
   @override
@@ -12,8 +17,9 @@ class _StampIn2State extends State<StampIn2> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String qrCodeString = '', tempprv, temprela, tempfull;
+  String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '';
   double lat, lng;
+  bool _isButtonDisabled = false;
 
   // method
 
@@ -21,6 +27,7 @@ class _StampIn2State extends State<StampIn2> {
   void initState() {
     // เริ่มทำงานตรงนี้ก่อนที่อื่น
     super.initState();
+    _isButtonDisabled = true;
     findLatLng();
   }
 
@@ -81,6 +88,10 @@ class _StampIn2State extends State<StampIn2> {
     tempprv = prefs.getString('sprv');
     temprela = prefs.getString('srelate');
     tempfull = prefs.getString('sfulln');
+    // await prefs.setString('stoken', token);
+    token = prefs.getString('stoken');
+    // await prefs.setString('suid', result['uid']);
+    tempuid = prefs.getString('suid');
 
     var currentLocation = await findLocationData();
 
@@ -106,6 +117,68 @@ class _StampIn2State extends State<StampIn2> {
         // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
       }
     } catch (e) {}
+  }
+
+  Future<void> sendstamp() async {
+    // addgroup
+
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
+    
+    var body = {
+      "chkuid": tempuid.trim(),
+      "chkfna": tempfull.trim(),
+      "glati": lat.toString(),
+      "glong": lng.toString(),
+      "ndivision": temprela.trim(),
+      "qrtext": qrCodeString.trim()
+    };
+    /* 
+    'lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
+
+  console.log('uid ='+req.body.chkuid);
+  console.log('fullname ='+req.body.chkfna);
+  console.log('lat2 ='+req.body.glati);
+  console.log('long2 ='+req.body.glong);
+  console.log('division ='+req.body.ndivision);
+  console.log('qr text ='+req.body.qrtext);
+  console.log('gpath ='+req.body.gpath);
+    */
+    //setUpDisplayName();
+    // var response = await get(urlString);
+
+    var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      var result = json.decode(response.body);
+      // print('result = $result');
+
+      if (result.toString() == 'null') {
+        myAlert('Not Stampin', 'No Stampin,put data in my Database');
+      } else {
+        if (_isButtonDisabled == true){
+        setState(() {
+          _isButtonDisabled = false;
+        });
+        }else{
+          myShowSnackBar('User Press Button > 2 Click');
+        }
+        if (result['status']) {
+          String getmessage = result['message'];
+          myAlert('OK', '$getmessage');
+          var addChildrenRoute = MaterialPageRoute(
+              builder: (BuildContext context) => Myservice());
+          // Navigator.of(context).pop();
+          Navigator.of(context).push(addChildrenRoute);
+        } else {
+          String getmessage = result['message'];
+          myAlert('Not OK', '$getmessage');
+        }
+      }
+    } else {
+      //check respond = 200
+      myAlert('Error', response.statusCode.toString());
+    }
   }
 
   void myShowSnackBar(String messageString) {
@@ -184,12 +257,16 @@ class _StampIn2State extends State<StampIn2> {
           // foregroundColor: Colors.green[900],
           tooltip: 'กดเพื่อ Upload ข้อมูล',
           child: Icon(Icons.cloud_upload, size: 40.0,),
+          
           onPressed: () {
             if ((lat.toString().isEmpty) || (qrCodeString.isEmpty)) {
               myAlert('มีข้อผิดพลาด',
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
               print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
+              // , headers: {HttpHeaders.authorizationHeader: "JWT $sValue"}
+              (_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
+              // sendstamp();
             }
           },
         ),
@@ -231,7 +308,7 @@ class _StampIn2State extends State<StampIn2> {
           mySizeBoxH(),
           mySizeBoxH(),
           mySizeBoxH(),
-          ((qrCodeString.isEmpty) || (lat.toString().isEmpty)) ? showTextnull() : uploadValueButton(),
+          ((qrCodeString.isEmpty) || (lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
         ],
       ),
       

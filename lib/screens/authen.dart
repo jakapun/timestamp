@@ -21,7 +21,7 @@ class _AuthenState extends State<Authen> {
   String emailString = '', passwordString = '';
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String _platformImei = 'Unknown';
+  String _platformImei = '';
 
   // Method
 
@@ -81,11 +81,11 @@ class _AuthenState extends State<Authen> {
         style: TextStyle(color: Colors.green.shade900),
       ),
       onPressed: () {
-        print('You Click SingUp');
+        print('You Click SignUp');
 
         // Create Route
         var registerRoute =
-            MaterialPageRoute(builder: (BuildContext context) => Register());
+            MaterialPageRoute(builder: (BuildContext context) => Register(imeidata: _platformImei));
         Navigator.of(context).push(registerRoute);
       },
     );

@@ -125,7 +125,7 @@ class _MyserviceState extends State<Myservice> {
         color: Colors.red,
       ),
       title: Text(
-        'ยกเลิกการใช้งาน',
+        'เลิกการใช้งาน App',
         style: TextStyle(fontSize: 18.0),
       ),
       onTap: () {
