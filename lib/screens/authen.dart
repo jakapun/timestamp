@@ -37,7 +37,8 @@ class _AuthenState extends State<Authen> {
     String platformImei;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformImei = await ImeiPlugin.getImei( shouldShowRequestPermissionRationale: false );
+      platformImei =
+          await ImeiPlugin.getImei(shouldShowRequestPermissionRationale: false);
     } on PlatformException {
       platformImei = 'Failed to get platform version.';
       myShowSnackBar('$platformImei');
@@ -84,8 +85,9 @@ class _AuthenState extends State<Authen> {
         print('You Click SignUp');
 
         // Create Route
-        var registerRoute =
-            MaterialPageRoute(builder: (BuildContext context) => Register(imeidata: _platformImei));
+        var registerRoute = MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Register(imeidata: _platformImei));
         Navigator.of(context).push(registerRoute);
       },
     );
@@ -110,27 +112,25 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<void> checkAuthen() async {
-
-    if ((emailString.length <= 5) || (passwordString.length <= 5)){
-       print('email = $emailString, password = $passwordString');
-       myShowSnackBar('$_platformImei username && password ต้องไม่เท่ากับ ว่าง');
+    if ((emailString.length <= 5) || (passwordString.length <= 5)) {
+      print('email = $emailString, password = $passwordString');
+      myShowSnackBar('$_platformImei username && password ต้องไม่เท่ากับ ว่าง');
     } else {
+      // emailString = emailString.trim();
+      // passwordString = passwordString.trim();
 
-        // emailString = emailString.trim();
-        // passwordString = passwordString.trim();
-
-    // await firebaseAuth
-    //     .signInWithEmailAndPassword(
-    //         email: emailString, password: passwordString)
-    //     .then((response) {
-    //   print('Authen Success');
-    //   moveToService();
-    // }).catchError((response) {
-    //   String errorString = response.message;
-    //   print('error = $errorString');
-    //   myShowSnackBar(errorString);
-    // });
-    /*
+      // await firebaseAuth
+      //     .signInWithEmailAndPassword(
+      //         email: emailString, password: passwordString)
+      //     .then((response) {
+      //   print('Authen Success');
+      //   moveToService();
+      // }).catchError((response) {
+      //   String errorString = response.message;
+      //   print('error = $errorString');
+      //   myShowSnackBar(errorString);
+      // });
+      /*
     str1.toLowerCase(); // lorem
     str1.toUpperCase(); // LOREM
     "   $str2  ".trim(); // 'Lorem ipsum'
@@ -139,96 +139,95 @@ class _AuthenState extends State<Authen> {
 
     101.109.115.27:2500/api/flutterget/User=123456
     */
-    // uid: user.fname, prv: user.province, priv: user.privilege
-    String urlString = 'http://8a7a08360daf.sn.mynetname.net:2528/api/signin';
+      // uid: user.fname, prv: user.province, priv: user.privilege
+      String urlString = 'http://8a7a08360daf.sn.mynetname.net:2528/api/signin';
 
-    var body = {
-      "username": emailString.trim(),
-      "password": passwordString.trim()
-    };
+      var body = {
+        "username": emailString.trim(),
+        "password": passwordString.trim()
+      };
 
-    // var response = await get(urlString);
-    var response = await post(urlString, body: body);
+      // var response = await get(urlString);
+      var response = await post(urlString, body: body);
 
-    if (response.statusCode == 200) {
-    print(response.statusCode);
-    var result = json.decode(response.body);
-    // print('result = $result');
+      if (response.statusCode == 200) {
+        print(response.statusCode);
+        var result = json.decode(response.body);
+        // print('result = $result');
 
-    if (result.toString() == 'null') {
-      myAlert('User False', 'No $emailString in my Database');
-    } else {
-      // for (var myJSON in result) {
-      //   print('myJSON = $myJSON');
-      //   UserModel userModel = UserModel.fromJSON(myJSON);
-
-      //   if (password == userModel.password.trim()) {
-      //     print('Login Success $password');
-
-      //     MaterialPageRoute materialPageRoute =
-      //         MaterialPageRoute(builder: (BuildContext context) => MyService(userModel: userModel,));
-      //     Navigator.of(context).pushAndRemoveUntil(
-      //         materialPageRoute, (Route<dynamic> route) => false);
-      //   } else {
-      //     myAlert('Password False', 'Plese try Aganis Password False');
-      //   }
-      // }
-
-        if (result['status']){
-          String token = result['token'];
-          token = token.split(' ').last;
-          // print(token);
-          if (token.isNotEmpty) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('stoken', token);
-          //  read value from store_preference
-          //  uid: user.fname, prv: user.province, priv: user.privilege
-          await prefs.setString('suid', result['uid']);
-          await prefs.setString('sprv', result['prv']);
-          await prefs.setInt('spriv', result['priv']); //store preference Integer
-          await prefs.setString('srelate', result['relate']);
-          await prefs.setString('sfulln', result['fullname']);
-          String sValue = prefs.getString('stoken');
-          print(sValue);
-          print(prefs.getInt('spriv').toString());
-          // ,headers: {HttpHeaders.authorizationHeader: "$sValue"},
-          String urlString2 = 'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
-          var response2 = await get(urlString2, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
-          if (response2.statusCode == 200) {
-             print(response2.statusCode);
-             var result2 = json.decode(response2.body);
-             if (result2['status']){
-             String getmessage = result2['message'];
-             print(getmessage);
-             myAlert('OK', response2.statusCode.toString());
-             } else {
-             print('message = Null');
-             }
-          } else {
-            myAlert('Error', response2.statusCode.toString());
-          }
-
-
-
-          // MaterialPageRoute materialPageRoute =
-          //     MaterialPageRoute(builder: (BuildContext context) => Myservice(uname: emailString.trim()));
-          MaterialPageRoute materialPageRoute =
-               MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          Navigator.of(context).pushAndRemoveUntil(
-              materialPageRoute, (Route<dynamic> route) => false);
-          
-          } else {
-            myAlert('Respond Fail', 'Backend Not Reply');
-          }
+        if (result.toString() == 'null') {
+          myAlert('User False', 'No $emailString in my Database');
         } else {
-          print(result['error']);
-        }
+          // for (var myJSON in result) {
+          //   print('myJSON = $myJSON');
+          //   UserModel userModel = UserModel.fromJSON(myJSON);
 
-    } // End else result.toString() != 'null'
-    } else { //check respond = 200
-      myAlert('Error', response.statusCode.toString());
-    }
+          //   if (password == userModel.password.trim()) {
+          //     print('Login Success $password');
 
+          //     MaterialPageRoute materialPageRoute =
+          //         MaterialPageRoute(builder: (BuildContext context) => MyService(userModel: userModel,));
+          //     Navigator.of(context).pushAndRemoveUntil(
+          //         materialPageRoute, (Route<dynamic> route) => false);
+          //   } else {
+          //     myAlert('Password False', 'Plese try Aganis Password False');
+          //   }
+          // }
+
+          if (result['status']) {
+            String token = result['token'];
+            token = token.split(' ').last;
+            // print(token);
+            if (token.isNotEmpty) {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.setString('stoken', token);
+              //  read value from store_preference
+              //  uid: user.fname, prv: user.province, priv: user.privilege
+              await prefs.setString('suid', result['uid']);
+              await prefs.setString('sprv', result['prv']);
+              await prefs.setInt(
+                  'spriv', result['priv']); //store preference Integer
+              await prefs.setString('srelate', result['relate']);
+              await prefs.setString('sfulln', result['fullname']);
+              String sValue = prefs.getString('stoken');
+              print(sValue);
+              print(prefs.getInt('spriv').toString());
+              // ,headers: {HttpHeaders.authorizationHeader: "$sValue"},
+              String urlString2 =
+                  'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
+              var response2 = await get(urlString2,
+                  headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
+              if (response2.statusCode == 200) {
+                print(response2.statusCode);
+                var result2 = json.decode(response2.body);
+                if (result2['status']) {
+                  String getmessage = result2['message'];
+                  print(getmessage);
+                  myAlert('OK', response2.statusCode.toString());
+                } else {
+                  print('message = Null');
+                }
+              } else {
+                myAlert('Error', response2.statusCode.toString());
+              }
+
+              // MaterialPageRoute materialPageRoute =
+              //     MaterialPageRoute(builder: (BuildContext context) => Myservice(uname: emailString.trim()));
+              MaterialPageRoute materialPageRoute = MaterialPageRoute(
+                  builder: (BuildContext context) => Myservice());
+              Navigator.of(context).pushAndRemoveUntil(
+                  materialPageRoute, (Route<dynamic> route) => false);
+            } else {
+              myAlert('Respond Fail', 'Backend Not Reply');
+            }
+          } else {
+            print(result['error']);
+          }
+        } // End else result.toString() != 'null'
+      } else {
+        //check respond = 200
+        myAlert('Error', response.statusCode.toString());
+      }
     } // End If check emailstring.length
   }
 

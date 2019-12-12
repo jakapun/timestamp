@@ -8,8 +8,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timestamp/screens/show_qr.dart';
 
 class CreateQr extends StatefulWidget {
+  CreateQr() : super();
+
   @override
   _CreateQrState createState() => _CreateQrState();
+}
+
+class Company {
+  int id;
+  String name;
+
+  Company(this.id, this.name);
+
+  static List<Company> getCompanies() {
+    return <Company>[
+      Company(1, 'T08:10:00.000'),
+      Company(2, 'T08:15:00.000'),
+      Company(3, 'T08:20:00.000'),
+      Company(4, 'T08:25:00.000'),
+      Company(5, 'T08:30:00.000'),
+      // Company(4, 'sup'),
+    ];
+  }
 }
 
 class _CreateQrState extends State<CreateQr> {
@@ -18,6 +38,10 @@ class _CreateQrState extends State<CreateQr> {
   String qrString, _mySelection, tempprv;
   double lat, lng;
   int randInt;
+
+  List<Company> _companies = Company.getCompanies();
+  List<DropdownMenuItem<Company>> _dropdownMenuItems;
+  Company _selectedCompany;
 
   List data = List(); //edited line
 
@@ -44,10 +68,31 @@ class _CreateQrState extends State<CreateQr> {
   // Method
   @override
   void initState() {
+    _dropdownMenuItems = buildDropdownMenuItems(_companies);
+    _selectedCompany = _dropdownMenuItems[0].value;
     // เริ่มทำงานตรงนี้ก่อนที่อื่น
     super.initState();
     findLatLng();
     this.getSWData();
+  }
+
+  List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
+    List<DropdownMenuItem<Company>> items = List();
+    for (Company company in companies) {
+      items.add(
+        DropdownMenuItem(
+          value: company,
+          child: Text(company.name),
+        ),
+      );
+    }
+    return items;
+  }
+
+  onChangeDropdownItem(Company selectedCompany) {
+    setState(() {
+      _selectedCompany = selectedCompany;
+    });
   }
 
   Future<LocationData> findLocationData() async {
@@ -86,7 +131,8 @@ class _CreateQrState extends State<CreateQr> {
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": _mySelection,
-      "prov": tempprv
+      "prov": tempprv,
+      "tlate": _selectedCompany.name
     };
     //setUpDisplayName();
     // var response = await get(urlString);
@@ -115,6 +161,22 @@ class _CreateQrState extends State<CreateQr> {
       //check respond = 200
       myAlert('Error', response.statusCode.toString());
     }
+  }
+
+  Widget dropdownstatic() {
+    return DropdownButton(
+      icon: Icon(Icons.arrow_downward),
+      hint: Text('กรุณาเลือกเวลา stampin ช้าสุด'),
+      iconSize: 36,
+      elevation: 26,
+      style: TextStyle(
+        color: Colors.brown,
+        fontSize: 18.0,
+      ),
+      value: _selectedCompany,
+      items: _dropdownMenuItems,
+      onChanged: onChangeDropdownItem,
+    );
   }
 
   Widget nameText() {
@@ -200,10 +262,44 @@ class _CreateQrState extends State<CreateQr> {
         print('Upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('qrcodetext = $_mySelection, Lat = $lat, lng = $lng');
-          register();
+          print(
+              'qrcodetext = $_mySelection, Lat = $lat, lng = $lng, timeinlimit = ${_selectedCompany.name}');
+          if ((_mySelection.length <= 2) ||
+              (_selectedCompany.name.length <= 2)) {
+            myAlert('Error', 'ไม่มี ข้อมูลศูนย์/เวลาเข้าช้าสุด');
+          } else {
+            register();
+          }
         }
       },
+    );
+  }
+
+  Widget showText1() {
+    return Text(
+      'เลือกศูนย์',
+      style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[800],
+          fontFamily: 'PermanentMarker'),
+    );
+  }
+
+  Widget showText2() {
+    return Text(
+      'เลือกเวลา StampIn ช้าสุด',
+      style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[800],
+          fontFamily: 'PermanentMarker'),
+    );
+  }
+
+  Widget mySizeBoxH() {
+    return SizedBox(
+      height: 25.0,
     );
   }
 
@@ -236,10 +332,11 @@ class _CreateQrState extends State<CreateQr> {
             height: 700.0,
             child: Column(
               children: <Widget>[
-                // nameText(),
-                // emailText(),
-                // passwordText(),
+                showText1(),
                 dropdownButton(),
+                mySizeBoxH(),
+                showText2(),
+                dropdownstatic(),
               ],
             ),
           ),

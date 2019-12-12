@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:timestamp/screens/authen.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
-      title: 'not allow debug mode',
-      debugShowCheckedModeBanner: false,
-      home: Authen());
+        title: 'not allow debug mode',
+        debugShowCheckedModeBanner: false,
+        home: Authen());
   }
 }

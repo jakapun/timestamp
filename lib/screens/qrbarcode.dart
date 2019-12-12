@@ -198,8 +198,6 @@ class _QrBarcodeState extends State<QrBarcode> {
           uploadValueButton(),
         ],
       ),
-      
     );
-    
   }
 }

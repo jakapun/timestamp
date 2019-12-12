@@ -18,7 +18,7 @@ class _StampIn2State extends State<StampIn2> {
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '';
-  double lat, lng;
+  double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
 
   // method
@@ -132,20 +132,7 @@ class _StampIn2State extends State<StampIn2> {
       "ndivision": temprela.trim(),
       "qrtext": qrCodeString.trim()
     };
-    /* 
-    'lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
-
-  console.log('uid ='+req.body.chkuid);
-  console.log('fullname ='+req.body.chkfna);
-  console.log('lat2 ='+req.body.glati);
-  console.log('long2 ='+req.body.glong);
-  console.log('division ='+req.body.ndivision);
-  console.log('qr text ='+req.body.qrtext);
-  console.log('gpath ='+req.body.gpath);
-    */
-    //setUpDisplayName();
-    // var response = await get(urlString);
-
+    
     var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
 
     if (response.statusCode == 200) {
@@ -158,21 +145,23 @@ class _StampIn2State extends State<StampIn2> {
       } else {
         if (_isButtonDisabled == true){
         setState(() {
-          _isButtonDisabled = false;
+          _isButtonDisabled = false; // disable ปุ่ม
         });
         }else{
-          myShowSnackBar('User Press Button > 2 Click');
+          myShowSnackBar('_isButtonDisabled = false');
         }
         if (result['status']) {
           String getmessage = result['message'];
-          myAlert('OK', '$getmessage');
+          // myAlert('OK', '$getmessage');
+          myShowSnackBar('$getmessage');
           var addChildrenRoute = MaterialPageRoute(
               builder: (BuildContext context) => Myservice());
           // Navigator.of(context).pop();
           Navigator.of(context).push(addChildrenRoute);
         } else {
           String getmessage = result['message'];
-          myAlert('Not OK', '$getmessage');
+          // myAlert('Not OK', '$getmessage');
+          myShowSnackBar('$getmessage');
         }
       }
     } else {
@@ -237,7 +226,7 @@ class _StampIn2State extends State<StampIn2> {
       alignment: Alignment.center,
       child: SelectableText(
         // '$qrCodeString',
-        'ยังไม่ Scan Qrcode \r\n จะไม่มีปุ่ม upload',
+        'ยังไม่ Scan Qrcode \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
         style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
       ),
     );

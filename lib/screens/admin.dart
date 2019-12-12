@@ -37,7 +37,6 @@ class _AdminSecState extends State<AdminSec> {
       // temppriv = prefs.getInt('spriv');
       temppriv = (prefs.getInt('spriv') ?? 0);
     });
-    
   }
 
   void moveToService() {
@@ -207,7 +206,7 @@ class _AdminSecState extends State<AdminSec> {
               mySizeBox(),
               Expanded(
                 // (temppriv == 4) ? menuAdmin() : mySizeBoxH(),
-                child: (temppriv == 4) ? freeButton() : freeButton2(),
+                child: (temppriv >= 3) ? freeButton() : freeButton2(),
               ),
             ],
           ),

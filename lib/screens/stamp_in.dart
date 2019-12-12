@@ -232,12 +232,11 @@ class _StampInState extends State<StampIn> {
   }
 
   Future uploadFileToStorage() async {
-
     String nodeEndPoint = 'http://101.109.115.27:2522/image';
     String namePicture = '$code.jpg';
     print('filename pic = $namePicture');
     // create instance
-      // updateValueToFireStore();
+    // updateValueToFireStore();
 
     //   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
     // StorageReference storageReference =
@@ -245,8 +244,8 @@ class _StampInState extends State<StampIn> {
     // StorageUploadTask storageUploadTask = storageReference.putFile(file);
 
     if (file == null) return;
-   String base64Image = base64Encode(file.readAsBytesSync());
-  //  String fileName = file.path.split("/").last;
+    String base64Image = base64Encode(file.readAsBytesSync());
+    //  String fileName = file.path.split("/").last;
 
     // var response = await post(urlString, body: body);
 
@@ -254,13 +253,13 @@ class _StampInState extends State<StampIn> {
     // print(response.statusCode);
     // var result = json.decode(response.body);
 
-   http.post(nodeEndPoint, body: {
-     "image": base64Image,
-     "name": namePicture,
-   }).then((response) {
-     if (response.statusCode == 200) {
-     print(response.statusCode);
-     var result = json.decode(response.body);
+    http.post(nodeEndPoint, body: {
+      "image": base64Image,
+      "name": namePicture,
+    }).then((response) {
+      if (response.statusCode == 200) {
+        print(response.statusCode);
+        var result = json.decode(response.body);
         // if (result['status']){
         if (result.toString() == 'null') {
           print('result not have value');
@@ -268,25 +267,24 @@ class _StampInState extends State<StampIn> {
           print(result['status'].toString());
           myShowSnackBar('Upload Image Successful');
         }
-     } else { //if response=200
-     print('api response != 200');
-     }
-   }).catchError((err) {
-     print(err);
-   });
-    
+      } else {
+        //if response=200
+        print('api response != 200');
+      }
+    }).catchError((err) {
+      print(err);
+    });
   }
 
   Future<void> updateValueToFireStore() async {
     // create instance
-      print('Test upload');
+    print('Test upload');
 
-      // add instance
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) => Myservice());
-      Navigator.of(context).pushAndRemoveUntil(
-          materialPageRoute, (Route<dynamic> route) => false);
-    
+    // add instance
+    MaterialPageRoute materialPageRoute =
+        MaterialPageRoute(builder: (BuildContext context) => Myservice());
+    Navigator.of(context)
+        .pushAndRemoveUntil(materialPageRoute, (Route<dynamic> route) => false);
   }
 
   void myAlert(String title, String message) {

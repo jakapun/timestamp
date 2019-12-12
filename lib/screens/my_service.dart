@@ -10,7 +10,6 @@ import 'package:timestamp/screens/stamp_out.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Myservice extends StatefulWidget {
-
   // final String uname;
 
   // Myservice({
@@ -23,7 +22,6 @@ class Myservice extends StatefulWidget {
 }
 
 class _MyserviceState extends State<Myservice> {
-
   String getuname, temps;
   int temppriv = 0;
   Widget currentWidget = MyHome();
@@ -38,7 +36,7 @@ class _MyserviceState extends State<Myservice> {
       title: Text(
         'ลงเวลาเข้า',
         style: TextStyle(fontSize: 18.0),
-        ),
+      ),
       // on tap == on click
       onTap: () {
         Navigator.of(context).pop();
@@ -59,7 +57,7 @@ class _MyserviceState extends State<Myservice> {
       title: Text(
         'ลงเวลาออก',
         style: TextStyle(fontSize: 18.0),
-        ),
+      ),
       // on tap == on click
       onTap: () {
         Navigator.of(context).pop();
@@ -115,7 +113,8 @@ class _MyserviceState extends State<Myservice> {
       },
     );
   }
-  // add_to_photos 
+
+  // add_to_photos
   // cake
   Widget signOutAnExit() {
     return ListTile(
@@ -135,9 +134,9 @@ class _MyserviceState extends State<Myservice> {
   }
 
   Future<void> mySignOut() async {
-      _onBackPressed();
-      // clearSharePreferance(context);
-      exit(0);
+    _onBackPressed();
+    // clearSharePreferance(context);
+    exit(0);
   }
 
   Widget showLogo() {
@@ -182,27 +181,27 @@ class _MyserviceState extends State<Myservice> {
 
   Widget myDrawer() {
     return Drawer(
-      child: (temps != 'xxx') ? ListView(
-        children: <Widget>[
-          myHead(),
-          menuListViewPage(),
-          Divider(),
-          menuFormPage(),
-          Divider(),
-          // menuQRcode(),
-          (temppriv > 2) ? menuAdmin() : mySizeBoxH(),
-          Divider(),
-          signOutAnExit(),
-        ],
-      )
-      : ListView(
-        children: <Widget>[
-          myHead(),
-          Divider(),
-          signOutAnExit(),
-        ],
-      )
-    );
+        child: (temps != 'xxx')
+            ? ListView(
+                children: <Widget>[
+                  myHead(),
+                  menuListViewPage(),
+                  Divider(),
+                  menuFormPage(),
+                  Divider(),
+                  // menuQRcode(),
+                  (temppriv > 2) ? menuAdmin() : mySizeBoxH(),
+                  Divider(),
+                  signOutAnExit(),
+                ],
+              )
+            : ListView(
+                children: <Widget>[
+                  myHead(),
+                  Divider(),
+                  signOutAnExit(),
+                ],
+              ));
   }
 
   @override
@@ -214,7 +213,6 @@ class _MyserviceState extends State<Myservice> {
   Future<void> findDisplayName() async {
     // FirebaseUser firebaseUser = await firebaseAuth.currentUser();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
 
     setState(() {
       getuname = prefs.getString('suid');
@@ -222,9 +220,9 @@ class _MyserviceState extends State<Myservice> {
       // temppriv = prefs.getInt('spriv');
       temppriv = (prefs.getInt('spriv') ?? 0);
       if (temps == 'xxx') {
-         print(temppriv.toString());
+        print(temppriv.toString());
       } else {
-         print('relateid is not xxx');
+        print('relateid is not xxx');
       }
     });
     print('name =$getuname');
@@ -233,72 +231,68 @@ class _MyserviceState extends State<Myservice> {
   void clearSharePreferance(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-        prefs.clear();
+      prefs.clear();
     });
   }
 
-  Future<bool> _onBackPressed(){
-    
+  Future<bool> _onBackPressed() {
     return showDialog(
-      context: context,
-      builder: (context)=>CupertinoAlertDialog(
-        title: Text('$getuname ต้องการ ออกจากระบบหรือไม่?'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('No',
-            style: TextStyle(fontSize: 17.0, color: Colors.red[800])),
-            onPressed: ()=>Navigator.pop(context, false),
-          ),
-          FlatButton(
-            child: Text('Yes',
-            style: TextStyle(fontSize: 17.0, color: Colors.blue)),
-            onPressed: () {
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Text('$getuname ต้องการ ออกจากระบบหรือไม่?'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('No',
+                      style: TextStyle(fontSize: 17.0, color: Colors.red[800])),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+                FlatButton(
+                    child: Text('Yes',
+                        style: TextStyle(fontSize: 17.0, color: Colors.blue)),
+                    onPressed: () {
                       clearSharePreferance(context);
                       Navigator.pop(context, true);
-            }
-          )
-        ],
-      )
-    );
+                    })
+              ],
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
-      return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: new Scaffold(
-      // backgroundColor: Colors.transparent,
-      // backgroundColor: Colors.white,
-      // appBar: new AppBar(
-      //       title: new Text('My Service'),
-      //       backgroundColor: Colors.transparent,
-      //       elevation: 0.0,
-      // ),
-      // appBar: AppBar(
-      //   title: Text('My Service'),
-      // ),
-      appBar: AppBar(
-          title: Text('My name is $getuname',
-              style: TextStyle(color: Colors.white),
-              textDirection: TextDirection.ltr),
-          flexibleSpace: Container(
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [
-                    const Color(0xFF2255EE),
-                    const Color(0xFF00DDDD),
-                  ],
-                  begin: const FractionalOffset(0.0, 0.1),
-                  end: const FractionalOffset(1.0, 0.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: new Scaffold(
+          // backgroundColor: Colors.transparent,
+          // backgroundColor: Colors.white,
+          // appBar: new AppBar(
+          //       title: new Text('My Service'),
+          //       backgroundColor: Colors.transparent,
+          //       elevation: 0.0,
+          // ),
+          // appBar: AppBar(
+          //   title: Text('My Service'),
+          // ),
+          appBar: AppBar(
+            title: Text('My id/username is $getuname',
+                style: TextStyle(color: Colors.white),
+                textDirection: TextDirection.ltr),
+            flexibleSpace: Container(
+              decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                    colors: [
+                      const Color(0xFF2255EE),
+                      const Color(0xFF00DDDD),
+                    ],
+                    begin: const FractionalOffset(0.0, 0.1),
+                    end: const FractionalOffset(1.0, 0.0),
+                    stops: [0.0, 1.0],
+                    tileMode: TileMode.clamp),
+              ),
             ),
+            iconTheme: new IconThemeData(color: Colors.yellow[900]),
           ),
-          iconTheme: new IconThemeData(color: Colors.yellow[900]),
-        ),
-      body: currentWidget,
-      drawer: myDrawer(), // call drawer
-    ));
-
+          body: currentWidget,
+          drawer: myDrawer(), // call drawer
+        ));
   }
 }

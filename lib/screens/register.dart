@@ -20,11 +20,15 @@ class _RegisterState extends State<Register> {
   // Explicit
   final formKey = GlobalKey<FormState>();
   String nameStringf, nameStringl, emailString, passwordString, _mySelection;
-  String _myStatic, deviceid = ''; 
-  List<Map> _myJson = [{"id":0,"name":"<New>"},{"id":1,"name":"Test Practice"}];
+  String _myStatic, deviceid = '';
+  List<Map> _myJson = [
+    {"id": 0, "name": "<New>"},
+    {"id": 1, "name": "Test Practice"}
+  ];
 
   // final String url = "http://webmyls.com/php/getdata.php";
-  final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
+  final String url =
+      "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
 
   List data = List(); //edited line
 
@@ -53,7 +57,6 @@ class _RegisterState extends State<Register> {
 
   // Method
 
-
   Widget nameTextf() {
     return TextFormField(
       decoration: InputDecoration(
@@ -71,7 +74,7 @@ class _RegisterState extends State<Register> {
         if (value.isEmpty) {
           return 'Type Firstname';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -97,7 +100,7 @@ class _RegisterState extends State<Register> {
         if (value.isEmpty) {
           return 'Type Lastname';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -125,7 +128,7 @@ class _RegisterState extends State<Register> {
         if (value.length <= 5) {
           return 'Type Employee Id';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -153,7 +156,7 @@ class _RegisterState extends State<Register> {
         if (value.length <= 5) {
           return 'Password Much More 6 Digits';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -162,59 +165,56 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget dropdownButton(){
+  Widget dropdownButton() {
     return DropdownButton(
-        icon: Icon(Icons.arrow_downward),
-        hint: Text('กรุณาเลือก จังหวัด'),
-        iconSize: 36,
-        elevation: 26,
-        style: TextStyle(
-          color: Colors.deepPurple,
-          fontSize: 18.0,
-        ),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
-          items: data.map((item) {
-            return new DropdownMenuItem(
-              child: new Text(item['province']),
-              value: item['EN'],
-            );
-          }).toList(),
-          onChanged: (newVal) {
-            setState(() {
-              _mySelection = newVal;
-            });
-          },
-          value: _mySelection,
+      icon: Icon(Icons.arrow_downward),
+      hint: Text('กรุณาเลือก จังหวัด'),
+      iconSize: 36,
+      elevation: 26,
+      style: TextStyle(
+        color: Colors.deepPurple,
+        fontSize: 18.0,
+      ),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      items: data.map((item) {
+        return new DropdownMenuItem(
+          child: new Text(item['province']),
+          value: item['EN'],
         );
-
+      }).toList(),
+      onChanged: (newVal) {
+        setState(() {
+          _mySelection = newVal;
+        });
+      },
+      value: _mySelection,
+    );
   }
 
-  Widget dropdownstatic(){
+  Widget dropdownstatic() {
     return DropdownButton(
-            isDense: true,
-            hint: new Text("Select"),
-            value: _myStatic,
-            onChanged: (String newValue) {
+      isDense: true,
+      hint: new Text("Select"),
+      value: _myStatic,
+      onChanged: (String newValue) {
+        setState(() {
+          _mySelection = newValue;
+        });
 
-              setState(() {
-                _mySelection = newValue;
-              });
-
-              print (_mySelection);
-            },
-            items: _myJson.map((Map map) {
-              return new DropdownMenuItem<String>(
-                value: map["id"].toString(),
-                child: new Text(
-                  map["name"],
-                ),
-              );
-            }).toList(),
+        print(_mySelection);
+      },
+      items: _myJson.map((Map map) {
+        return new DropdownMenuItem<String>(
+          value: map["id"].toString(),
+          child: new Text(
+            map["name"],
+          ),
         );
-
+      }).toList(),
+    );
   }
 
   Widget uploadButton() {
@@ -226,7 +226,7 @@ class _RegisterState extends State<Register> {
           formKey.currentState.save();
           print(
               'Namef = $nameStringf, Namel = $nameStringl, Email = $emailString, Pass = $passwordString, Drop = $_mySelection, deviceid = $deviceid');
-          // register();
+          register();
         }
       },
     );
@@ -237,37 +237,36 @@ class _RegisterState extends State<Register> {
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/signup";
     String fullname = '$nameStringf $nameStringl';
     var body = {
-          "fullname": fullname,
-          "username": emailString.trim(),
-          "password": passwordString.trim(),
-          "province": _mySelection.trim(),
-          "fname": nameStringf.trim(),
-          "deviceid": deviceid.trim()
-        };
-      //setUpDisplayName();
+      "fullname": fullname,
+      "username": emailString.trim(),
+      "password": passwordString.trim(),
+      "province": _mySelection.trim(),
+      "fname": nameStringf.trim(),
+      "deviceid": deviceid.trim()
+    };
+    //setUpDisplayName();
     // var response = await get(urlString);
     var response = await http.post(urlpost, body: body);
 
     if (response.statusCode == 200) {
-    print(response.statusCode);
-    var result = json.decode(response.body);
-    // print('result = $result');
+      print(response.statusCode);
+      var result = json.decode(response.body);
+      // print('result = $result');
 
-    if (result.toString() == 'null') {
-      myAlert('Not Insert', 'No Create in my Database');
-    } else {
-      if (result['status']){
-      String getmessage = result['message'];
-      myAlert('OK', '$getmessage');
+      if (result.toString() == 'null') {
+        myAlert('Not Insert', 'No Create in my Database');
       } else {
-      myAlert('Not OK', 'message = Null');
+        if (result['status']) {
+          String getmessage = result['message'];
+          myAlert('OK', '$getmessage');
+        } else {
+          myAlert('Not OK', 'message = Null');
+        }
       }
-    }
-
-    } else { //check respond = 200
+    } else {
+      //check respond = 200
       myAlert('Error', response.statusCode.toString());
     }
-    
   }
 
   Future<void> setUpDisplayName() async {
@@ -276,9 +275,10 @@ class _RegisterState extends State<Register> {
     //   updateInfo.displayName = nameString;
     //   response.updateProfile(updateInfo);
 
-      var serviceRoute =
-          MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          Navigator.of(context).pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => Myservice());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
     // });
   }
 

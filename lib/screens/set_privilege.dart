@@ -4,21 +4,19 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timestamp/screens/my_service.dart';
 
-
 class SetPriv extends StatefulWidget {
-
   SetPriv() : super();
 
   @override
   _SetPrivState createState() => _SetPrivState();
-} 
+}
 
- class Company {
+class Company {
   int id;
   String name;
- 
+
   Company(this.id, this.name);
- 
+
   static List<Company> getCompanies() {
     return <Company>[
       Company(1, 'user (พนักงาน/os)'),
@@ -30,7 +28,6 @@ class SetPriv extends StatefulWidget {
 }
 
 class _SetPrivState extends State<SetPriv> {
-
   // Explicit
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString, _mySelection, rstoreprv;
@@ -38,18 +35,14 @@ class _SetPrivState extends State<SetPriv> {
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
   Company _selectedCompany;
-  
-  // String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
-  // final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisionsall";
-  // /getdivisions/:prv
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String tempprv = prefs.getString('sprv');
-    String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    String url =
+        "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -64,7 +57,6 @@ class _SetPrivState extends State<SetPriv> {
   }
 
   @override
-  
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_companies);
     _selectedCompany = _dropdownMenuItems[0].value;
@@ -84,7 +76,7 @@ class _SetPrivState extends State<SetPriv> {
     }
     return items;
   }
- 
+
   onChangeDropdownItem(Company selectedCompany) {
     setState(() {
       _selectedCompany = selectedCompany;
@@ -110,7 +102,7 @@ class _SetPrivState extends State<SetPriv> {
         if (value.isEmpty) {
           return 'Type Emplyee Id';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -137,7 +129,7 @@ class _SetPrivState extends State<SetPriv> {
         if (!((value.contains('@')) && (value.contains('.')))) {
           return 'Type Email Format';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -163,7 +155,7 @@ class _SetPrivState extends State<SetPriv> {
         if (value.length <= 5) {
           return 'Password Much More 6 Charactor';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -172,50 +164,46 @@ class _SetPrivState extends State<SetPriv> {
     );
   }
 
-  Widget dropdownButton(){
+  Widget dropdownButton() {
     return DropdownButton(
-        icon: Icon(Icons.arrow_downward),
-        hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
-        iconSize: 36,
-        elevation: 26,
-        style: TextStyle(
-          color: Colors.deepPurple
-        ),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
-          items: data.map((item) {
-            return new DropdownMenuItem(
-              child: new Text(item['sdivisiontwo']),
-              value: item['sdivision'].toString(),
-            );
-          }).toList(),
-          onChanged: (newVal) {
-            setState(() {
-              _mySelection = newVal;
-            });
-          },
-          value: _mySelection,
+      icon: Icon(Icons.arrow_downward),
+      hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
+      iconSize: 36,
+      elevation: 26,
+      style: TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      items: data.map((item) {
+        return new DropdownMenuItem(
+          child: new Text(item['sdivisiontwo']),
+          value: item['sdivision'].toString(),
         );
-
+      }).toList(),
+      onChanged: (newVal) {
+        setState(() {
+          _mySelection = newVal;
+        });
+      },
+      value: _mySelection,
+    );
   }
 
-  Widget dropdownstatic(){
+  Widget dropdownstatic() {
     return DropdownButton(
-            icon: Icon(Icons.arrow_downward),
-            hint: Text('กรุณาเลือก สิทธิ'),
-            iconSize: 36,
-            elevation: 26,
-            style: TextStyle(
-                 color: Colors.deepPurple,
-                 fontSize: 18.0,
-            ),
-            value: _selectedCompany,
-            items: _dropdownMenuItems,
-            onChanged: onChangeDropdownItem,
-        );
-
+      icon: Icon(Icons.arrow_downward),
+      hint: Text('กรุณาเลือก สิทธิ'),
+      iconSize: 36,
+      elevation: 26,
+      style: TextStyle(
+        color: Colors.deepPurple,
+        fontSize: 18.0,
+      ),
+      value: _selectedCompany,
+      items: _dropdownMenuItems,
+      onChanged: onChangeDropdownItem,
+    );
   }
 
   Widget uploadButton() {
@@ -225,8 +213,7 @@ class _SetPrivState extends State<SetPriv> {
         print('Upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print(
-              'Name = $nameString, Drop = ${_selectedCompany.id}');
+          print('Name = $nameString, Drop = ${_selectedCompany.id}');
           uppriv();
         }
       },
@@ -235,38 +222,36 @@ class _SetPrivState extends State<SetPriv> {
 
   Future<void> uppriv() async {
     // addgroup
-    
+
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/updatepriv";
-                   // http://8a7a08360daf.sn.mynetname.net:2528/api/addpoint
 
     var body = {
-          "user": nameString.trim(),
-          "priv": _selectedCompany.id.toString()
-        };
-      //setUpDisplayName();
+      "user": nameString.trim(),
+      "priv": _selectedCompany.id.toString()
+    };
+    //setUpDisplayName();
     // var response = await get(urlString);
     var response = await http.post(urlpost, body: body);
 
     if (response.statusCode == 200) {
-    print(response.statusCode);
-    var result = json.decode(response.body);
-    // print('result = $result');
+      print(response.statusCode);
+      var result = json.decode(response.body);
+      // print('result = $result');
 
-    if (result.toString() == 'null') {
-      myAlert('Not Insert', 'No Create in my Database');
-    } else {
-      if (result['status']){
-      String getmessage = result['message'];
-      myAlert('OK', '$getmessage');
+      if (result.toString() == 'null') {
+        myAlert('Not Insert', 'No Create in my Database');
       } else {
-      myAlert('Not OK', 'message = Null');
+        if (result['status']) {
+          String getmessage = result['message'];
+          myAlert('OK', '$getmessage');
+        } else {
+          myAlert('Not OK', 'message = Null');
+        }
       }
-    }
-
-    } else { //check respond = 200
+    } else {
+      //check respond = 200
       myAlert('Error', response.statusCode.toString());
     }
-    
   }
 
   Future<void> setUpDisplayName() async {
@@ -275,9 +260,10 @@ class _SetPrivState extends State<SetPriv> {
     //   updateInfo.displayName = nameString;
     //   response.updateProfile(updateInfo);
 
-      var serviceRoute =
-          MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          Navigator.of(context).pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => Myservice());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
     // });
   }
 
@@ -301,6 +287,34 @@ class _SetPrivState extends State<SetPriv> {
           ],
         );
       },
+    );
+  }
+
+  Widget showText1() {
+    return Text(
+      'รหัสพนักงาน tot/os',
+      style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[800],
+          fontFamily: 'PermanentMarker'),
+    );
+  }
+
+  Widget showText2() {
+    return Text(
+      'เลือก ประเภทสิทธิ',
+      style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[800],
+          fontFamily: 'PermanentMarker'),
+    );
+  }
+
+  Widget mySizeBoxH() {
+    return SizedBox(
+      height: 25.0,
     );
   }
 
@@ -333,10 +347,10 @@ class _SetPrivState extends State<SetPriv> {
             height: 700.0,
             child: Column(
               children: <Widget>[
+                showText1(),
                 nameText(),
-                // emailText(),
-                // passwordText(),
-                // dropdownButton(),
+                mySizeBoxH(),
+                showText2(),
                 dropdownstatic(),
               ],
             ),

@@ -17,8 +17,9 @@ class _StampOutState extends State<StampOut> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String qrCodeString = '', tempprv, temprela, tempfull, token = '';
-  double lat, lng;
+  String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '';
+  double lat = 0, lng = 0;
+  bool _isButtonDisabled = false;
 
   // method
 
@@ -26,6 +27,7 @@ class _StampOutState extends State<StampOut> {
   void initState() {
     // เริ่มทำงานตรงนี้ก่อนที่อื่น
     super.initState();
+    _isButtonDisabled = true;
     findLatLng();
   }
 
@@ -88,6 +90,8 @@ class _StampOutState extends State<StampOut> {
     tempfull = prefs.getString('sfulln');
     // await prefs.setString('stoken', token);
     token = prefs.getString('stoken');
+    // await prefs.setString('suid', result['uid']);
+    tempuid = prefs.getString('suid');
 
     var currentLocation = await findLocationData();
 
@@ -118,16 +122,17 @@ class _StampOutState extends State<StampOut> {
   Future<void> sendstamp() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampout";
     
     var body = {
+      "chkuid": tempuid.trim(),
+      "chkfna": tempfull.trim(),
       "glati": lat.toString(),
       "glong": lng.toString(),
-      "prov": tempprv
+      "ndivision": temprela.trim(),
+      "qrtext": qrCodeString.trim()
     };
-    //setUpDisplayName();
-    // var response = await get(urlString);
-
+    
     var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
 
     if (response.statusCode == 200) {
@@ -136,18 +141,26 @@ class _StampOutState extends State<StampOut> {
       // print('result = $result');
 
       if (result.toString() == 'null') {
-        myAlert('Not Stampout', 'No Stampout,put data in my Database');
+        myAlert('Not Stampin', 'No Stampin,put data in my Database');
       } else {
+        if (_isButtonDisabled == true){
+        setState(() {
+          _isButtonDisabled = false;
+        });
+        }else{
+          myShowSnackBar('_isButtonDisabled = false');
+        }
         if (result['status']) {
           String getmessage = result['message'];
-          myAlert('OK', '$getmessage');
+          myShowSnackBar('$getmessage');
+      
           var addChildrenRoute = MaterialPageRoute(
               builder: (BuildContext context) => Myservice());
           // Navigator.of(context).pop();
           Navigator.of(context).push(addChildrenRoute);
         } else {
           String getmessage = result['message'];
-          myAlert('Not OK', '$getmessage');
+          myShowSnackBar('$getmessage');
         }
       }
     } else {
@@ -212,7 +225,7 @@ class _StampOutState extends State<StampOut> {
       alignment: Alignment.center,
       child: SelectableText(
         // '$qrCodeString',
-        'ยังไม่ Scan Qrcode \r\n จะไม่มีปุ่ม upload',
+        'ยังไม่ Scan Qrcode \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
         style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
       ),
     );
@@ -238,7 +251,8 @@ class _StampOutState extends State<StampOut> {
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
               print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
-              //, headers: {HttpHeaders.authorizationHeader: "JWT $sValue"}
+              //(_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
+              sendstamp();
             }
           },
         ),
@@ -280,7 +294,7 @@ class _StampOutState extends State<StampOut> {
           mySizeBoxH(),
           mySizeBoxH(),
           mySizeBoxH(),
-          ((qrCodeString.isEmpty) || (lat.toString().isEmpty)) ? showTextnull() : uploadValueButton(),
+          ((qrCodeString.isEmpty) || (lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
         ],
       ),
       

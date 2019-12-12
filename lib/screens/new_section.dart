@@ -10,18 +10,19 @@ class NewSection extends StatefulWidget {
 }
 
 class _NewSectionState extends State<NewSection> {
-
   // Explicit
   final formKey = GlobalKey<FormState>();
   String nameString1, nameString2, abbrOString, abbrTString, _mySelection;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
+  final String url =
+      "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var res = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -54,10 +55,10 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if ((value.isEmpty) || (value.length <= 8))  {
+        if ((value.isEmpty) || (value.length <= 8)) {
           return 'พิมพ์ชื่อ ส่วนงาน';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -80,10 +81,10 @@ class _NewSectionState extends State<NewSection> {
         ),
       ),
       validator: (String value) {
-        if ((value.isEmpty)|| (value.length <= 8)) {
+        if ((value.isEmpty) || (value.length <= 8)) {
           return 'พิมพ์ชื่อ ศูนย์';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -110,7 +111,7 @@ class _NewSectionState extends State<NewSection> {
         if (value.length <= 3) {
           return 'พิมพ์ ตัวย่อส่วน';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -136,7 +137,7 @@ class _NewSectionState extends State<NewSection> {
         if (value.length <= 3) {
           return 'พิมพ์ ตัวย่อศูนย์';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -145,34 +146,33 @@ class _NewSectionState extends State<NewSection> {
     );
   }
 
-  Widget dropdownButton(){
+  Widget dropdownButton() {
     return DropdownButton(
-        icon: Icon(Icons.arrow_drop_down),
-        hint: Text('กรุณาเลือก จังหวัด'),
-        iconSize: 36,
-        elevation: 26,
-        style: TextStyle(
-          color: Colors.deepPurple,
-          fontSize: 18.0,
-        ),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
-          items: data.map((item) {
-            return new DropdownMenuItem(
-              child: new Text(item['province']),
-              value: item['EN'],
-            );
-          }).toList(),
-          onChanged: (newVal) {
-            setState(() {
-              _mySelection = newVal;
-            });
-          },
-          value: _mySelection,
+      icon: Icon(Icons.arrow_drop_down),
+      hint: Text('กรุณาเลือก จังหวัด'),
+      iconSize: 36,
+      elevation: 26,
+      style: TextStyle(
+        color: Colors.deepPurple,
+        fontSize: 18.0,
+      ),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      items: data.map((item) {
+        return new DropdownMenuItem(
+          child: new Text(item['province']),
+          value: item['EN'],
         );
-
+      }).toList(),
+      onChanged: (newVal) {
+        setState(() {
+          _mySelection = newVal;
+        });
+      },
+      value: _mySelection,
+    );
   }
 
   Widget uploadButton() {
@@ -195,36 +195,35 @@ class _NewSectionState extends State<NewSection> {
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/adddivis";
 
     var body = {
-          "Name1": nameString1.trim(),
-          "abbrone": abbrOString.trim(),
-          "Name2": nameString2.trim(),
-          "abbrtwo": abbrTString.trim(),
-          "dropdown": _mySelection
-        };
-      //setUpDisplayName();
+      "Name1": nameString1.trim(),
+      "abbrone": abbrOString.trim(),
+      "Name2": nameString2.trim(),
+      "abbrtwo": abbrTString.trim(),
+      "dropdown": _mySelection
+    };
+    //setUpDisplayName();
     // var response = await get(urlString);
     var response = await http.post(urlpost, body: body);
 
     if (response.statusCode == 200) {
-    print(response.statusCode);
-    var result = json.decode(response.body);
-    // print('result = $result');
+      print(response.statusCode);
+      var result = json.decode(response.body);
+      // print('result = $result');
 
-    if (result.toString() == 'null') {
-      myAlert('Not Insert', 'No Create in my Database');
-    } else {
-      if (result['status']){
-      String getmessage = result['message'];
-      myAlert('OK', '$getmessage');
+      if (result.toString() == 'null') {
+        myAlert('Not Insert', 'No Create in my Database');
       } else {
-      myAlert('Not OK', 'message = Null');
+        if (result['status']) {
+          String getmessage = result['message'];
+          myAlert('OK', '$getmessage');
+        } else {
+          myAlert('Not OK', 'message = Null');
+        }
       }
-    }
-
-    } else { //check respond = 200
+    } else {
+      //check respond = 200
       myAlert('Error', response.statusCode.toString());
     }
-    
   }
 
   Future<void> setUpDisplayName() async {
@@ -233,9 +232,10 @@ class _NewSectionState extends State<NewSection> {
     //   updateInfo.displayName = nameString;
     //   response.updateProfile(updateInfo);
 
-      var serviceRoute =
-          MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          Navigator.of(context).pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => Myservice());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
     // });
   }
 

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timestamp/screens/my_service.dart';
 
 class RelateId extends StatefulWidget {
-
   RelateId() : super();
 
   @override
@@ -15,9 +14,9 @@ class RelateId extends StatefulWidget {
 class Company {
   int id;
   String name;
- 
+
   Company(this.id, this.name);
- 
+
   static List<Company> getCompanies() {
     return <Company>[
       Company(1, 'Apple'),
@@ -30,7 +29,6 @@ class Company {
 }
 
 class _RelateIdState extends State<RelateId> {
-
 // Explicit
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString, _mySelection, rstoreprv;
@@ -38,18 +36,14 @@ class _RelateIdState extends State<RelateId> {
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
   Company _selectedCompany;
-  
-  // String urlString2 = 'http://101.109.115.27:2500/api/flutterget/User=123456';
-  // final String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisionsall";
-  // /getdivisions/:prv
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String tempprv = prefs.getString('sprv');
-    String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    String url =
+        "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -64,7 +58,6 @@ class _RelateIdState extends State<RelateId> {
   }
 
   @override
-  
   void initState() {
     _dropdownMenuItems = buildDropdownMenuItems(_companies);
     _selectedCompany = _dropdownMenuItems[0].value;
@@ -84,7 +77,7 @@ class _RelateIdState extends State<RelateId> {
     }
     return items;
   }
- 
+
   onChangeDropdownItem(Company selectedCompany) {
     setState(() {
       _selectedCompany = selectedCompany;
@@ -110,7 +103,7 @@ class _RelateIdState extends State<RelateId> {
         if (value.isEmpty) {
           return 'Type Emplyee Id';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -137,7 +130,7 @@ class _RelateIdState extends State<RelateId> {
         if (!((value.contains('@')) && (value.contains('.')))) {
           return 'Type Email Format';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -163,7 +156,7 @@ class _RelateIdState extends State<RelateId> {
         if (value.length <= 5) {
           return 'Password Much More 6 Charactor';
         } else {
-            return null;
+          return null;
         }
       },
       onSaved: (String value) {
@@ -172,43 +165,41 @@ class _RelateIdState extends State<RelateId> {
     );
   }
 
-  Widget dropdownButton(){
+  Widget dropdownButton() {
     return DropdownButton(
-        icon: Icon(Icons.arrow_downward),
-        hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
-        iconSize: 36,
-        elevation: 26,
-        style: TextStyle(
-          color: Colors.deepPurple,
-          fontSize: 18.0,
-        ),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
-          items: data.map((item) {
-            return new DropdownMenuItem(
-              child: new Text(item['sdivisiontwo']),
-              value: item['sdivision'].toString(),
-            );
-          }).toList(),
-          onChanged: (newVal) {
-            setState(() {
-              _mySelection = newVal;
-            });
-          },
-          value: _mySelection,
+      icon: Icon(Icons.arrow_downward),
+      hint: Text('กรุณาเลือก ส่วน/ศูนย์'),
+      iconSize: 36,
+      elevation: 26,
+      style: TextStyle(
+        color: Colors.deepPurple,
+        fontSize: 18.0,
+      ),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      items: data.map((item) {
+        return new DropdownMenuItem(
+          child: new Text(item['sdivisiontwo']),
+          value: item['sdivision'].toString(),
         );
-
+      }).toList(),
+      onChanged: (newVal) {
+        setState(() {
+          _mySelection = newVal;
+        });
+      },
+      value: _mySelection,
+    );
   }
 
-  Widget dropdownstatic(){
+  Widget dropdownstatic() {
     return DropdownButton(
-            value: _selectedCompany,
-            items: _dropdownMenuItems,
-            onChanged: onChangeDropdownItem,
-        );
-
+      value: _selectedCompany,
+      items: _dropdownMenuItems,
+      onChanged: onChangeDropdownItem,
+    );
   }
 
   Widget uploadButton() {
@@ -218,8 +209,7 @@ class _RelateIdState extends State<RelateId> {
         print('Upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print(
-              'Name = $nameString, Drop = $_mySelection');
+          print('Name = $nameString, Drop = $_mySelection');
           register();
         }
       },
@@ -228,37 +218,33 @@ class _RelateIdState extends State<RelateId> {
 
   Future<void> register() async {
     // addgroup
-    
+
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup";
 
-    var body = {
-          "idstaff": nameString.trim(),
-          "ndivision": _mySelection.trim()
-        };
-      //setUpDisplayName();
+    var body = {"idstaff": nameString.trim(), "ndivision": _mySelection.trim()};
+    //setUpDisplayName();
     // var response = await get(urlString);
     var response = await http.post(urlpost, body: body);
 
     if (response.statusCode == 200) {
-    print(response.statusCode);
-    var result = json.decode(response.body);
-    // print('result = $result');
+      print(response.statusCode);
+      var result = json.decode(response.body);
+      // print('result = $result');
 
-    if (result.toString() == 'null') {
-      myAlert('Not Insert', 'No Create in my Database');
-    } else {
-      if (result['status']){
-      String getmessage = result['message'];
-      myAlert('OK', '$getmessage');
+      if (result.toString() == 'null') {
+        myAlert('Not Insert', 'No Create in my Database');
       } else {
-      myAlert('Not OK', 'message = Null');
+        if (result['status']) {
+          String getmessage = result['message'];
+          myAlert('OK', '$getmessage');
+        } else {
+          myAlert('Not OK', 'message = Null');
+        }
       }
-    }
-
-    } else { //check respond = 200
+    } else {
+      //check respond = 200
       myAlert('Error', response.statusCode.toString());
     }
-    
   }
 
   Future<void> setUpDisplayName() async {
@@ -267,9 +253,10 @@ class _RelateIdState extends State<RelateId> {
     //   updateInfo.displayName = nameString;
     //   response.updateProfile(updateInfo);
 
-      var serviceRoute =
-          MaterialPageRoute(builder: (BuildContext context) => Myservice());
-          Navigator.of(context).pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => Myservice());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
     // });
   }
 

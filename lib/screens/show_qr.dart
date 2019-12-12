@@ -51,7 +51,7 @@ class _ShowQrState extends State<ShowQr> {
                     .copyWith(bottom: 40),
                 // child: Text('create qrcode already'),
                 child: Text(
-                  '$getqrdata',
+                  '$getqrdata ',
                   style: TextStyle(fontSize: 28.0),
                 ),
               ),
