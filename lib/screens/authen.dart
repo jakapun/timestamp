@@ -144,7 +144,8 @@ class _AuthenState extends State<Authen> {
 
       var body = {
         "username": emailString.trim(),
-        "password": passwordString.trim()
+        "password": passwordString.trim(),
+        "deviceid": _platformImei.trim()
       };
 
       // var response = await get(urlString);

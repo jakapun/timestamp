@@ -2,23 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:http/http.dart' as http;
 import 'package:timestamp/screens/my_service.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
 
-class StampIn2 extends StatefulWidget {
+class Absent extends StatefulWidget {
   @override
-  _StampIn2State createState() => _StampIn2State();
+  _AbsentState createState() => _AbsentState();
 }
 
-class _StampIn2State extends State<StampIn2> {
+class _AbsentState extends State<Absent> {
+
   // Explicit
-  // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue;
+  String tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue;
   double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
 
@@ -30,44 +30,6 @@ class _StampIn2State extends State<StampIn2> {
     super.initState();
     _isButtonDisabled = true;
     findLatLng();
-  }
-
-  Widget showTextOne() {
-    return Text(
-      'ลงเวลาเข้า',
-      style: TextStyle(
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.brown[800],
-          fontFamily: 'PermanentMarker'),
-    );
-  }
-
-  Widget showText() {
-    return Container(
-      alignment: Alignment.center,
-      child: SelectableText(
-        // '$qrCodeString',
-        '$lat',
-        style: TextStyle(fontSize: 24.0),
-      ),
-    );
-  }
-
-  Widget showButton() {
-    return RaisedButton.icon(
-      // icon: Icon(Icons.android),
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-      icon: Icon(Icons.crop_free),
-      label: Text('สแกน Qrcode/Barcode'),
-      onPressed: () {
-        qrProcess();
-        // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
-      },
-    );
   }
 
   Future<LocationData> findLocationData() async {
@@ -106,24 +68,24 @@ class _StampIn2State extends State<StampIn2> {
     }
   }
 
-  Future<void> qrProcess() async {
-    try {
-      String codeString = await BarcodeScanner.scan();
-
-      if (codeString.length != 0) {
-        setState(() {
-          qrCodeString = codeString;
-        });
-        // myShowSnackBar('$codeString');
-        // print('lat = $lat, lng = $lng, qrtxt = $qrCodeString');
-      }
-    } catch (e) {}
+  void myShowSnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.green[700],
+      duration: Duration(seconds: 15),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+        textColor: Colors.orange,
+      ),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
-  Future<void> sendstamp() async {
+  Future<void> sendabsent() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent";
     
     var body = {
       "chkuid": tempuid.trim(),
@@ -131,8 +93,7 @@ class _StampIn2State extends State<StampIn2> {
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
-      "qrtext": qrCodeString.trim(),
-      "area": radiovalue.trim()
+      "reason": radiovalue.trim()
     };
     
     var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
@@ -172,115 +133,14 @@ class _StampIn2State extends State<StampIn2> {
     }
   }
 
-  void myShowSnackBar(String messageString) {
-    SnackBar snackBar = SnackBar(
-      content: Text(messageString),
-      backgroundColor: Colors.green[700],
-      duration: Duration(seconds: 15),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {},
-        textColor: Colors.orange,
-      ),
-    );
-    scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
-  Widget showLat() {
-    return Column(
-      children: <Widget>[
-        Text(
-          'Latitude',
-          style: TextStyle(fontSize: 20.0),
-        ),
-        Text('$lat')
-      ],
-    );
-  }
-
-  Widget showLng() {
-    return Column(
-      children: <Widget>[
-        Text(
-          'Longitude',
-          style: TextStyle(fontSize: 20.0),
-        ),
-        Text('$lng')
-      ],
-    );
-  }
-
-  Widget mySizeBox() {
-    return SizedBox(
-      width: 8.0,
-      height: 100.0,
-    );
-  }
-
-  Widget mySizeBoxH() {
-    return SizedBox(
-      height: 25.0,
-    );
-  }
-
-  Widget showTextnull() {
-    return Container(
-      alignment: Alignment.center,
-      child: SelectableText(
-        // '$qrCodeString',
-        'ยังไม่ Scan Qrcode \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
-        style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
-      ),
-    );
-  }
-
-  Widget uploadValueButton() {
-    // return IconButton(
-    //   icon: Icon(Icons.cloud_upload),
-    //   onPressed: () {},
-    // );
-    return Row(
-      mainAxisAlignment:
-          MainAxisAlignment.center, // จัดตำแหน่ง FloatingActionButton
-      children: <Widget>[
-        FloatingActionButton(
-          elevation: 15.0,
-          // foregroundColor: Colors.green[900],
-          tooltip: 'กดเพื่อ Upload ข้อมูล',
-          child: Icon(Icons.cloud_upload, size: 40.0,),
-          
-          onPressed: () {
-            if ((lat.toString().isEmpty) || (qrCodeString.isEmpty)) {
-              myAlert('มีข้อผิดพลาด',
-                  'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
-            } else {
-              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela, working = $radiovalue');
-              (_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
-              // sendstamp();
-            }
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget radiocheck() {
-    return Container(
-      width: 220.0,
-      child: RadioButtonGroup(
-          labels: [
-            "ทำงาน ในสถานที่",
-            "ทำงาน นอกสถานที่",
-          ],
-          disabled: [
-            // "In Area"
-          ],
-          onChange: (String label, int index) => print("label: $label index: $index"),
-          onSelected: (String label) => radiovalue = label,
-        ),
-      // onSaved: (String value) {
-      //     passwordString = value;
-      //   },
+  Widget showTextOne() {
+    return Text(
+      'ลาวันนี้ \r\n (เพื่อแสดงข้อมูล ในระบบ)',
+      style: TextStyle(
+          fontSize: 30.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.brown[800],
+          fontFamily: 'PermanentMarker'),
     );
   }
 
@@ -303,6 +163,79 @@ class _StampIn2State extends State<StampIn2> {
         });
   }
 
+  Widget mySizeBox() {
+    return SizedBox(
+      width: 8.0,
+      height: 100.0,
+    );
+  }
+
+  Widget mySizeBoxH() {
+    return SizedBox(
+      height: 25.0,
+    );
+  }
+
+  Widget radiocheck() {
+    return Container(
+      width: 220.0,
+      child: RadioButtonGroup(
+          labels: [
+            "ลากิจ",
+            "ลาป่วย",
+          ],
+          disabled: [
+            // "In Area"
+          ],
+          onChange: (String label, int index) => print("label: $label index: $index"),
+          onSelected: (String label) => radiovalue = label,
+        ),
+      // onSaved: (String value) {
+      //     passwordString = value;
+      //   },
+    );
+  }
+
+  Widget showTextnull() {
+    return Container(
+      alignment: Alignment.center,
+      child: SelectableText(
+        // '$qrCodeString',
+        'ไม่มีข้อมูล Location \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
+        style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
+      ),
+    );
+  }
+
+  Widget uploadValueButton() {
+    // return IconButton(
+    //   icon: Icon(Icons.cloud_upload),
+    //   onPressed: () {},
+    // );
+    return Row(
+      mainAxisAlignment:
+          MainAxisAlignment.center, // จัดตำแหน่ง FloatingActionButton
+      children: <Widget>[
+        FloatingActionButton(
+          elevation: 15.0,
+          // foregroundColor: Colors.green[900],
+          tooltip: 'กดเพื่อ Upload ข้อมูล',
+          child: Icon(Icons.cloud_upload, size: 40.0,),
+          
+          onPressed: () {
+            if (lat.toString().isEmpty) {
+              myAlert('มีข้อผิดพลาด',
+                  'กรุณาเปิดการใช้ Location อีกรอบ \r\n ก่อนกด Upload');
+            } else {
+              print('lat = $lat, lng = $lng, prv = $tempprv, full = $tempfull, nvision = $temprela, absent = $radiovalue');
+              (_isButtonDisabled) ? sendabsent() : myShowSnackBar('User Press Button > 1 Click');
+              // sendabsent();
+            }
+          },
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -311,15 +244,15 @@ class _StampIn2State extends State<StampIn2> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           showTextOne(),
-          mySizeBox(),
-          showButton(),
-          mySizeBoxH(),
-          showText(),
+          //mySizeBox(),
           mySizeBoxH(),
           radiocheck(),
           mySizeBoxH(),
           mySizeBoxH(),
-          ((qrCodeString.isEmpty) || (lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
+          mySizeBoxH(),
+          // uploadValueButton()
+          ((lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
+        
         ],
       ),
       

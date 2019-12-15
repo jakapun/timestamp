@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:timestamp/screens/absent.dart';
 import 'package:timestamp/screens/admin.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/qrbarcode.dart';
@@ -86,6 +87,27 @@ class _MyserviceState extends State<Myservice> {
         });
       },
     );
+  }
+
+  Widget subOsuseonly() {
+    return ListTile(
+      leading: Icon(
+        Icons.alarm_add,
+        size: 36.0,
+        color: Colors.brown,
+      ),
+      title: Text(
+        'พนง. OS แจ้งลา',
+        style: TextStyle(fontSize: 18.0),
+      ),
+      // on tap == on click
+      onTap: () {
+        Navigator.of(context).pop();
+        setState(() {
+          currentWidget = Absent();
+        });
+      },
+    ); // https://material.io/resources/icons/?style=baseline
   }
 
   Widget menuAdmin() {
@@ -188,6 +210,8 @@ class _MyserviceState extends State<Myservice> {
                   menuListViewPage(),
                   Divider(),
                   menuFormPage(),
+                  Divider(),
+                  subOsuseonly(),
                   Divider(),
                   // menuQRcode(),
                   (temppriv > 2) ? menuAdmin() : mySizeBoxH(),
