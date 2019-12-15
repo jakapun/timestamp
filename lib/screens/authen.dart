@@ -1,4 +1,4 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,20 +116,7 @@ class _AuthenState extends State<Authen> {
       print('email = $emailString, password = $passwordString');
       myShowSnackBar('$_platformImei username && password ต้องไม่เท่ากับ ว่าง');
     } else {
-      // emailString = emailString.trim();
-      // passwordString = passwordString.trim();
-
-      // await firebaseAuth
-      //     .signInWithEmailAndPassword(
-      //         email: emailString, password: passwordString)
-      //     .then((response) {
-      //   print('Authen Success');
-      //   moveToService();
-      // }).catchError((response) {
-      //   String errorString = response.message;
-      //   print('error = $errorString');
-      //   myShowSnackBar(errorString);
-      // });
+      
       /*
     str1.toLowerCase(); // lorem
     str1.toUpperCase(); // LOREM
@@ -159,23 +146,8 @@ class _AuthenState extends State<Authen> {
         if (result.toString() == 'null') {
           myAlert('User False', 'No $emailString in my Database');
         } else {
-          // for (var myJSON in result) {
-          //   print('myJSON = $myJSON');
-          //   UserModel userModel = UserModel.fromJSON(myJSON);
-
-          //   if (password == userModel.password.trim()) {
-          //     print('Login Success $password');
-
-          //     MaterialPageRoute materialPageRoute =
-          //         MaterialPageRoute(builder: (BuildContext context) => MyService(userModel: userModel,));
-          //     Navigator.of(context).pushAndRemoveUntil(
-          //         materialPageRoute, (Route<dynamic> route) => false);
-          //   } else {
-          //     myAlert('Password False', 'Plese try Aganis Password False');
-          //   }
-          // }
-
-          if (result['status']) {
+        
+            if (result['status']) {
             String token = result['token'];
             token = token.split(' ').last;
             // print(token);
@@ -193,41 +165,40 @@ class _AuthenState extends State<Authen> {
               String sValue = prefs.getString('stoken');
               print(sValue);
               print(prefs.getInt('spriv').toString());
-              // ,headers: {HttpHeaders.authorizationHeader: "$sValue"},
-              String urlString2 =
-                  'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
-              var response2 = await get(urlString2,
-                  headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
-              if (response2.statusCode == 200) {
-                print(response2.statusCode);
-                var result2 = json.decode(response2.body);
-                if (result2['status']) {
-                  String getmessage = result2['message'];
-                  print(getmessage);
-                  myAlert('OK', response2.statusCode.toString());
-                } else {
-                  print('message = Null');
-                }
-              } else {
-                myAlert('Error', response2.statusCode.toString());
-              }
+              
+              // String urlString2 =
+              //     'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
+              // var response2 = await get(urlString2,
+              //     headers: {HttpHeaders.authorizationHeader: "JWT $sValue"});
+              // if (response2.statusCode == 200) {
+              //   print(response2.statusCode);
+              //   var result2 = json.decode(response2.body);
+              //   if (result2['status']) {
+              //     String getmessage = result2['message'];
+              //     print(getmessage);
+              //     myAlert('OK', response2.statusCode.toString());
+              //   } else {
+              //     print('message = Null');
+              //   }
+              // } else {
+              //   myAlert('Error', response2.statusCode.toString());
+              // }
 
-              // MaterialPageRoute materialPageRoute =
-              //     MaterialPageRoute(builder: (BuildContext context) => Myservice(uname: emailString.trim()));
               MaterialPageRoute materialPageRoute = MaterialPageRoute(
                   builder: (BuildContext context) => Myservice());
               Navigator.of(context).pushAndRemoveUntil(
                   materialPageRoute, (Route<dynamic> route) => false);
             } else {
-              myAlert('Respond Fail', 'Backend Not Reply');
+              myAlert('Respond Fail', 'Backend Not Reply,Session empty');
             }
           } else {
-            print(result['error']);
+            // print(result['error']);
+            myAlert('Error', response.statusCode.toString());
           }
         } // End else result.toString() != 'null'
       } else {
         //check respond = 200
-        myAlert('Error', response.statusCode.toString());
+        myAlert('Error->Backend error', response.statusCode.toString());
       }
     } // End If check emailstring.length
   }
