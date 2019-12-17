@@ -20,6 +20,7 @@ class _StampOutState extends State<StampOut> {
   String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '';
   double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
+  SharedPreferences prefs;
 
   // method
 
@@ -82,7 +83,7 @@ class _StampOutState extends State<StampOut> {
 
   Future<void> findLatLng() async {
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     // await prefs.setString('srelate', result['relate']);
     // await prefs.setString('sfulln', result['fulln']);
     tempprv = prefs.getString('sprv');

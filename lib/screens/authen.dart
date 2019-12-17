@@ -20,8 +20,8 @@ class _AuthenState extends State<Authen> {
   final formKey = GlobalKey<FormState>();
   String emailString = '', passwordString = '';
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
   String _platformImei = '';
+  SharedPreferences prefs;
 
   // Method
 
@@ -152,7 +152,7 @@ class _AuthenState extends State<Authen> {
             token = token.split(' ').last;
             // print(token);
             if (token.isNotEmpty) {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs = await SharedPreferences.getInstance();
               await prefs.setString('stoken', token);
               //  read value from store_preference
               //  uid: user.fname, prv: user.province, priv: user.privilege
@@ -162,9 +162,9 @@ class _AuthenState extends State<Authen> {
                   'spriv', result['priv']); //store preference Integer
               await prefs.setString('srelate', result['relate']);
               await prefs.setString('sfulln', result['fullname']);
-              String sValue = prefs.getString('stoken');
-              print(sValue);
-              print(prefs.getInt('spriv').toString());
+              // String sValue = prefs.getString('stoken');
+              // print(sValue);
+              // print(prefs.getInt('spriv').toString());
               
               // String urlString2 =
               //     'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
@@ -240,7 +240,7 @@ class _AuthenState extends State<Authen> {
     return Container(
       width: 220.0,
       child: TextFormField(
-        keyboardType: TextInputType.number,
+        // keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: 'รหัสพนักงาน/OS :',
           hintText: 'Employee Id',

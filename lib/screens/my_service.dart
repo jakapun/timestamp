@@ -26,6 +26,7 @@ class _MyserviceState extends State<Myservice> {
   String getuname, temps;
   int temppriv = 0;
   Widget currentWidget = MyHome();
+  SharedPreferences prefs;
 
   Widget menuFormPage() {
     return ListTile(
@@ -236,7 +237,7 @@ class _MyserviceState extends State<Myservice> {
 
   Future<void> findDisplayName() async {
     // FirebaseUser firebaseUser = await firebaseAuth.currentUser();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
 
     setState(() {
       getuname = prefs.getString('suid');
@@ -253,7 +254,7 @@ class _MyserviceState extends State<Myservice> {
   }
 
   void clearSharePreferance(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.clear();
     });

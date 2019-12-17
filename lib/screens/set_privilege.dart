@@ -35,11 +35,12 @@ class _SetPrivState extends State<SetPriv> {
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
   Company _selectedCompany;
+  SharedPreferences prefs;
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     String tempprv = prefs.getString('sprv');
     String url =
         "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";

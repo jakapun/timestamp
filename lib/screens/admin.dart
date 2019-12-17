@@ -19,6 +19,7 @@ class _AdminSecState extends State<AdminSec> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Widget currentWidget;
   int temppriv = 0;
+  SharedPreferences prefs;
 
   // Method
 
@@ -30,7 +31,7 @@ class _AdminSecState extends State<AdminSec> {
 
   Future<void> checkStatus() async {
     // moveToService();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     setState(() {
       getuname = prefs.getString('suid');
       temps = prefs.getString('srelate');

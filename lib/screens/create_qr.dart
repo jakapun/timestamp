@@ -38,6 +38,7 @@ class _CreateQrState extends State<CreateQr> {
   String qrString, _mySelection, tempprv;
   double lat, lng;
   int randInt;
+  SharedPreferences prefs;
 
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
@@ -46,7 +47,7 @@ class _CreateQrState extends State<CreateQr> {
   List data = List(); //edited line
 
   Future<String> getSWData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     tempprv = prefs.getString('sprv');
 
     String url =

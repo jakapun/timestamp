@@ -21,6 +21,7 @@ class _AbsentState extends State<Absent> {
   String tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue;
   double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
+  SharedPreferences prefs;
 
   // method
 
@@ -45,7 +46,7 @@ class _AbsentState extends State<Absent> {
 
   Future<void> findLatLng() async {
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     // await prefs.setString('srelate', result['relate']);
     // await prefs.setString('sfulln', result['fulln']);
     tempprv = prefs.getString('sprv');
@@ -85,7 +86,7 @@ class _AbsentState extends State<Absent> {
   Future<void> sendabsent() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
     
     var body = {
       "chkuid": tempuid.trim(),
@@ -93,7 +94,7 @@ class _AbsentState extends State<Absent> {
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
-      "reason": radiovalue.trim()
+      "area": radiovalue.trim()
     };
     
     var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);

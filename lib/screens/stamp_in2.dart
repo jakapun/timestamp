@@ -21,7 +21,7 @@ class _StampIn2State extends State<StampIn2> {
   String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue;
   double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
-
+  SharedPreferences prefs;
   // method
 
   @override
@@ -83,7 +83,7 @@ class _StampIn2State extends State<StampIn2> {
 
   Future<void> findLatLng() async {
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     // await prefs.setString('srelate', result['relate']);
     // await prefs.setString('sfulln', result['fulln']);
     tempprv = prefs.getString('sprv');
@@ -122,7 +122,11 @@ class _StampIn2State extends State<StampIn2> {
 
   Future<void> sendstamp() async {
     // addgroup
-
+    if(radiovalue.length < 1){
+       radiovalue = 'ทำงาน ในสถานที่';
+    }else{
+       print(radiovalue);
+    }
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
     
     var body = {
