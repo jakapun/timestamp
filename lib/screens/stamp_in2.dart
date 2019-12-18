@@ -6,8 +6,8 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:timestamp/screens/my_service.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:timestamp/screens/my_success.dart';
 
 class StampIn2 extends StatefulWidget {
   @override
@@ -127,7 +127,7 @@ class _StampIn2State extends State<StampIn2> {
     }else{
        print(radiovalue);
     }
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampino";
     
     var body = {
       "chkuid": tempuid.trim(),
@@ -144,7 +144,6 @@ class _StampIn2State extends State<StampIn2> {
     if (response.statusCode == 200) {
       print(response.statusCode);
       var result = json.decode(response.body);
-      // print('result = $result');
 
       if (result.toString() == 'null') {
         myAlert('Not Stampin', 'No Stampin,put data in my Database');
@@ -154,20 +153,18 @@ class _StampIn2State extends State<StampIn2> {
           _isButtonDisabled = false; // disable ปุ่ม
         });
         }else{
-          myShowSnackBar('_isButtonDisabled = false');
+          print('_isButtonDisabled = false');
         }
-        if (result['status']) {
+        if ((result['status']) && (result['success'])){
           String getmessage = result['message'];
-          // myAlert('OK', '$getmessage');
-          myShowSnackBar('$getmessage');
+
           var addChildrenRoute = MaterialPageRoute(
-              builder: (BuildContext context) => Myservice());
-          // Navigator.of(context).pop();
+              builder: (BuildContext context) => Mysuccess(successtxt: getmessage));
           Navigator.of(context).push(addChildrenRoute);
+
         } else {
           String getmessage = result['message'];
-          // myAlert('Not OK', '$getmessage');
-          myShowSnackBar('$getmessage');
+          myAlert('Not OK', '$getmessage');
         }
       }
     } else {
@@ -259,8 +256,8 @@ class _StampIn2State extends State<StampIn2> {
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
               print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela, working = $radiovalue');
-              (_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
-              // sendstamp();
+              // (_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button == 1 Click');
+              sendstamp();
             }
           },
         ),

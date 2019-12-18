@@ -6,7 +6,7 @@ import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:http/http.dart' as http;
-import 'package:timestamp/screens/my_service.dart';
+import 'package:timestamp/screens/my_success.dart';
 
 class Absent extends StatefulWidget {
   @override
@@ -112,20 +112,18 @@ class _AbsentState extends State<Absent> {
           _isButtonDisabled = false; // disable ปุ่ม
         });
         }else{
-          myShowSnackBar('_isButtonDisabled = false');
+          print('_isButtonDisabled = false');
         }
-        if (result['status']) {
-          String getmessage = result['message'];
-          // myAlert('OK', '$getmessage');
-          myShowSnackBar('$getmessage');
+        if ((result['status']) && (result['success'])) {
+          String getmessage = 'ลงเวลา ลากิจ/ลาป่วย เรียบร้อย';
+          
           var addChildrenRoute = MaterialPageRoute(
-              builder: (BuildContext context) => Myservice());
-          // Navigator.of(context).pop();
+              builder: (BuildContext context) => Mysuccess(successtxt: getmessage));
           Navigator.of(context).push(addChildrenRoute);
+
         } else {
           String getmessage = result['message'];
-          // myAlert('Not OK', '$getmessage');
-          myShowSnackBar('$getmessage');
+          myAlert('Not OK', '$getmessage');
         }
       }
     } else {

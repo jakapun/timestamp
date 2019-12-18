@@ -6,7 +6,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:timestamp/screens/my_service.dart';
+import 'package:timestamp/screens/my_success.dart';
 
 class StampOut extends StatefulWidget {
   @override
@@ -123,7 +123,7 @@ class _StampOutState extends State<StampOut> {
   Future<void> sendstamp() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampout";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampouto";
     
     var body = {
       "chkuid": tempuid.trim(),
@@ -139,7 +139,6 @@ class _StampOutState extends State<StampOut> {
     if (response.statusCode == 200) {
       print(response.statusCode);
       var result = json.decode(response.body);
-      // print('result = $result');
 
       if (result.toString() == 'null') {
         myAlert('Not Stampin', 'No Stampin,put data in my Database');
@@ -149,19 +148,18 @@ class _StampOutState extends State<StampOut> {
           _isButtonDisabled = false;
         });
         }else{
-          myShowSnackBar('_isButtonDisabled = false');
+          print('_isButtonDisabled = false');
         }
-        if (result['status']) {
+        if ((result['status']) && (result['success'])) {
           String getmessage = result['message'];
-          myShowSnackBar('$getmessage');
       
           var addChildrenRoute = MaterialPageRoute(
-              builder: (BuildContext context) => Myservice());
-          // Navigator.of(context).pop();
+              builder: (BuildContext context) => Mysuccess(successtxt: getmessage));
           Navigator.of(context).push(addChildrenRoute);
+
         } else {
           String getmessage = result['message'];
-          myShowSnackBar('$getmessage');
+          myAlert('Not OK', '$getmessage');
         }
       }
     } else {
