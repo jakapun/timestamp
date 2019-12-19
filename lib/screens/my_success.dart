@@ -37,13 +37,35 @@ class _MysuccessState extends State<Mysuccess> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          showText(),
-        ],
+    return Scaffold(
+      resizeToAvoidBottomPadding: true,
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              colors: [Colors.white, Colors.green.shade900],
+              radius: 1.2,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Form(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                showText(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
+    // return Container(
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: <Widget>[
+    //       showText(),
+    //     ],
+    //   ),
+    // );
   }
 }
