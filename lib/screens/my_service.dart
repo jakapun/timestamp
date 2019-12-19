@@ -28,7 +28,7 @@ class _MyserviceState extends State<Myservice> {
   Widget currentWidget = MyHome();
   SharedPreferences prefs;
 
-  Widget menuFormPage() {
+  Widget menuStampin() {
     return ListTile(
       leading: Icon(
         Icons.alarm_add,
@@ -49,7 +49,7 @@ class _MyserviceState extends State<Myservice> {
     ); // https://material.io/resources/icons/?style=baseline
   }
 
-  Widget menuListViewPage() {
+  Widget menuStampout() {
     return ListTile(
       leading: Icon(
         Icons.alarm_off,
@@ -208,9 +208,9 @@ class _MyserviceState extends State<Myservice> {
             ? ListView(
                 children: <Widget>[
                   myHead(),
-                  menuListViewPage(),
+                  menuStampout(),
                   Divider(),
-                  menuFormPage(),
+                  menuStampin(),
                   Divider(),
                   subOsuseonly(),
                   Divider(),

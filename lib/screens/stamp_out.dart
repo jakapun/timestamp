@@ -120,7 +120,7 @@ class _StampOutState extends State<StampOut> {
     } catch (e) {}
   }
 
-  Future<void> sendstamp() async {
+  Future<void> sendstampout() async {
     // addgroup
 
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampouto";
@@ -251,7 +251,7 @@ class _StampOutState extends State<StampOut> {
             } else {
               print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
               //(_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
-              sendstamp();
+              sendstampout();
             }
           },
         ),

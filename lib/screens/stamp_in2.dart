@@ -120,13 +120,13 @@ class _StampIn2State extends State<StampIn2> {
     } catch (e) {}
   }
 
-  Future<void> sendstamp() async {
+  Future<void> sendstampin() async {
     // addgroup
-    if(radiovalue.length < 1){
-       radiovalue = 'ทำงาน ในสถานที่';
-    }else{
-       print(radiovalue);
-    }
+    // if(radiovalue.length < 1){
+    //    radiovalue = 'ทำงาน ในสถานที่';
+    // }else{
+    //    print(radiovalue);
+    // }
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampino";
     
     var body = {
@@ -136,7 +136,6 @@ class _StampIn2State extends State<StampIn2> {
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
       "qrtext": qrCodeString.trim(),
-      "area": radiovalue.trim()
     };
     
     var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
@@ -255,9 +254,9 @@ class _StampIn2State extends State<StampIn2> {
               myAlert('มีข้อผิดพลาด',
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
-              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela, working = $radiovalue');
-              // (_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button == 1 Click');
-              sendstamp();
+              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
+              // (_isButtonDisabled) ? sendstampin() : myShowSnackBar('User Press Button == 1 Click');
+              sendstampin();
             }
           },
         ),
