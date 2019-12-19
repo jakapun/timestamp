@@ -36,7 +36,7 @@ class _MyserviceState extends State<Myservice> {
         color: Colors.green[400],
       ),
       title: Text(
-        'ลงเวลาเข้า',
+        'บันทึกเข้า',
         style: TextStyle(fontSize: 18.0),
       ),
       // on tap == on click
@@ -57,7 +57,7 @@ class _MyserviceState extends State<Myservice> {
         color: Colors.red,
       ),
       title: Text(
-        'ลงเวลาออก',
+        'บันทึกออก',
         style: TextStyle(fontSize: 18.0),
       ),
       // on tap == on click
@@ -98,7 +98,7 @@ class _MyserviceState extends State<Myservice> {
         color: Colors.brown,
       ),
       title: Text(
-        'พนง. OS แจ้งลา',
+        'บันทึก อื่นๆ/ลา',
         style: TextStyle(fontSize: 18.0),
       ),
       // on tap == on click

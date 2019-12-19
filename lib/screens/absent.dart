@@ -18,7 +18,7 @@ class _AbsentState extends State<Absent> {
   // Explicit
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue;
+  String tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue = '';
   double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
   SharedPreferences prefs;
@@ -134,7 +134,7 @@ class _AbsentState extends State<Absent> {
 
   Widget showTextOne() {
     return Text(
-      'ลาวันนี้ \r\n (เพื่อแสดงข้อมูล ในระบบ)',
+      'บันทึกอื่นๆ/ลา',
       style: TextStyle(
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
@@ -175,11 +175,23 @@ class _AbsentState extends State<Absent> {
     );
   }
 
-  Widget radiocheck() {
+  Widget showText() {
+    return Text(
+      'เลือกประเภท บันทึก/ลา',
+      style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[800],
+          fontFamily: 'PermanentMarker'),
+    );
+  }
+
+  Widget radiocheck1() {
     return Container(
       width: 220.0,
       child: RadioButtonGroup(
           labels: [
+            "บันทึกเข้า นอกสถานที่",
             "ลากิจ",
             "ลาป่วย",
           ],
@@ -195,12 +207,34 @@ class _AbsentState extends State<Absent> {
     );
   }
 
+  Widget showText2() {
+    return Text(
+      'การทำรายการในหน้านี้จะมี \r\n การแจ้งเตือนไปที่ admin/ผส.',
+      style: TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[800],
+          fontFamily: 'PermanentMarker'),
+    );
+  }
+
+  Widget showText3() {
+    return Container(
+      alignment: Alignment.center,
+      child: SelectableText(
+        // '$qrCodeString',
+        '$lat',
+        style: TextStyle(fontSize: 24.0),
+      ),
+    );
+  }
+
   Widget showTextnull() {
     return Container(
       alignment: Alignment.center,
       child: SelectableText(
         // '$qrCodeString',
-        'ไม่มีข้อมูล Location \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
+        'ไม่มีข้อมูล Location \r\n หรือเคยบันทึกแล้ว \r\n จะไม่มีปุ่ม upload',
         style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
       ),
     );
@@ -227,8 +261,8 @@ class _AbsentState extends State<Absent> {
                   'กรุณาเปิดการใช้ Location อีกรอบ \r\n ก่อนกด Upload');
             } else {
               print('lat = $lat, lng = $lng, prv = $tempprv, full = $tempfull, nvision = $temprela, absent = $radiovalue');
-              (_isButtonDisabled) ? sendabsent() : myShowSnackBar('User Press Button > 1 Click');
-              // sendabsent();
+              // (_isButtonDisabled) ? sendabsent() : myShowSnackBar('User Press Button > 1 Click');
+              sendabsent();
             }
           },
         ),
@@ -245,11 +279,15 @@ class _AbsentState extends State<Absent> {
           showTextOne(),
           //mySizeBox(),
           mySizeBoxH(),
-          radiocheck(),
+          // showText(),
+          radiocheck1(),
           mySizeBoxH(),
           mySizeBoxH(),
           mySizeBoxH(),
-          // uploadValueButton()
+          showText2(),
+          mySizeBoxH(),
+          showText3(),
+          mySizeBoxH(),
           ((lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
         
         ],

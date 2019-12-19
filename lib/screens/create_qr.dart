@@ -289,7 +289,7 @@ class _CreateQrState extends State<CreateQr> {
 
   Widget showText2() {
     return Text(
-      'เลือกเวลา StampIn ช้าสุด',
+      'เลือกเวลา บันทึกเข้า ช้าสุด',
       style: TextStyle(
           fontSize: 18.0,
           fontWeight: FontWeight.bold,

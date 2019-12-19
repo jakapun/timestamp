@@ -34,7 +34,7 @@ class _StampIn2State extends State<StampIn2> {
 
   Widget showTextOne() {
     return Text(
-      'ลงเวลาเข้า',
+      'บันทึกเข้า',
       style: TextStyle(
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
@@ -229,7 +229,7 @@ class _StampIn2State extends State<StampIn2> {
       alignment: Alignment.center,
       child: SelectableText(
         // '$qrCodeString',
-        'ยังไม่ Scan Qrcode \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
+        'ยังไม่ Scan Qrcode \r\n หรือเคยบันทึกเข้าแล้ว \r\n จะไม่มีปุ่ม upload',
         style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
       ),
     );
@@ -317,7 +317,7 @@ class _StampIn2State extends State<StampIn2> {
           mySizeBoxH(),
           showText(),
           mySizeBoxH(),
-          radiocheck(),
+          // radiocheck(),
           mySizeBoxH(),
           mySizeBoxH(),
           ((qrCodeString.isEmpty) || (lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),

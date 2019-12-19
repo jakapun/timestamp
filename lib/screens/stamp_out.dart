@@ -34,7 +34,7 @@ class _StampOutState extends State<StampOut> {
 
   Widget showTextOne() {
     return Text(
-      'ลงเวลาออก',
+      'บันทึกออก',
       style: TextStyle(
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _StampOutState extends State<StampOut> {
       alignment: Alignment.center,
       child: SelectableText(
         // '$qrCodeString',
-        'ยังไม่ Scan Qrcode \r\n หรือเคยลงเวลาแล้ว \r\n จะไม่มีปุ่ม upload',
+        'ยังไม่ Scan Qrcode \r\n หรือเคยบันทึกออกแล้ว \r\n จะไม่มีปุ่ม upload',
         style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
       ),
     );
