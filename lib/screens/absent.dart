@@ -86,7 +86,7 @@ class _AbsentState extends State<Absent> {
   Future<void> sendabsent() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampin";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent";
     
     var body = {
       "chkuid": tempuid.trim(),

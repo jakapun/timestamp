@@ -29,7 +29,7 @@ class _MysuccessState extends State<Mysuccess> {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        '$txtisshow \r\n slide หน้าจอจากขอบด้านซ้ายไปขวา \r\n เลือกเมนูเพื่อทำงานต่อ',
+        '$txtisshow \r\n กรุณากด Back (ลูกศรเลี้ยวซ้าย) \r\n เพื่อทำงานต่อ',
         style: TextStyle(fontSize: 22.0),
       ),
     );
