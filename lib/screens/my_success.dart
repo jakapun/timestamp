@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timestamp/screens/my_service.dart';
 
 class Mysuccess extends StatefulWidget {
 
@@ -25,12 +26,44 @@ class _MysuccessState extends State<Mysuccess> {
     });
   }
 
+  Widget goBackButton() {
+    return OutlineButton(
+      borderSide: BorderSide(color: Colors.green.shade900),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        '<-- Main',
+        style: TextStyle(color: Colors.green.shade900),
+      ),
+      onPressed: () {
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Myservice());
+        Navigator.of(context).push(materialPageRoute);
+      },
+    );
+  }
+
   Widget showText() {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        '$txtisshow \r\n กรุณากด Back (ลูกศรเลี้ยวซ้าย) \r\n เพื่อทำงานต่อ',
+        '$txtisshow \r\n กรุณากด (ปุ่ม <-- Main) \r\n เพื่อทำงานต่อ',
         style: TextStyle(fontSize: 22.0),
+      ),
+    );
+  }
+
+  Widget myButton() {
+    return Container(
+      alignment: Alignment.center,
+      width: 220.0,
+      child: Column(
+        children: <Widget>[
+          goBackButton(),
+          // singInButton(),
+        ],
       ),
     );
   }
@@ -53,6 +86,7 @@ class _MysuccessState extends State<Mysuccess> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 showText(),
+                myButton(),
               ],
             ),
           ),

@@ -194,6 +194,8 @@ class _AbsentState extends State<Absent> {
             "บันทึกเข้า นอกสถานที่",
             "ลากิจ",
             "ลาป่วย",
+            "อบรม/สัมมนา",
+            "พักร้อน",
           ],
           disabled: [
             // "In Area"
@@ -281,7 +283,6 @@ class _AbsentState extends State<Absent> {
           mySizeBoxH(),
           // showText(),
           radiocheck1(),
-          mySizeBoxH(),
           mySizeBoxH(),
           mySizeBoxH(),
           showText2(),
