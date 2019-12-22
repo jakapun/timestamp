@@ -207,7 +207,7 @@ class _AdminSecState extends State<AdminSec> {
               mySizeBox(),
               Expanded(
                 // (temppriv == 4) ? menuAdmin() : mySizeBoxH(),
-                child: (temppriv >= 3) ? freeButton() : freeButton2(),
+                child: (temppriv == 3) ? freeButton() : freeButton2(),
               ),
             ],
           ),
@@ -272,7 +272,7 @@ class _AdminSecState extends State<AdminSec> {
 
   Widget showText() {
     return Text(
-      'Admin เซคชั่น',
+      'Sup/Admin',
       style: TextStyle(
           fontSize: 45.0,
           fontWeight: FontWeight.bold,

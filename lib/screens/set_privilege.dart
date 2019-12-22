@@ -19,9 +19,9 @@ class Company {
 
   static List<Company> getCompanies() {
     return <Company>[
-      Company(1, 'user (พนักงาน/os)'),
-      Company(2, 'head (ผจ.ศูนย์/ผช.จังหวัด)'),
-      Company(3, 'admin ประจำศูนย์'),
+      Company(1, 'User (พนักงาน/os)'),
+      Company(2, 'Admin (admin ประจำศูนย์)'),
+      Company(3, 'Supervisor'),
       // Company(4, 'sup'),
     ];
   }

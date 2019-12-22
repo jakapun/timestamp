@@ -119,7 +119,7 @@ class _MyserviceState extends State<Myservice> {
         color: Colors.purple,
       ),
       title: Text(
-        'Admin เซคชั่น',
+        'Sup/Admin เซคชั่น',
         style: TextStyle(fontSize: 18.0),
       ),
       // onTap: () {
@@ -215,7 +215,7 @@ class _MyserviceState extends State<Myservice> {
                   subOsuseonly(),
                   Divider(),
                   // menuQRcode(),
-                  (temppriv > 2) ? menuAdmin() : mySizeBoxH(),
+                  (temppriv >= 2) ? menuAdmin() : mySizeBoxH(),
                   Divider(),
                   signOutAnExit(),
                 ],

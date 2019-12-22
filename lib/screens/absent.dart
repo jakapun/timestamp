@@ -191,11 +191,11 @@ class _AbsentState extends State<Absent> {
       width: 220.0,
       child: RadioButtonGroup(
           labels: [
-            "บันทึกเข้า นอกสถานที่",
+            "บันทึก นอกสถานที่",
             "ลากิจ",
             "ลาป่วย",
             "อบรม/สัมมนา",
-            "พักร้อน",
+            "พักผ่อน",
           ],
           disabled: [
             // "In Area"
