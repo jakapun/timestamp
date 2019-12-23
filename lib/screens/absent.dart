@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +32,7 @@ class _AbsentState extends State<Absent> {
     super.initState();
     _isButtonDisabled = true;
     findLatLng();
+    
   }
 
   Future<LocationData> findLocationData() async {
@@ -65,6 +67,7 @@ class _AbsentState extends State<Absent> {
       setState(() {
         lat = currentLocation.latitude;
         lng = currentLocation.longitude;
+        
       });
     }
   }
@@ -84,7 +87,6 @@ class _AbsentState extends State<Absent> {
   }
 
   Future<void> sendabsent() async {
-    // addgroup
 
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent";
     
@@ -264,12 +266,35 @@ class _AbsentState extends State<Absent> {
             } else {
               print('lat = $lat, lng = $lng, prv = $tempprv, full = $tempfull, nvision = $temprela, absent = $radiovalue');
               // (_isButtonDisabled) ? sendabsent() : myShowSnackBar('User Press Button > 1 Click');
-              sendabsent();
+              _onShowCondition();
+              //sendabsent();
             }
           },
         ),
       ],
     );
+  }
+  
+  Future<bool> _onShowCondition() {
+    return showDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Text('ในกรณีที่มี การลาครึ่งวัน \r\n ต้อง บันทึกออก ด้วยเสมอ'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('No',
+                      style: TextStyle(fontSize: 17.0, color: Colors.red[800])),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+                FlatButton(
+                    child: Text('Yes',
+                        style: TextStyle(fontSize: 17.0, color: Colors.blue)),
+                    onPressed: () {
+                    sendabsent();
+                    Navigator.pop(context, true);
+                    })
+              ],
+            ));
   }
 
   @override
@@ -290,7 +315,6 @@ class _AbsentState extends State<Absent> {
           showText3(),
           mySizeBoxH(),
           ((lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
-        
         ],
       ),
       
