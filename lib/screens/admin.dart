@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timestamp/screens/create_qr.dart';
+import 'package:timestamp/screens/delete_user.dart';
 import 'package:timestamp/screens/my_home.dart';
 import 'package:timestamp/screens/new_section.dart';
 import 'package:timestamp/screens/relate_id.dart';
@@ -60,14 +61,14 @@ class _AdminSecState extends State<AdminSec> {
   }
 
   Widget singUpButton() {
-    return OutlineButton(
-      borderSide: BorderSide(color: Colors.green.shade900),
+    return RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
+      color: Colors.green[900],
       child: Text(
         'สร้างข้อมูล ศูนย์/ส่วน',
-        style: TextStyle(color: Colors.green.shade900),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         print('You Click SingUp');
@@ -163,6 +164,25 @@ class _AdminSecState extends State<AdminSec> {
     );
   }
 
+  Widget freeButton3() {
+    return OutlineButton(
+      borderSide: BorderSide(color: Colors.green.shade900),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        'ลบ user',
+        style: TextStyle(color: Colors.green.shade900),
+      ),
+      onPressed: () {
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => DelUser());
+        Navigator.of(context).push(materialPageRoute);
+      },
+    );
+  }
+
   Widget freeButton2() {
     return OutlineButton(
       borderSide: BorderSide(color: Colors.green.shade900),
@@ -208,6 +228,19 @@ class _AdminSecState extends State<AdminSec> {
               Expanded(
                 // (temppriv == 4) ? menuAdmin() : mySizeBoxH(),
                 child: (temppriv == 3) ? freeButton() : freeButton2(),
+              ),
+            ],
+          ),
+          mySizeBoxH(),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: freeButton2(),
+              ),
+              mySizeBox(),
+              Expanded(
+                // (temppriv == 4) ? menuAdmin() : mySizeBoxH(),
+                child: (temppriv == 3) ? freeButton3() : freeButton2(),
               ),
             ],
           ),
