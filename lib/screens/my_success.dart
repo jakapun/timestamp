@@ -38,9 +38,13 @@ class _MysuccessState extends State<Mysuccess> {
         style: TextStyle(color: Colors.green.shade900),
       ),
       onPressed: () {
-        MaterialPageRoute materialPageRoute =
-            MaterialPageRoute(builder: (BuildContext context) => Myservice());
-        Navigator.of(context).push(materialPageRoute);
+        // MaterialPageRoute materialPageRoute =
+        //     MaterialPageRoute(builder: (BuildContext context) => Myservice());
+        // Navigator.of(context).push(materialPageRoute);
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+                  builder: (BuildContext context) => Myservice());
+              Navigator.of(context).pushAndRemoveUntil(
+                  materialPageRoute, (Route<dynamic> route) => false);
       },
     );
   }

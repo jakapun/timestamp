@@ -154,17 +154,15 @@ class _AuthenState extends State<Authen> {
             if (token.isNotEmpty) {
               prefs = await SharedPreferences.getInstance();
               await prefs.setString('stoken', token);
-              //  read value from store_preference
-              //  uid: user.fname, prv: user.province, priv: user.privilege
               await prefs.setString('suid', result['uid']);
               await prefs.setString('sprv', result['prv']);
-              await prefs.setInt(
-                  'spriv', result['priv']); //store preference Integer
+              await prefs.setInt('spriv', result['priv']); //store preference Integer
               await prefs.setString('srelate', result['relate']);
               await prefs.setString('sfulln', result['fullname']);
+              
               // String sValue = prefs.getString('stoken');
               // print(sValue);
-              // print(prefs.getInt('spriv').toString());
+              // print(prefs.getInt('sfullname').toString());
               
               // String urlString2 =
               //     'http://8a7a08360daf.sn.mynetname.net:2528/api/flutterget/123456';
@@ -246,7 +244,7 @@ class _AuthenState extends State<Authen> {
           hintText: 'Employee Id',
         ),
         onSaved: (String value) {
-          emailString = value;
+          emailString = value.toUpperCase();
         },
       ),
     );

@@ -17,7 +17,7 @@ class _StampOutState extends State<StampOut> {
   // Explicit
   // String qrCodeString = 'ก๊อปปี้ code จากการสแกน';
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String qrCodeString = '', tempprv, temprela, tempfull, token = '', tempuid = '';
+  String qrCodeString = '', tempprv, temprela, token = '', tempuid = '';
   double lat = 0, lng = 0;
   bool _isButtonDisabled = false;
   SharedPreferences prefs;
@@ -88,10 +88,7 @@ class _StampOutState extends State<StampOut> {
     // await prefs.setString('sfulln', result['fulln']);
     tempprv = prefs.getString('sprv');
     temprela = prefs.getString('srelate');
-    tempfull = prefs.getString('sfulln');
-    // await prefs.setString('stoken', token);
     token = prefs.getString('stoken');
-    // await prefs.setString('suid', result['uid']);
     tempuid = prefs.getString('suid');
 
     var currentLocation = await findLocationData();
@@ -127,7 +124,6 @@ class _StampOutState extends State<StampOut> {
     
     var body = {
       "chkuid": tempuid.trim(),
-      "chkfna": tempfull.trim(),
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
@@ -249,7 +245,7 @@ class _StampOutState extends State<StampOut> {
               myAlert('มีข้อผิดพลาด',
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
-              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
+              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, nvision = $temprela');
               //(_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
               sendstampout();
             }

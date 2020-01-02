@@ -88,11 +88,10 @@ class _StampIn2State extends State<StampIn2> {
     // await prefs.setString('sfulln', result['fulln']);
     tempprv = prefs.getString('sprv');
     temprela = prefs.getString('srelate');
-    tempfull = prefs.getString('sfulln');
-    // await prefs.setString('stoken', token);
     token = prefs.getString('stoken');
-    // await prefs.setString('suid', result['uid']);
     tempuid = prefs.getString('suid');
+    // await prefs.setString('sfulln', result['fullname']);
+    tempfull = prefs.getString('sfulln');
 
     var currentLocation = await findLocationData();
 
@@ -131,7 +130,7 @@ class _StampIn2State extends State<StampIn2> {
     
     var body = {
       "chkuid": tempuid.trim(),
-      "chkfna": tempfull.trim(),
+      "chkfna": tempfull,
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
@@ -254,7 +253,7 @@ class _StampIn2State extends State<StampIn2> {
               myAlert('มีข้อผิดพลาด',
                   'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
             } else {
-              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, full = $tempfull, nvision = $temprela');
+              print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, nvision = $temprela');
               // (_isButtonDisabled) ? sendstampin() : myShowSnackBar('User Press Button == 1 Click');
               sendstampin();
             }

@@ -49,15 +49,13 @@ class _AbsentState extends State<Absent> {
   Future<void> findLatLng() async {
 
     prefs = await SharedPreferences.getInstance();
-    // await prefs.setString('srelate', result['relate']);
-    // await prefs.setString('sfulln', result['fulln']);
+
     tempprv = prefs.getString('sprv');
     temprela = prefs.getString('srelate');
-    tempfull = prefs.getString('sfulln');
-    // await prefs.setString('stoken', token);
     token = prefs.getString('stoken');
-    // await prefs.setString('suid', result['uid']);
     tempuid = prefs.getString('suid');
+    // await prefs.setString('sfulln', result['fullname']);
+    tempfull = prefs.getString('sfulln');
 
     var currentLocation = await findLocationData();
 
@@ -87,12 +85,19 @@ class _AbsentState extends State<Absent> {
   }
 
   Future<void> sendabsent() async {
+    print('call future sendabsen');
+    print('$tempuid');
 
+    print('$lat');
+    print('$lng');
+    print('$temprela');
+    print('$radiovalue');
+    
     String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent";
     
     var body = {
       "chkuid": tempuid.trim(),
-      "chkfna": tempfull.trim(),
+      "chkfna": tempfull,
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
@@ -117,7 +122,7 @@ class _AbsentState extends State<Absent> {
           print('_isButtonDisabled = false');
         }
         if ((result['status']) && (result['success'])) {
-          String getmessage = 'ลงเวลา ลากิจ/ลาป่วย เรียบร้อย';
+          String getmessage = 'ลงเวลา ลากิจ/ลาป่วย/อบรม/พักผ่อน เรียบร้อย';
           
           var addChildrenRoute = MaterialPageRoute(
               builder: (BuildContext context) => Mysuccess(successtxt: getmessage));
@@ -264,7 +269,7 @@ class _AbsentState extends State<Absent> {
               myAlert('มีข้อผิดพลาด',
                   'กรุณาเปิดการใช้ Location อีกรอบ \r\n ก่อนกด Upload');
             } else {
-              print('lat = $lat, lng = $lng, prv = $tempprv, full = $tempfull, nvision = $temprela, absent = $radiovalue');
+              print('lat = $lat, lng = $lng, prv = $tempprv, nvision = $temprela, absent = $radiovalue');
               // (_isButtonDisabled) ? sendabsent() : myShowSnackBar('User Press Button > 1 Click');
               _onShowCondition();
               //sendabsent();

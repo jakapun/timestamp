@@ -208,9 +208,9 @@ class _MyserviceState extends State<Myservice> {
             ? ListView(
                 children: <Widget>[
                   myHead(),
-                  menuStampout(),
-                  Divider(),
                   menuStampin(),
+                  Divider(),
+                  menuStampout(),
                   Divider(),
                   subOsuseonly(),
                   Divider(),

@@ -66,9 +66,9 @@ class _DelUserState extends State<DelUser> {
 
   Widget emailText() {
     return TextFormField(
-      keyboardType: TextInputType.number,
+      // keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        labelText: 'รหัสพนักงานTOT/OS :',
+        labelText: 'รหัส พนง.TOT/OS ที่จะลบ :',
         labelStyle: TextStyle(color: Colors.blue),
         helperText: 'TOT Employee Id/OS Id',
         helperStyle: TextStyle(color: Colors.blue),
@@ -87,7 +87,7 @@ class _DelUserState extends State<DelUser> {
         }
       },
       onSaved: (String value) {
-        emailString = value;
+        emailString = value.toUpperCase();
       },
     );
   }
@@ -143,7 +143,7 @@ class _DelUserState extends State<DelUser> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('ลงทะเบียน User'),
+        title: Text('ลบ User'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(

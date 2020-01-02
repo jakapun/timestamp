@@ -111,11 +111,11 @@ class _RegisterState extends State<Register> {
 
   Widget emailText() {
     return TextFormField(
-      keyboardType: TextInputType.number,
+      // keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: 'รหัสพนักงานTOT/OS :',
         labelStyle: TextStyle(color: Colors.blue),
-        helperText: 'TOT Employee Id/OS Id',
+        helperText: '12700099/B123456',
         helperStyle: TextStyle(color: Colors.blue),
         icon: Icon(
           Icons.email,
@@ -132,7 +132,7 @@ class _RegisterState extends State<Register> {
         }
       },
       onSaved: (String value) {
-        emailString = value;
+        emailString = value.toUpperCase();
       },
     );
   }
