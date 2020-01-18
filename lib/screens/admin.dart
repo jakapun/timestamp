@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timestamp/screens/admin_signr.dart';
 import 'package:timestamp/screens/create_qr.dart';
 import 'package:timestamp/screens/delete_user.dart';
 import 'package:timestamp/screens/my_home.dart';
@@ -183,6 +184,26 @@ class _AdminSecState extends State<AdminSec> {
     );
   }
 
+  Widget freeButton4() {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.green[900],
+      child: Text(
+        'Admin ลงเวลาแทน',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        // formKey.currentState.save();
+        // checkAuthen();
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => AdminSign());
+        Navigator.of(context).push(materialPageRoute);
+      },
+    );
+  }
+
   Widget freeButton2() {
     return OutlineButton(
       borderSide: BorderSide(color: Colors.green.shade900),
@@ -235,7 +256,7 @@ class _AdminSecState extends State<AdminSec> {
           Row(
             children: <Widget>[
               Expanded(
-                child: freeButton2(),
+                child: freeButton4(),
               ),
               mySizeBox(),
               Expanded(

@@ -122,7 +122,8 @@ class _AbsentState extends State<Absent> {
           print('_isButtonDisabled = false');
         }
         if ((result['status']) && (result['success'])) {
-          String getmessage = 'ลงเวลา ลากิจ/ลาป่วย/อบรม/พักผ่อน เรียบร้อย';
+          // String getmessage = 'ลงเวลา ลากิจ/ลาป่วย/อบรม/พักผ่อน เรียบร้อย';
+          String getmessage = ' บันทึก $radiovalue เรียบร้อย';
           
           var addChildrenRoute = MaterialPageRoute(
               builder: (BuildContext context) => Mysuccess(successtxt: getmessage));
@@ -198,7 +199,7 @@ class _AbsentState extends State<Absent> {
       width: 220.0,
       child: RadioButtonGroup(
           labels: [
-            "บันทึก นอกสถานที่",
+            "นอกสถานที่",
             "ลากิจ",
             "ลาป่วย",
             "อบรม/สัมมนา",

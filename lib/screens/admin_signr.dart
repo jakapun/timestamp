@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timestamp/screens/my_service.dart';
+import 'package:location/location.dart';
+import 'package:timestamp/screens/my_success.dart';
 
-class RelateId extends StatefulWidget {
-  RelateId() : super();
+class AdminSign extends StatefulWidget {
+
+  AdminSign() : super();
 
   @override
-  _RelateIdState createState() => _RelateIdState();
+  _AdminSignState createState() => _AdminSignState();
 }
 
 class Company {
@@ -28,21 +33,32 @@ class Company {
   }
 }
 
-class _RelateIdState extends State<RelateId> {
-// Explicit
+class _AdminSignState extends State<AdminSign> {
+
+  // Explicit
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString, _mySelection, rstoreprv;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
   Company _selectedCompany;
+  String tempprv, temprela, tempfull, token = '', tempuid = '', radiovalue = '';
+  double lat = 0, lng = 0;
   SharedPreferences prefs;
+  bool _isButtonDisabled = false;
 
   List data = List(); //edited line
 
   Future<String> getSWData() async {
     prefs = await SharedPreferences.getInstance();
-    String tempprv = prefs.getString('sprv');
+
+    tempprv = prefs.getString('sprv');
+    temprela = prefs.getString('srelate');
+    token = prefs.getString('stoken');
+    tempuid = prefs.getString('suid');
+    // await prefs.setString('sfulln', result['fullname']);
+    tempfull = prefs.getString('sfulln');
+
     String url =
         "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
     var res = await http
@@ -64,6 +80,8 @@ class _RelateIdState extends State<RelateId> {
     _selectedCompany = _dropdownMenuItems[0].value;
     super.initState();
     this.getSWData();
+    findLatLng();
+    _isButtonDisabled = true;
   }
 
   List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
@@ -85,7 +103,31 @@ class _RelateIdState extends State<RelateId> {
     });
   }
 
-  
+  Future<LocationData> findLocationData() async {
+    var location = Location();
+
+    try {
+      return await location.getLocation();
+    } catch (e) {
+      print('Error = $e');
+      return null;
+    }
+  }
+
+  Future<void> findLatLng() async {
+
+    var currentLocation = await findLocationData();
+
+    if (currentLocation == null) {
+      myAlert('Location Error', 'Please Open GPS&Allow use Location');
+    } else {
+      setState(() {
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+        
+      });
+    }
+  }
 
   // Method
   Widget nameText() {
@@ -212,22 +254,56 @@ class _RelateIdState extends State<RelateId> {
         print('Upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('Name = $nameString, Drop = $_mySelection');
+          print('Name = $nameString, nvision = $_mySelection, lat = $lat, lng = $lng, prv = $tempprv');
           register();
         }
       },
     );
   }
 
+  Widget mySizeBoxH() {
+    return SizedBox(
+      height: 25.0,
+    );
+  }
+
+  Widget showTextnull() {
+    return Container(
+      alignment: Alignment.center,
+      child: SelectableText(
+        // '$qrCodeString',
+        'ไม่มีข้อมูล Location \r\n หรือเคยบันทึกแล้ว \r\n จะไม่มีปุ่ม upload',
+        style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
+      ),
+    );
+  }
+
   Future<void> register() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup";
+    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/admsignr";
+    String areaone = "adm ลงเวลาแทน";
 
-    var body = {"idstaff": nameString.trim(), "ndivision": _mySelection.trim()};
+    var body = {"chkuid": nameString.trim(), 
+                "ndivision": _mySelection.trim(),
+                "glati": lat.toString(),
+                "glong": lng.toString(),
+                "area": areaone
+                };
+    // var body = {
+    //   "chkuid": tempuid.trim(),
+    //   "chkfna": tempfull,
+    //   "glati": lat.toString(),
+    //   "glong": lng.toString(),
+    //   "ndivision": temprela.trim(),
+    //   "area": radiovalue.trim()
+    // };
+
     //setUpDisplayName();
     // var response = await get(urlString);
-    var response = await http.post(urlpost, body: body);
+    // var response = await http.post(urlpost, body: body);
+    var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
+
 
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -235,13 +311,25 @@ class _RelateIdState extends State<RelateId> {
       // print('result = $result');
 
       if (result.toString() == 'null') {
-        myAlert('Not Insert', 'No Create in my Database');
+        myAlert('Not Stampin', 'No Stampin,put data in my Database');
       } else {
-        if (result['status']) {
-          String getmessage = result['message'];
-          myAlert('OK', '$getmessage');
+        if (_isButtonDisabled == true){
+        setState(() {
+          _isButtonDisabled = false; // disable ปุ่ม
+        });
+        }else{
+          print('_isButtonDisabled = false');
+        }
+        if ((result['status']) && (result['success'])) {
+          String getmessage = '  admin ลงเวลาแทน เรียบร้อย';
+          
+          var addChildrenRoute = MaterialPageRoute(
+              builder: (BuildContext context) => Mysuccess(successtxt: getmessage));
+          Navigator.of(context).push(addChildrenRoute);
+
         } else {
-          myAlert('Not OK', 'message = Null');
+          String getmessage = result['message'];
+          myAlert('Not OK', '$getmessage');
         }
       }
     } else {
@@ -292,7 +380,7 @@ class _RelateIdState extends State<RelateId> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('ผูก รหัสพนักงาน กับศูนย์'),
+        title: Text('Admin ลงเวลาแทน พนง.'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(
@@ -316,9 +404,13 @@ class _RelateIdState extends State<RelateId> {
             child: Column(
               children: <Widget>[
                 nameText(),
+                mySizeBoxH(),
                 // emailText(),
                 // passwordText(),
                 dropdownButton(),
+                mySizeBoxH(),
+                // ((lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadButton(),
+                
                 // dropdownstatic(),
               ],
             ),

@@ -62,7 +62,7 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
         labelText: 'ชื่อ :',
         labelStyle: TextStyle(color: Colors.orange),
-        helperText: 'Type Firstname',
+        helperText: 'แสดงใน ใบลงเวลา',
         helperStyle: TextStyle(color: Colors.orange),
         icon: Icon(
           Icons.face,
@@ -88,7 +88,7 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
         labelText: 'นามสกุล :',
         labelStyle: TextStyle(color: Colors.pink[400]),
-        helperText: 'Type Lastname',
+        helperText: 'แสดงใน ใบลงเวลา',
         helperStyle: TextStyle(color: Colors.pink[400]),
         icon: Icon(
           Icons.face,
@@ -115,7 +115,7 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
         labelText: 'รหัสพนักงานTOT/OS :',
         labelStyle: TextStyle(color: Colors.blue),
-        helperText: '12700099/B123456',
+        helperText: '12700099/B123456 แสดงใน ใบลงเวลา',
         helperStyle: TextStyle(color: Colors.blue),
         icon: Icon(
           Icons.email,
@@ -311,7 +311,7 @@ class _RegisterState extends State<Register> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.green[800],
-        title: Text('ลงทะเบียน User'),
+        title: Text('ลงทะเบียน User(ผูกมือถือ)'),
         actions: <Widget>[uploadButton()],
       ),
       body: Form(

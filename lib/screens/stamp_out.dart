@@ -127,7 +127,7 @@ class _StampOutState extends State<StampOut> {
       "glati": lat.toString(),
       "glong": lng.toString(),
       "ndivision": temprela.trim(),
-      "qrtext": qrCodeString.trim()
+      // "qrtext": qrCodeString.trim()
     };
     
     var response = await http.post(urlpost, headers: {HttpHeaders.authorizationHeader: "JWT $token"}, body: body);
@@ -220,7 +220,7 @@ class _StampOutState extends State<StampOut> {
       alignment: Alignment.center,
       child: SelectableText(
         // '$qrCodeString',
-        'ยังไม่ Scan Qrcode \r\n หรือเคยบันทึกออกแล้ว \r\n จะไม่มีปุ่ม upload',
+        'เคยกดบันทึกออกแล้ว \r\n จะไม่มีปุ่ม upload เพื่อลงเวลา',
         style: TextStyle(fontSize: 24.0, color: Colors.red[700]),
       ),
     );
@@ -238,12 +238,13 @@ class _StampOutState extends State<StampOut> {
         FloatingActionButton(
           elevation: 15.0,
           // foregroundColor: Colors.red[900],
-          tooltip: 'กดเพื่อ Upload ข้อมูล',
+          tooltip: 'กดเพื่อ Upload บันทึกออก',
           child: Icon(Icons.cloud_upload, size: 40.0,),
           onPressed: () {
-            if ((lat.toString().isEmpty) || (qrCodeString.isEmpty)) {
+            // if ((lat.toString().isEmpty) || (qrCodeString.isEmpty)) {
+            if (lat.toString().isEmpty) {
               myAlert('มีข้อผิดพลาด',
-                  'กรุณาเปิดการใช้ Location และแสกน \r\n Barcode/QRcode อีกรอบ \r\n ก่อนกด Upload');
+                  'กรุณาเปิดการใช้ Location \r\n ก่อนกด Upload');
             } else {
               print('lat = $lat, lng = $lng, qrtxt = $qrCodeString, prv = $tempprv, nvision = $temprela');
               //(_isButtonDisabled) ? sendstamp() : myShowSnackBar('User Press Button > 1 Click');
@@ -283,13 +284,14 @@ class _StampOutState extends State<StampOut> {
         children: <Widget>[
           showTextOne(),
           mySizeBox(),
-          showButton(),
-          mySizeBoxH(),
+          // showButton(),
+          // mySizeBoxH(),
           showText(),
           mySizeBoxH(),
           mySizeBoxH(),
           mySizeBoxH(),
-          ((qrCodeString.isEmpty) || (lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
+          // ((qrCodeString.isEmpty) || (lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
+          ((lat.toString().isEmpty) || (_isButtonDisabled == false)) ? showTextnull() : uploadValueButton(),
         ],
       ),
       
