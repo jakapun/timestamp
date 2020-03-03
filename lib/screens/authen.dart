@@ -127,7 +127,8 @@ class _AuthenState extends State<Authen> {
     101.109.115.27:2500/api/flutterget/User=123456
     */
       // uid: user.fname, prv: user.province, priv: user.privilege
-      String urlString = 'http://8a7a08360daf.sn.mynetname.net:2528/api/signin';
+      //String urlString = 'http://8a7a08360daf.sn.mynetname.net:2528/api/signin'; //rbr
+      String urlString = 'http://71dc0715fe49.sn.mynetname.net:2528/api/signin'; //kkn
 
       var body = {
         "username": emailString.trim(),

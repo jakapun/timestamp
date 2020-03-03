@@ -50,8 +50,9 @@ class _CreateQrState extends State<CreateQr> {
     prefs = await SharedPreferences.getInstance();
     tempprv = prefs.getString('sprv');
 
-    String url =
-        "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    // String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv"; //rbr
+    String url = "http://71dc0715fe49.sn.mynetname.net:2528/api/getdivisions/$tempprv"; //kkn
+
 
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -124,8 +125,8 @@ class _CreateQrState extends State<CreateQr> {
   Future<void> register() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addpoint";
-    // String qrone = '$tempprv\_$_mySelection\_$randInt\_$lng\_$lat';
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addpoint"; //rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/addpoint"; //kkn
     String qrmini = '$tempprv\_$_mySelection\_$randInt';
     var body = {
       "qrtext": qrmini,

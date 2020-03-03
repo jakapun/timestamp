@@ -43,8 +43,9 @@ class _RelateIdState extends State<RelateId> {
   Future<String> getSWData() async {
     prefs = await SharedPreferences.getInstance();
     String tempprv = prefs.getString('sprv');
-    String url =
-        "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    // String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv"; //rbr
+
+    String url = "http://71dc0715fe49.sn.mynetname.net:2528/api/getdivisions/$tempprv"; //kkn
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -222,7 +223,8 @@ class _RelateIdState extends State<RelateId> {
   Future<void> register() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup";
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/addgroup"; // rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/addgroup"; //kkn
 
     var body = {"idstaff": nameString.trim(), "ndivision": _mySelection.trim()};
     //setUpDisplayName();

@@ -126,7 +126,9 @@ class _StampIn2State extends State<StampIn2> {
     // }else{
     //    print(radiovalue);
     // }
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampino";
+    
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampino"; //rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/stampino"; //kkn
     
     var body = {
       "chkuid": tempuid.trim(),

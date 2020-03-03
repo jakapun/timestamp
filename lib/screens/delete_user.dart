@@ -20,8 +20,9 @@ class _DelUserState extends State<DelUser> {
   }
 
   Future<void> postdeluser() async {
-    // http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/deleteusertime";
+    
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/deleteusertime"; //rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/deleteusertime"; //kkn
     var body = {
       "username": emailString.trim()
     };

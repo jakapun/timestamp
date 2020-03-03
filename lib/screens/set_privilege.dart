@@ -42,8 +42,8 @@ class _SetPrivState extends State<SetPriv> {
   Future<String> getSWData() async {
     prefs = await SharedPreferences.getInstance();
     String tempprv = prefs.getString('sprv');
-    String url =
-        "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    // String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv"; // rbr
+    String url = "http://71dc0715fe49.sn.mynetname.net:2528/api/getdivisions/$tempprv"; // kkn
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -224,7 +224,8 @@ class _SetPrivState extends State<SetPriv> {
   Future<void> uppriv() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/updatepriv";
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/updatepriv"; //rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/updatepriv"; //kkn
 
     var body = {
       "user": nameString.trim(),

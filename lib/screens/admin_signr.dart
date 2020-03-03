@@ -59,8 +59,8 @@ class _AdminSignState extends State<AdminSign> {
     // await prefs.setString('sfulln', result['fullname']);
     tempfull = prefs.getString('sfulln');
 
-    String url =
-        "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv";
+    // String url = "http://8a7a08360daf.sn.mynetname.net:2528/api/getdivisions/$tempprv"; //rbr
+    String url = "http://71dc0715fe49.sn.mynetname.net:2528/api/getdivisions/$tempprv"; //kkn
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -281,14 +281,16 @@ class _AdminSignState extends State<AdminSign> {
   Future<void> register() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/admsignr";
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/admsignr"; //rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/admsignr"; //kkn
     String areaone = "adm ลงเวลาแทน";
 
     var body = {"chkuid": nameString.trim(), 
                 "ndivision": _mySelection.trim(),
                 "glati": lat.toString(),
                 "glong": lng.toString(),
-                "area": areaone
+                "area": areaone,
+                "ownuid": tempuid.trim()
                 };
     // var body = {
     //   "chkuid": tempuid.trim(),

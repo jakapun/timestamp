@@ -26,9 +26,8 @@ class _RegisterState extends State<Register> {
     {"id": 1, "name": "Test Practice"}
   ];
 
-  // final String url = "http://webmyls.com/php/getdata.php";
-  final String url =
-      "http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
+  // final String url ="http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince"; //rbr
+  final String url ="http://71dc0715fe49.sn.mynetname.net:2528/api/getprovince"; //kkn
 
   List data = List(); //edited line
 
@@ -233,8 +232,9 @@ class _RegisterState extends State<Register> {
   }
 
   Future<void> register() async {
-    // http://8a7a08360daf.sn.mynetname.net:2528/api/getprovince";
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/signup";
+  
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/signup"; // rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/signup"; //kkn
     String fullname = '$nameStringf $nameStringl';
     var body = {
       "fullname": fullname,

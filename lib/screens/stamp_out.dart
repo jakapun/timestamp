@@ -120,7 +120,8 @@ class _StampOutState extends State<StampOut> {
   Future<void> sendstampout() async {
     // addgroup
 
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampouto";
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/stampouto"; // rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/stampouto"; // kkn
     
     var body = {
       "chkuid": tempuid.trim(),

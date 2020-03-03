@@ -93,7 +93,8 @@ class _AbsentState extends State<Absent> {
     print('$temprela');
     print('$radiovalue');
     
-    String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent";
+    // String urlpost = "http://8a7a08360daf.sn.mynetname.net:2528/api/absent"; // rbr
+    String urlpost = "http://71dc0715fe49.sn.mynetname.net:2528/api/absent"; //kkn
     
     var body = {
       "chkuid": tempuid.trim(),
